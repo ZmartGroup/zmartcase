@@ -1,0 +1,12 @@
+
+  <%= form_for @category, html: {class: "pure-form pure-form-stacked", style: "padding: 20px;"} do |f| %>
+    <fieldset>
+      <legend><h1>New Category</h1></legend>
+
+      <%= f.text_field :name, placeholder: "Name"%>
+      <br>
+      <%= f.submit "Create", class: "pure-button pure-button-primary" %>
+
+    </fieldset>
+  <% end %>
+
