@@ -2,51 +2,72 @@
 <html>
 <head>
   <title>Zmartcase</title>
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<div id="layout" class="content pure-g">
-    <div id="nav" class="pure-u-1">
 
-        <div class="nav-inner">
-            <button class="primary-button pure-button">ZmartCase</button>
 
-            <div class="pure-menu">
-                <ul class="pure-menu-list">
-                    <li class="pure-menu-item pure-menu-selected"><%= link_to(root_path, class: "pure-menu-link") do %> Inbox <%end%> </li>
-                    <li class="pure-menu-item pure-menu-link">Sent</li>
-                    <li class="pure-menu-heading">Categories</li>
-                    <% @categories.each do |category| %>
-                      <li class="pure-menu-item">
-                          <%= link_to(category_email_path(category.id,category.emails.first), class: "pure-menu-link") do %> <%= category.name %>
-                          <span class="email-count">(<%= category.emails.size %>)</span>
-                          <%end%>
-                      </li>
-                    <%end%>
-                    <li class="pure-menu-heading">Settings</li>
-                    <li class="pure-menu-item"><%= link_to "Category", new_category_path, class: "pure-menu-link"%></li>
-                    <!--<li class="pure-menu-item"><a href="#" class="pure-menu-link">Important</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Sent</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Drafts</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Trash</a></li>
-                    <li class="pure-menu-heading">Labels</li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-personal"></span>Personal</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-work"></span>Work</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-travel"></span>Travel</a></li>-->
-                </ul>
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    ZmartCase
+                </a>
+            </li>
+            <li>
+              <%= link_to(root_path, class: "pure-menu-link") do %> Inbox <%end%> 
+            </li>
+            <li>
+              <a href="#">
+                  Sent
+                </a>
+            </li>
+            <li class="sidebar-label">
+              Categories
+            </li>
+            <% @categories.each do |category| %>
+              <li>
+                  <%= link_to(category_email_path(category.id,category.emails.first), class: "pure-menu-link") do %> <%= category.name %>
+                  <span class="email-count">(<%= category.emails.size %>)</span>
+                  <%end%>
+              </li>
+            <%end%>
+            <li class="sidebar-label">
+              Settings
+            </li>
+            <li>
+                <%= link_to "Category", new_category_path, class: "pure-menu-link"%>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <%= yield %>
+                </div>
             </div>
-            <button class="primary-button pure-button new-button" style="position: fixed; bottom: 0px; left: 20px;">New Case</button>
         </div>
     </div>
-    <div id="main" class="pure-u-1">
-      <%= yield %>
-    </div>
+    <!-- /#page-content-wrapper -->
 
-</div>
 
 
 </body>

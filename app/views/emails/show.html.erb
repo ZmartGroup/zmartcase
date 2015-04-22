@@ -1,19 +1,17 @@
-<div class="pure-g">
-    <div id="mail-list" class="pure-u-1-3">
-      <ul>
-          <% @emails.each do |email| %>
-            <li id="mail-item">
-              <h5 class="email-name">Tilo Mitra</h5>
-              <h4 class="email-subject"><%= email.subject %>
-              <button class="button-success pure-button" style="float:right;"><%= link_to "show", category_email_path(@category,email) %></button>
-              </h4>
-              <p class="email-desc">
-                <%= email.body[0..40]+ "..." %>
-              </p>
-            </li>
-          <% end %>
-
-      </ul>
+<div class="row">
+  <div class="col-md-3">
+    <div class="list-group">
+      <% @emails.each do |email| %>
+        <%= link_to(category_email_path(@category,email), class: "list-group-item") do %>
+          <h4 class="list-group-item-heading">Tilo Mitra</h4>
+          <h4 class="list-group-item-heading"><%= email.subject %></h4>
+          <p class="list-group-item-text"><%= email.body[0..30]+ "..." %></p>
+        </a>
+        <%end%>
+      <% end %>
     </div>
-    <div class="pure-u"><p><%= render 'email'%></p></div>
+  </div>
+  <div class="col-md-9">
+    <%= render 'email'%>
+  </div>
 </div>
