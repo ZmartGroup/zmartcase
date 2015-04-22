@@ -1,4 +1,10 @@
 Zmartcase::Application.routes.draw do
+  get "cases/index"
+
+  get "cases/new"
+
+  get "cases/show"
+
   resources :categories do
     resources :emails
   end
