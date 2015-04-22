@@ -96,6 +96,19 @@
     text-decoration: none;
 }
 
+.sidebar-nav > .sidebar-footer a {
+    text-indent: 85px;
+    position: fixed;
+    bottom: 0px;
+    font-size: 16px;
+}
+
+.sidebar-nav > .sidebar-footer a:hover {
+    color: #fff;
+    background: none;
+    border: none;
+}
+
 .sidebar-nav > .sidebar-brand {
     height: 65px;
     font-size: 18px;

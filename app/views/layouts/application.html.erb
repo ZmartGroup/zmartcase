@@ -15,8 +15,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-
+<% if current_user %>
 
 <div id="wrapper">
 
@@ -52,7 +51,12 @@
             <li>
                 <%= link_to "Category", new_category_path, class: "pure-menu-link"%>
             </li>
+            <li class="sidebar-brand sidebar-footer">
+              <%= link_to "Log out", logout_path %>
+            </li>
         </ul>
+        <div>
+        </div>
     </div>
     <!-- /#sidebar-wrapper -->
 
@@ -67,7 +71,25 @@
         </div>
     </div>
     <!-- /#page-content-wrapper -->
-
+<% else %>
+  <style>
+  body{
+    background-color: white;
+    background-image: url("assets/Nature2.png");
+    background-repeat: no-repeat;
+    background-position:center 100px;
+    background-size: 100%;
+  }
+  </style>
+  <% if current_page?('/login') %>
+    <%= render partial: "layouts/login" %>
+  <% end %>
+  <% if current_page?('/signup') %>
+    <%= render partial: "users/signup" %>
+  <% end %>
+  <%#= link_to "Sign up", signup_path %>
+  <%#= link_to "log in", login_path %>
+<% end %>
 
 
 </body>
