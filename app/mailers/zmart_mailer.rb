@@ -1,5 +1,5 @@
 class ZmartMailer < ActionMailer::Base
-  	def self.fetchAll
+  	def self.fetch_all_from_one
 		emails = Array.new
 		imap = Net::IMAP.new('imap.gmail.com', {:port => '993', :ssl => true})
 		imap.login('barasparaprojtest@gmail.com', 'Kth2015!')
@@ -18,8 +18,8 @@ class ZmartMailer < ActionMailer::Base
 		return emails
 	end
 
-	
-	def self.fetchNew
+
+	def self.fetch_new_from_one
 		emails = Array.new
 		imap = Net::IMAP.new('imap.gmail.com', {:port => '993', :ssl => true})
 		imap.login('barasparaprojtest@gmail.com', 'Kth2015!')
