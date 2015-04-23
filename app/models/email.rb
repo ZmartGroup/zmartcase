@@ -34,4 +34,4 @@ class Email < ActiveRecord::Base
 
 end
 
-##test push
+##test 3 i email
