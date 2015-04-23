@@ -18,6 +18,7 @@ class ZmartMailer < ActionMailer::Base
 		return emails
 	end
 
+	
 	def self.fetchNew
 		emails = Array.new
 		imap = Net::IMAP.new('imap.gmail.com', {:port => '993', :ssl => true})
