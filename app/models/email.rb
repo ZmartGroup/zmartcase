@@ -4,6 +4,8 @@ class Email < ActiveRecord::Base
   belongs_to :type
   belongs_to :category
   
+  #testCommentLine
+
    #Creates a new mail
     def initialize(subject, body,toAddress,fromAddress)
       @mailSubject=subject
