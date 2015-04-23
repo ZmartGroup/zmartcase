@@ -7,7 +7,7 @@ describe User do
     user = User.new
     user.first_name = "Kalle"
     user.last_name = "testsson"
-    user.name.should == "Kalle testsson"
+    expect(user.name).to eq("Kalle testsson")
   end
 
 end
