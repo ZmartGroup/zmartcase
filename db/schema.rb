@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150422083900) do
+ActiveRecord::Schema.define(:version => 20150423120448) do
 
   create_table "cases", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(:version => 20150422083900) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "email_accounts", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "imap"
+    t.string   "port"
+    t.string   "user_name"
+    t.string   "password"
+    t.boolean  "enable_ssl"
   end
 
   create_table "emails", :force => true do |t|
