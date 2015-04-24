@@ -3,6 +3,7 @@ class Email < ActiveRecord::Base
   belongs_to :case
   belongs_to :type
   belongs_to :category
+
   
   attr_accessor :category
   attr_reader :body, :subject, :mail_body, :mail_to_address
@@ -35,4 +36,8 @@ class Email < ActiveRecord::Base
       return @mail_to_address
     end
 
+
+
 end
+
+##test 3 i email
