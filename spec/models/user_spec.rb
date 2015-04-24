@@ -2,6 +2,7 @@ require 'rails_helper'
 
 
 describe User do
+  
   user = User.new
   user.first_name = "Kalle"
   user.last_name = "testsson"

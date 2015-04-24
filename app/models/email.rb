@@ -1,5 +1,7 @@
 class Email < ActiveRecord::Base
-  attr_accessible :body, :case_id, :subject, :subject, :body, :to, :from
+
+  attr_accessible :body, :case_id, :subject, :subject, :to, :from
+
   belongs_to :case
   belongs_to :type
   belongs_to :category
@@ -34,4 +36,3 @@ class Email < ActiveRecord::Base
 
 end
 
-##test 3 i email
