@@ -1,21 +1,15 @@
 class Email < ActiveRecord::Base
-  attr_accessible :body, :case_id, :subject
+  attr_accessible :body, :case_id, :subject, :subject, :body, :to, :from
   belongs_to :case
   belongs_to :type
   belongs_to :category
-
-  
-  attr_accessor :category
-  attr_reader :body, :subject, :mail_body, :mail_to_address
   
    #Creates a new mail
-    def initialize(subject, body,to_address,from_address)
-      @mail_subject       = subject
-      @mail_body          = body
-      @mail_to_address    = toAddress
-      @mail_from_address  = from_address
-    end
-    
+
+  #validates :to, presence: true
+  #validates :from, presence: true
+
+
     def get_body()
       return @mail_body.to_s
     end

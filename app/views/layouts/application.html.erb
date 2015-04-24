@@ -41,7 +41,7 @@
             <% @categories.each do |category| %>
               <li>
                   <%= link_to(category_email_path(category.id,category.emails.first), class: "pure-menu-link") do %> <%= category.name %>
-                  <span class="email-count">(<%= category.emails.size %>)</span>
+                  <span class="email-count">(<%= category.emails.count %>)</span>
                   <%end%>
               </li>
             <%end%>
@@ -52,7 +52,7 @@
                 <%= link_to "Category", new_category_path, class: "pure-menu-link"%>
             </li>
             <li class="sidebar-brand sidebar-footer">
-              <%= link_to "Log out", log_path %>
+              <%= link_to "Log out", login_path %>
             </li>
         </ul>
         <div>

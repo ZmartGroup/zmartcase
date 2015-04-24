@@ -11,7 +11,25 @@ class EmailsController < ApplicationController
   def edit
   end
 
+    def create
+
+    #render plain: params[:email].inspect
+    #@email = Email.new(params.require(:email).permit(:to, :from, :subject, :body))
+    @email = Email.new(article_params)
+
+    if @email.save
+      redirect_to @email
+    else
+      render 'new'
+    end
+  end
+
+  def index 
+    @emails = Email.all
+  end
+
   def new
+    @email = Email.new
   end
 
   def update
@@ -19,4 +37,12 @@ class EmailsController < ApplicationController
 
   def destroy
   end
+
+    private
+    def article_params
+      params.permit(:to, :from, :subject, :body)
+      #params.require(:email).permit(:to, :from, :subject, :body)
+    end
+
+
 end
