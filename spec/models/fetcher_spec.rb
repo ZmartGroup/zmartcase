@@ -1,7 +1,7 @@
 require "rails_helper"
 
 
-describe ZmartMailer do 
+describe ZmartMailer do
 	EmailAccount.create(imap:"imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
 	EmailAccount.create(imap:"imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
 

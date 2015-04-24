@@ -41,9 +41,7 @@ ActiveRecord::Schema.define(:version => 20150423120448) do
     t.integer  "case_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.datetime "date"
-    t.string   "to"
-    t.string   "from"
+    t.integer  "type_id"
     t.integer  "category_id"
   end
 
