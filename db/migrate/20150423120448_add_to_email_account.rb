@@ -5,6 +5,6 @@ class AddToEmailAccount < ActiveRecord::Migration
   	add_column :email_accounts, :user_name, :string
   	add_column :email_accounts, :password, :string
   	add_column :email_accounts, :enable_ssl, :boolean
-  	
+
   end
 end

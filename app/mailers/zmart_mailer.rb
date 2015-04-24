@@ -25,7 +25,7 @@ class ZmartMailer < ActionMailer::Base
 		end
 		return emails
 	end
-  	
+
 	def self.fetch_all_from_one(email_account)
 		emails = Array.new
 		imap = Net::IMAP.new(email_account.imap, {:port => email_account.port, :ssl => email_account.enable_ssl})
@@ -40,7 +40,7 @@ class ZmartMailer < ActionMailer::Base
 			emails.push ste
 		end
 		imap.logout()
-		imap.disconnect() 	
+		imap.disconnect()
 		return emails
 	end
 
@@ -58,7 +58,7 @@ class ZmartMailer < ActionMailer::Base
 			emails.push ste
 		end
 		imap.logout()
-		imap.disconnect() 
+		imap.disconnect()
 		return emails
 	end
 end
