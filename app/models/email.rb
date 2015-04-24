@@ -4,32 +4,35 @@ class Email < ActiveRecord::Base
   belongs_to :type
   belongs_to :category
   
+  attr_accessor :category
+  attr_reader :body, :subject, :mail_body, :mail_to_address
+  
    #Creates a new mail
-    def initialize(subject, body,toAddress,fromAddress)
-      @mailSubject=subject
-      @mailBody=body
-      @mailToAddress = toAddress
-      @mailFromAddress = fromAddress
+    def initialize(subject, body,to_address,from_address)
+      @mail_subject       = subject
+      @mail_body          = body
+      @mail_to_address    = toAddress
+      @mail_from_address  = from_address
     end
     
-    def getBody()
-      return @mailBody.to_s
+    def get_body()
+      return @mail_body.to_s
     end
     
-    def getSubject()
-      return @mailSubject.to_s
+    def get_subject()
+      return @mail_subject.to_s
     end
     
-    def setCategory(category)
-      @mailCategory = category
+    def set_category(category)
+      @mail_category = category
     end
     
-    def getCategory()
-      return @mailCategory
+    def get_category()
+      return @mail_category
     end
     
-    def getMailToAddress
-      return @mailToAddress
+    def get_mail_to_address
+      return @mail_to_address
     end
 
 end
