@@ -44,7 +44,6 @@ class ZmartMailer < ActionMailer::Base
 		return emails
 	end
 
-
 	def self.fetch_new_from_one(email_account)
 		emails = Array.new
 		imap = Net::IMAP.new(email_account.imap, {:port => email_account.port, :ssl => email_account.enable_ssl})
