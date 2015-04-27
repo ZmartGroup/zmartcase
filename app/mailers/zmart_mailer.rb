@@ -2,6 +2,13 @@ require 'net/imap'
 require 'mail'
 
 class ZmartMailer < ActionMailer::Base
+	default from: "barasparaprojtest@gmail.com"
+
+	def create_email(email)
+		@email = email		
+		mail(to: @email.to, subject: @email.subject)
+	end
+
 	def self.fetch_all_from_all
 		Email.delete_all
 		emails = Array.new
