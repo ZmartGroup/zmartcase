@@ -6,7 +6,7 @@ Zmartcase::Application.routes.draw do
   resources :users
   resources :sessions
   resources :categories do
-    resources :emails
+    resources :cases
   end
 
 

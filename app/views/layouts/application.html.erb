@@ -12,6 +12,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+  <%#= javascript_include_tag "path/to/highcharts.js", "chartkick" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -40,9 +42,13 @@
             </li>
             <% @categories.each do |category| %>
               <li>
-                  <%= link_to(category_email_path(category.id,category.emails.first), class: "pure-menu-link") do %> <%= category.name %>
-                  <span class="email-count">(<%= category.emails.size %>)</span>
+                <% if category.cases.empty? %>
+                  <a class="pure-menu-link"> <%= category.name %><span class="email-count"> (0)</span></a>
+                <% else %>
+                  <%= link_to(category_case_path(category.id,category.cases.first), class: "pure-menu-link") do %> <%= category.name %>
+                  <span class="email-count"> (<%= category.cases.size %>)</span>
                   <%end%>
+                <% end %>
               </li>
             <%end%>
             <li class="sidebar-label">

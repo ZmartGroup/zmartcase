@@ -1,0 +1,19 @@
+<% @communications.each do |c| %>
+<div class="panel panel-default" >
+  <div class="panel-heading">
+    <h3>
+        <%=c.subject.capitalize %>
+        <button class="btn btn-sm btn-default pull-right">Reply</button>
+        <button class="btn btn-sm btn-default pull-right">Forward</button>
+        <button class="btn btn-sm btn-default pull-right">Move to</button>
+    </h3>
+    <h3 class="panel-title">
+        From <a>Tilo Mitra</a> at <span><%= c.created_at %></span>
+
+    </h3>
+  </div>
+  <div class="panel-body">
+    <%= c.body %>
+  </div>
+</div>
+<%end%>

@@ -5,7 +5,7 @@ class CategoriesController < ApplicationController
 
   def show
     @category = Category.find(params[:id])
-    @emails = @category.emails
+    @cases = @category.cases
   end
 
   def edit

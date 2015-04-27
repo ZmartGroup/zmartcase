@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   def index
     @category = Category.all
+    @user = current_user
   end
 
   def new

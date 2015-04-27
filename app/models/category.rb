@@ -1,4 +1,4 @@
 class Category < ActiveRecord::Base
   attr_accessible :name
-  has_many :emails
+  has_many :cases
 end

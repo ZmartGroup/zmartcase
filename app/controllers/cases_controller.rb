@@ -6,5 +6,9 @@ class CasesController < ApplicationController
   end
 
   def show
+    @category = Category.find(params[:category_id])
+    @cases = @category.cases
+    @case = @category.cases.find(params[:id])
+    @communications = @case.emails
   end
 end
