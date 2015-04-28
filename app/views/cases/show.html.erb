@@ -1,15 +1,6 @@
 <div class="row" >
   <div class="col-md-3">
-    <div class="list-group">
-      <% @cases.each do |c| %>
-        <%= link_to(category_case_path(@category,c), class: "list-group-item") do %>
-          <h4 class="list-group-item-heading" style="color:grey;">Tilo Mitra</h4>
-          <h4 class="list-group-item-heading"><%= c.id %></h4>
-          <p class="list-group-item-text"><%= c.id %></p>
-        </a>
-        <%end%>
-      <% end %>
-    </div>
+    <%= render 'case_list' %>
   </div>
   <div class="col-md-9">
     <% if @communications.empty? %>

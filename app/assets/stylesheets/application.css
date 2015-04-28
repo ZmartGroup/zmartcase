@@ -11,9 +11,6 @@
  *= require_self
  *= require_tree .
  */
- body{
-    font-family: sans-serif;
- }
 
  .btn-primary {
     border-radius: 25px;
@@ -167,8 +164,8 @@
 
 .list-group {
     border: 0px;
-    position:fixed;
-    width: 20%;
+    position:relative;
+    width: 100%;
     height:100%;
     border-right: 1px solid lightgrey;
     margin-top: -11px;
