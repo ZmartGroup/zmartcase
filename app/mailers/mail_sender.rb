@@ -9,4 +9,4 @@ class MailSender < ActionMailer::Base
 		sub = @email.subject + " [CaseID:<" + @email.case_id.to_s + ">]"
 		mail(to: @email.to, subject: sub)
 	end
-end
+end 
