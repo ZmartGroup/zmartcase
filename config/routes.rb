@@ -20,7 +20,6 @@ Zmartcase::Application.routes.draw do
   get "users/fetch"
   post "users/fetch"
   
-
   resources :users
   resources :sessions
   resources :emails
