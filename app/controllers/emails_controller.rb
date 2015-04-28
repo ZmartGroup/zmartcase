@@ -11,12 +11,14 @@ class EmailsController < ApplicationController
   def edit
   end
 
+
+
     def create
 
     #render plain: params[:email].inspect
     #@email = Email.new(params.require(:email).permit(:to, :from, :subject, :body))
     @email = Email.new(article_params)
-
+    
     if @email.save
       redirect_to @email
     else

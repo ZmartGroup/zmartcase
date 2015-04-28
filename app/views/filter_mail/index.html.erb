@@ -1,0 +1,43 @@
+<h1><%= @c %></h1>
+
+
+
+
+<%= button_to "Filter mails MEthod", :method=> "start_filtering" %>
+<%= button_to "Filter mails page", filter_mail_start_filtering_path %>
+
+<h1>Listing mails</h1>
+ 
+<table border =1>
+  <tr>
+    <th>Subject:</th>
+    <th>To:</th>
+    <th>From:</th>
+    <th>Category:</th>
+    <th>Body:</th>
+  </tr>
+ 
+  <% @emails.each do |email| %>
+    <tr>
+      <td><%= email.subject %></td>
+      <td><%= email.to %></td>
+      <td><%= email.from %></td>
+      <td>
+      <%if not email.category.blank? %>
+      <%=email.category.name %>
+      <% else %>
+      -
+      <% end %>
+		</td>
+		 
+		<td><%= email.body %></td>
+
+    </tr>
+  <% end %>
+
+
+
+
+</table>
+
+
