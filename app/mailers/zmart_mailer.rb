@@ -10,7 +10,7 @@ class ZmartMailer < ActionMailer::Base
 	end
 
 
-=begin
+
 	def self.fetch_all_from_all
 		Email.delete_all
 		emails = Array.new
@@ -63,5 +63,5 @@ class ZmartMailer < ActionMailer::Base
 		imap.disconnect() 
 		return emails
 	end
-=end
+
 end
