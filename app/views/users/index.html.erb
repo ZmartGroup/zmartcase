@@ -1,2 +1,8 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<%= button_to "Fetch mails", users_fetch_path %>
+
+<br>
+<% @emails.each do |email| %>
+<p>From: <%= email.from %> Subject:<%= email.subject %></p>
+<p>Body: <%= email.body %><br>---------------</p>
+
+<% end %>
