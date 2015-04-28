@@ -13,6 +13,7 @@ Zmartcase::Application.routes.draw do
 
   resources :users
   resources :sessions
+  resources :emails
   resources :categories do
     resources :emails
   end
