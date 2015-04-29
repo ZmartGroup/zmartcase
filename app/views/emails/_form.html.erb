@@ -1,12 +1,15 @@
-<%= form_for @email do |f| %>
+<%= form_for @email, html: {class: "form-group"} do |f| %>
   <%= f.label :to %>:
-  <%= f.text_field :to %><br />
+  <%= f.text_field :to,class: "form-control", placeholder: "To" %><br />
 
   <%= f.label :subject %>:
-  <%= f.text_field :subject %><br />
+  <%= f.text_field :subject,class: "form-control", placeholder: "Subject" %><br />
 
   <%= f.label :body %>:
-  <%= f.text_field :body %><br />
+  <%= f.text_area :body,class: "form-control",rows: "5", placeholder: "Body" %><br />
 
-  <%= f.submit %>
+  <%= f.hidden_field :case_id, value: @case.id %>
+  <%= f.hidden_field :category_id, value: @category.id %>
+
+  <%= f.submit "Send", class: "btn btn-success" %>
 <% end %>

@@ -3,6 +3,11 @@ class CasesController < ApplicationController
   end
 
   def new
+
+  end
+
+  def create
+
   end
 
   def show
@@ -10,5 +15,6 @@ class CasesController < ApplicationController
     @cases = @category.cases
     @case = @category.cases.find(params[:id])
     @communications = @case.emails
+    @email = Email.new
   end
 end

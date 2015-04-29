@@ -1,5 +1,5 @@
 class EmailsController < ApplicationController
-  
+
   def index
   end
 
@@ -19,8 +19,8 @@ class EmailsController < ApplicationController
   def create
     @email = Email.new(params[:email])
     @email.save
-    ZmartMailer.create_email(@email).deliver
-    redirect_to new_category_path 
+    #ZmartMailer.create_email(@email).deliver
+    redirect_to new_category_path
   end
 
   def update
