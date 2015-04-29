@@ -10,4 +10,3 @@ class MailSender < ActionMailer::Base
 		mail(to: @email.to, subject: sub)
 	end
 end
-
