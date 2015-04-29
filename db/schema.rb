@@ -11,12 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150427090446) do
+ActiveRecord::Schema.define(:version => 20150428120354) do
 
   create_table "cases", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.integer  "user_id"
+    t.string   "hashtag"
+    t.boolean  "active"
+    t.integer  "category_id"
   end
 
 # Could not dump table "categories" because of following StandardError

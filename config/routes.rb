@@ -1,9 +1,16 @@
 Zmartcase::Application.routes.draw do
-  get "welcome/index"
+
+     
+  #get "welcome/index"
 
   get "filter_mail/index"
+  #get "filter_mail/filter_all_uncategorized_emails"
+  #post "filter_mail/filter_all_uncategorized_emails"
   get "filter_mail/start_filtering"
   post "filter_mail/start_filtering"
+
+
+  
   post "filter_mail/index"
 
   get "logout" => "sessions#destroy", :as => "logout"
@@ -18,6 +25,7 @@ Zmartcase::Application.routes.draw do
     resources :emails
   end
 
+  root :to => 'users#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -68,7 +76,7 @@ Zmartcase::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-   root :to => 'users#index'
+  # root :to => 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 
