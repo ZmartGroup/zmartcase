@@ -27,7 +27,7 @@ class EmailsController < ApplicationController
   def create
     @email = Email.new(params[:email])
     @email.save
-    ZmartMailer.create_email(@email).deliver
+    MailSender.create_email(@email).deliver
     redirect_to new_category_path 
 
   end
