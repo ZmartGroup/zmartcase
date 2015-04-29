@@ -1,16 +1,73 @@
 class FilterMailController < ApplicationController
-
+	require 'net/http'
 	@debug = true
   @HASHTAGNAME = "hashtagCaseID = "
 
 	def index
 		@emails = Email.all
+		#generate_random_emails(10)
 	end
+
+	
+	def generate_random_emails(num)
+		require 'open-uri'
+		until 0>num do
+			#generate subject with 1 -5 words
+			knum = rand(4) +1 
+			email_subject = ""
+			until 0 > knum do
+				word = open('http://randomword.setgetgo.com/get.php').read.to_s
+				word = word.chomp
+				email_subject += word.to_s
+				email_subject += " "
+				knum -=1
+			end
+			
+
+			#generate body with 40-70 words
+			knum = rand(30) +40
+			email_body = ""
+
+			until 0 > knum do
+				word = open('http://randomword.setgetgo.com/get.php').read.to_s
+				word = word.chomp
+
+				email_body += word.to_s
+				email_body += " "
+				knum -=1
+			end
+			logger.debug email_body + " \n"
+
+			#generate from and to
+			email_from = ""
+			word = open('http://randomword.setgetgo.com/get.php').read.to_s
+			word = word.chomp
+			email_from += word 
+			email_from += "@"
+			word = open('http://randomword.setgetgo.com/get.php').read.to_s
+			word = word.chomp
+			email_from += word
+			email_from +=".com"
+
+			email_to = "info@baraspara.se"
+
+			tempEmail = Email.new
+			tempEmail.subject = email_subject
+			tempEmail.body = email_body
+			tempEmail.from = email_from
+			tempEmail.to = email_to
+			tempEmail.save
+			num-=1
+		end	
+		#redirect_to filter_mail_index_path
+	end
+
 
 	#Filters all mails that has no category or case assigned to it
 	#def filter_all_uncategorized_emails
 	def start_filtering
 		@debug = true
+
 
 		logger.debug "\n\n\n\n\n\n START Filtering: "
 		Email.all.each do |email|
@@ -20,7 +77,17 @@ class FilterMailController < ApplicationController
 					logger.debug email.from
 					logger.debug "\n"
 				end
-				filter_mail(email)
+				Thread.new do
+					logger.debug "\n START filter_mail\n Thread ID: "
+					logger.debug Thread.current.object_id
+					logger.debug "\n"
+					filter_mail(email)
+					logger.debug "\n END filter_mail\n Thread ID: "
+					logger.debug Thread.current.object_id
+					logger.debug "\n"
+					ActiveRecord::Base.connection.close
+				end
+				
 			end
 		end
 
@@ -31,7 +98,9 @@ class FilterMailController < ApplicationController
 
 	#finds a case for the email or if non is found creates a new one and categorises it
 	def filter_mail(email)
-		logger.debug "\n START filter_mail\n"
+		logger.debug "\n START filter_mail\n Thread ID: "
+		logger.debug Thread.current.object_id
+		logger.debug "\n"
 		unless checkCase(email) #FIRST CHECK IF THERE'S ALREADY A CASE!!!!!
 			create_new_case(email) # create new case if no case is present
 			find_category(email) #and finally place that case in a category
