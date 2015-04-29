@@ -4,7 +4,6 @@ class FilterMailController < ApplicationController
   @HASHTAGNAME = "hashtagCaseID = "
 
 	def index
-		
 		@emails = Email.all
 	end
 
@@ -17,7 +16,7 @@ class FilterMailController < ApplicationController
 		Email.all.each do |email|
 			if email.category.blank? #or email.case.blank?
 				if @debug
-					logger.debug "\n\n\n\n\n\nFiltering mail with from: "
+					logger.debug "\nFiltering mail with from: "
 					logger.debug email.from
 					logger.debug "\n"
 				end
@@ -32,10 +31,10 @@ class FilterMailController < ApplicationController
 
 	#finds a case for the email or if non is found creates a new one and categorises it
 	def filter_mail(email)
-		#FIRST CHECK IF THERE'S ALREADY A CASE!!!!!
-		unless checkCase(email) # DOES NOTHING ATM!!!!
-			create_new_case(email)
-			find_category(email)
+		logger.debug "\n START filter_mail\n"
+		unless checkCase(email) #FIRST CHECK IF THERE'S ALREADY A CASE!!!!!
+			create_new_case(email) # create new case if no case is present
+			find_category(email) #and finally place that case in a category
 		end
 	end
 
@@ -44,50 +43,23 @@ class FilterMailController < ApplicationController
 	#SHOULD NOT BEEEE HEEEEREEEE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	def create_new_case(email)
 		new_case = Case.new
-		tempHash = ('a'..'z').to_a.shuffle[0,64].join
+		#tempHash = ('a'..'z').to_a.shuffle[0,64].join
 		
-		new_case.hashtag = tempHash
-
+		#new_case.hashtag = tempHash
 		new_case.active = true
 		new_case.save
 
 		email.case = new_case
 		email.save
-		#add hash to email body
-		if @debug
-				logger.debug "\n\n\nCreated new Case\n"
-				logger.debug "Case hashtag: "
-				logger.debug email.case.hashtag
-				logger.debug "\n"
-		end
-		add_hash_to_email_body(email, new_case.hashtag)
+
 		
 	end
 
-	#SHOULD NOT BEEEE HEEEEREEEE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	#ATM just adds the hash to the begning of the mail
-	def add_hash_to_email_body(email, hashtag)
-
-		#email.body = email.body.insert(0, "TESTSTSTESXTT  TEST\n")
-
-		#email.body += "."
-		#email.body = email.body[0...-1]
-
-		#logger.debug "------------------------------" + email.body
-    #logger.debug "------------------------------" + email.changes.inspect
-		#email.save!
-
-		#email.create()
-		##.insert(0, "hashtagID =START: ", hashtag ," END")
-	end
-
-	#def find_index_for_hash_id(email)
-	#	email
-	#end
 
 
 	#Starts the proccess to find a category for an email
 	def find_category(email)
+    logger.debug "\n START find_category\n"
 		#Check each category's email address to see if it fits:
 		unless checkEmailAddresses(email)
 			#Second check each word in subject and body against keywords in categories
@@ -96,23 +68,17 @@ class FilterMailController < ApplicationController
 	end
 
 
-	# DOES NOTHING ATM!!!!
-	#Checks if theres a prior case to add email to. Otherwise creates a new case
+	#Checks if theres a prior case to add email to. Otherwise returns false
 	def checkCase(email)
-    #seperate the words
-    body_words = email.body.scan(/\w+/)
-
-		#scans body for hashtagID
-    body_words.each do |word|
-      if @HASHTAGNAME.eql? word.downcase
-        #tries to match it with a case
-        logger.debug "\nMATCH!!!!!!!!!!!!!\n"
-      end
+    if email.case_id.blank?
+      return false
+    else 
+      #add email to case and return true
+		  return true
     end
-
-		return false
 	end
-	
+
+
 	#Checks the email address in the email against the email addresses in each category
 	def checkEmailAddresses(email)
 		logger.debug "\n START checkEmailAddresses\n"
@@ -136,6 +102,7 @@ class FilterMailController < ApplicationController
 					end
 
 					email.category = cat
+          email.case.category = cat
 					email.save
 					return true
 				end
@@ -163,10 +130,6 @@ class FilterMailController < ApplicationController
 		subject_words = email.subject.scan(/\w+/)
 		body_words = email.body.scan(/\w+/)
 
-
-		#logger.debug email.subject
-
-		#CATEGORY
 		Category.all.each do |cat|
 
 			#Checks each word in subject and body against keywords in categories
@@ -179,9 +142,10 @@ class FilterMailController < ApplicationController
 			if tempPoints > points
 				points = tempPoints
 				logger.debug "\n\n\n Category set!!!! \n\n\n"
-				#set cat
-				email.category = cat
-				email.save
+				#set cat % case
+          email.category = cat
+          email.case.category = cat
+          email.save
 			end
 			tempPoints = 0
 		end # end category
@@ -194,14 +158,9 @@ class FilterMailController < ApplicationController
 
 	#check each word against each keyword
 	def checkKeyWords(email, cat, word, key_words, is_subject = false)
-		
-			#logger.debug "\n START checkKeyWords:\n"
-
-
 		tempPoints = 0
 		key_words.each do |key|
 			if false
-				#logger.debug key.word
 				logger.debug "Checking word: "
 				logger.debug word
 				logger.debug " against: "
@@ -227,11 +186,8 @@ class FilterMailController < ApplicationController
 
 			end
 		end
-		#logger.debug "\n END checkKeyWords\n"
 		return tempPoints
 	end
-
-	
 
 	#check each word in the SUBJECT against the keywords in each category's key_words
 	def checkWords(email, cat, words, is_subject = false)
