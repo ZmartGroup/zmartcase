@@ -1,7 +1,7 @@
 <%= button_to "Fetch mails", users_fetch_path %>
 
 <br>
-<% @emails.each do |email| %>
+<% @emails.reverse_each do |email| %>
 <p>From: <%= email.from %> Subject:<%= email.subject %></p>
 <p>Body: <%= email.body %><br>---------------</p>
 

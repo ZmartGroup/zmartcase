@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   end
 
   def fetch
-    FetchFromAll.new(false).perform
+    FetchFromAll.new.perform
     redirect_to root_path
   end
 
