@@ -1,4 +1,14 @@
 Zmartcase::Application.routes.draw do
+  get "notes/index"
+
+  get "notes/show"
+
+  get "notes/edit"
+
+  get "notes/new"
+
+  get "notes/create"
+
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
   get "signup" => "users#new", :as => "signup"
@@ -8,6 +18,7 @@ Zmartcase::Application.routes.draw do
   resources :emails
   resources :categories do
     resources :cases
+    resources :notes
   end
 
 
