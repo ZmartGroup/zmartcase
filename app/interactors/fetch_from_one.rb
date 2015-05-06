@@ -5,14 +5,15 @@ class FetchFromOne
   def initialize(email_account, only_unseen = true)
     @email_account = email_account
     only_unseen ? @imap_search_for = "UNSEEN" : @imap_search_for = "ALL"
+    create_imap
+    imap_login
   end
 
   def perform
-    create_imap
-    imap_login
-    imap_select_inbox
-    imap_search
-    imap_logout
+    if check_for_unread > 0
+      imap_select_inbox
+      imap_readmail
+    end
   end
 
   #HELPER functions
@@ -31,9 +32,14 @@ class FetchFromOne
     @imap.select('INBOX')
   end
 
-  #Read the new mail, save in db, mark it seen
-  def imap_search
-    @imap.search([@imap_search_for]).reverse_each do |message_id|
+  def check_for_unread
+    number = @imap.status("INBOX", [@imap_search_for])[@imap_search_for]
+    return number
+  end
+
+  #Read the new mail, save in db
+  def imap_readmail
+    @imap.search([@imap_search_for]).each do |message_id|
       msg = @imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
       mail = Mail.new(msg)
       case_id = get_case_id(mail)
