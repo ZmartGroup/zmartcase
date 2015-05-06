@@ -21,14 +21,11 @@ class FilterEmail
 	#Checks if theres a prior case to add email to. Otherwise returns false
 	def check_case(email)
 	    if email.case_id.blank?
-	      return false
+	      	return false
 	    else 
 			return true
 	    end
 	end
-
-
-
 
 
 	#SHOULD NOT BEEEE HEEEEREEEE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -294,10 +291,10 @@ class FilterEmail
 		Category.all.each do |cat|
 
 			#Checks each word in subject and body against keywords in categories
-			tempPoints += checkWords(email, cat, subject_words, is_subject = true)
+			tempPoints += checkWords(cat, subject_words, is_subject = true)
 
 			#BODY
-			tempPoints += checkWords(email, cat, body_words, is_subject = false)
+			tempPoints += checkWords(cat, body_words, is_subject = false)
 
 			if tempPoints > points
 				points = tempPoints
@@ -316,11 +313,11 @@ class FilterEmail
 	end
 
 		#check each word in either subject or body against the keywords in each category's key_words
-	def checkWords(email, cat, words, is_subject = false)
+	def checkWords(cat, words, is_subject = false)
 		tempPoints = 0
 		words.each do |word|
 
-			tempPoints += checkKeyWords(email, cat, word, cat.key_words, is_subject)
+			tempPoints += checkKeyWords(word, cat.key_words, is_subject)
 			#check each word against each keyword
 
 		end 
@@ -328,17 +325,17 @@ class FilterEmail
 	end
 
 	#check each word against each keyword
-	def checkKeyWords(email, cat, word, key_words, is_subject = false)
+	def checkKeyWords(word, key_words, is_subject = false)
 		tempPoints = 0
 		Rails.logger.debug "\nSTART CHECK KEYWORDS\n"
 		key_words.each do |key|
-			#if true #@debug
+			if true #@debug
 				Rails.logger.debug "Checking word: "
 				Rails.logger.debug word
 				Rails.logger.debug " against: "
 				Rails.logger.debug key.word
 				Rails.logger.debug "\n"
-			#end
+			end
 			if key.word.downcase.eql? word.downcase
 				if @debug
 					Rails.logger.debug "\nFOUND a match for word: \n"

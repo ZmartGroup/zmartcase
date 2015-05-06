@@ -22,8 +22,12 @@ ActiveRecord::Schema.define(:version => 20150428120354) do
     t.integer  "category_id"
   end
 
-# Could not dump table "categories" because of following StandardError
-#   Unknown type 'KeyWord' for column 'key_words'
+  create_table "categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "filter_id"
+  end
 
   create_table "email_accounts", :force => true do |t|
     t.datetime "created_at",    :null => false
