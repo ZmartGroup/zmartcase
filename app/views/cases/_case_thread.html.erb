@@ -21,7 +21,7 @@
   <% end %>
     <div class="panel-heading">
       <h2 style="margin-top: 0px;">
-        <%=c.subject.capitalize %>
+        <%=link_to c.subject.capitalize, email_path(c) %>
       </h2>
       <h3 class="panel-title">
           From <a>Tilo Mitra</a> at <span><%= c.created_at %></span>

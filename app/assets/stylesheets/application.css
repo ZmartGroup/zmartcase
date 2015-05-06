@@ -164,11 +164,13 @@
 
 .list-group {
     border: 0px;
-    position:relative;
-    width: 100%;
+    position:fixed;
+    width: 280px;
     height:100%;
     border-right: 1px solid lightgrey;
     margin-top: -11px;
+    margin-left: -15px;
+    overflow: auto;
     border-radius: 0px;
 }
 
