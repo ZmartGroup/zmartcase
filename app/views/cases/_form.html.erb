@@ -3,7 +3,10 @@
   <%= f.text_field :created_at,class: "form-control", placeholder: "To" %><br />
 
   <%= f.label "Assign to user"  %>:
-  <%= f.collection_select :user_id, @users, :id, :name, {prompt: "select user"}, {class: "form-control"}  %><br />
+  <%= f.collection_select :user_id, User.all, :id, :name, {prompt: "select user"}, {class: "form-control"}  %><br />
+
+  <%= f.label "Set priority"  %>:
+  <%= f.collection_select :priority_id, Priority.all, :id, :name, {prompt: "select user"}, {class: "form-control"}  %><br />
 
   <%= f.submit "Save", class: "btn btn-success" %>
 <% end %>

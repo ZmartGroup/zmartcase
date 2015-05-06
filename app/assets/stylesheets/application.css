@@ -186,3 +186,7 @@
     box-shadow:5px 0px 0px 0px rgb(75, 113, 151) inset;
     /*background: transparent;*/
 }
+
+.navbar-default > .navbar-text{
+    color: white;
+}

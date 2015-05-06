@@ -1,4 +1,4 @@
-<div class="navbar-fixed-top" style="left:170px;">
+<div class="navbar-default navbar-fixed-top" style="left:450px; background: rgb(37, 42, 58);">
   <!-- Button trigger modal -->
     <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalPrio" style="margin:15px;">
       Edit case<%#= link_to "Edit Case", edit_category_case_path %>
@@ -9,6 +9,9 @@
     <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalEmail" style="margin:15px;">
       New email
     </button>
+    <p class="navbar-text lead pull-right">Priority: <%= @case.priority.name %> </p>
+    <p class="navbar-text lead pull-right">Created at: <%= @case.priority.created_at %> </p>
+    <p class="navbar-text lead pull-right">Assigned to: <%= @case.user.name %> </p>
 </div>
 
 <br>
