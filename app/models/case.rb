@@ -1,5 +1,5 @@
 class Case < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :created_at
   has_many :emails
   has_many :notes
   belongs_to :user

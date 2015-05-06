@@ -15,6 +15,7 @@ class NotesController < ApplicationController
 
   def create
     @note = Note.new(params[:note])
+    @note.user = current_user
     @note.save
     redirect_to new_category_path
   end

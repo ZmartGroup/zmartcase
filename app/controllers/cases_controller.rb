@@ -10,15 +10,35 @@ class CasesController < ApplicationController
 
   end
 
+  def edit
+
+  end
+
+  def update
+    @category = Category.find(params[:category_id])
+    @case = Case.find(params[:id])
+
+    if @case.update_attributes(params[:case])
+      redirect_to category_case_path(@category,@case), notice: "Case is updated!"
+    else
+      redirect_to category_case_path(@category,@case), alert: "Case was not updated!"
+    end
+  end
+
   def show
     @category = Category.find(params[:category_id])
     @cases = @category.cases
-    @case = @category.cases.find(params[:id])
+    @case = Case.find(params[:id])
+    @users = User.all
+
+    #to list all communications in @case
     @communications = @case.emails
     @communications += @case.notes
     @communications = @communications.sort_by(&:created_at).reverse
 
+    #for creating new communications under @case
     @email = Email.new
     @note = Note.new
   end
+
 end
