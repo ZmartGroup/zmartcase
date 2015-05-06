@@ -21,7 +21,7 @@
   <% end %>
     <div class="panel-heading">
       <h2 style="margin-top: 0px;">
-        <%=link_to c.subject.capitalize, email_path(c) %>
+        <%#=link_to c.subject.capitalize, email_path(c) %>
       </h2>
       <h3 class="panel-title">
           From <a>Tilo Mitra</a> at <span><%= c.created_at %></span>
@@ -64,12 +64,12 @@
         <h4 class="modal-title" id="myModalLabel">New Note</h4>
       </div>
       <div class="modal-body">
-        ...
+        <%= render '/notes/form' %>
       </div>
-      <div class="modal-footer">
+      <!--<div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-success">Add</button>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>

@@ -15,6 +15,10 @@ class CasesController < ApplicationController
     @cases = @category.cases
     @case = @category.cases.find(params[:id])
     @communications = @case.emails
+    @communications += @case.notes
+    @communications = @communications.sort_by(&:created_at).reverse
+
     @email = Email.new
+    @note = Note.new
   end
 end
