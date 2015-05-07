@@ -5,12 +5,13 @@ class FetchFromOne
   def initialize(email_account, only_unseen = true)
     @email_account = email_account
     only_unseen ? @imap_search_for = "UNSEEN" : @imap_search_for = "ALL"
+    only_unseen ? @imap_status_of = "UNSEEN" : @imap_status_of = "MESSAGES"
     create_imap
     imap_login
   end
 
   def perform
-    if check_for_unread > 0
+    if check_number_of_emails > 0
       imap_select_inbox
       imap_readmail
     end
@@ -32,8 +33,8 @@ class FetchFromOne
     @imap.select('INBOX') 
   end
 
-  def check_for_unread
-    number = @imap.status("INBOX", [@imap_search_for])[@imap_search_for]
+  def check_number_of_emails
+    number = @imap.status("INBOX", [@imap_status_of])[@imap_status_of]
     return number
   end
 
@@ -43,9 +44,17 @@ class FetchFromOne
       msg = @imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
       mail = Mail.new(msg)
       case_id = get_case_id(mail)
-      Email.create(case_id: case_id, date: mail.date, to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
+      Email.create(case_id: case_id, date: mail.date, raw: compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
       @imap.store(message_id, '+FLAGS', [:Seen])
     end
+  end
+
+  def compress_mail(msg)
+    file = StringIO.new(ActiveSupport::Gzip.compress(msg))
+    file.class.class_eval { attr_accessor :original_filename, :content_type }
+    file.original_filename = 'rawMail.gzip'
+    file.content_type = 'application/x-gzip'
+    return file
   end
 
   def get_case_id(mail)
