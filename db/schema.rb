@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20150506132725) do
     t.string   "to"
     t.string   "from"
     t.integer  "category_id"
+    t.string   "raw"
   end
 
   create_table "filters", :force => true do |t|
