@@ -17,10 +17,10 @@ ActiveRecord::Schema.define(:version => 20150506132725) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "user_id"
-    t.string   "hashtag"
-    t.boolean  "active"
     t.integer  "category_id"
     t.integer  "priority_id"
+    t.string   "hashtag"
+    t.boolean  "active"
   end
 
   create_table "categories", :force => true do |t|
@@ -66,6 +66,21 @@ ActiveRecord::Schema.define(:version => 20150506132725) do
     t.integer  "category_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "notes", :force => true do |t|
+    t.string   "subject"
+    t.text     "body"
+    t.integer  "case_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "priorities", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "terms", :force => true do |t|
