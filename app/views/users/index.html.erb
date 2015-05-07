@@ -1,8 +1,11 @@
-<%= button_to "Fetch mails", users_fetch_path %>
 
-<br>
-<% @emails.each do |email| %>
-<p>From: <%= email.from %> Subject:<%= email.subject %></p>
-<p>Body: <%= email.body %><br>---------------</p>
+<div class="row" style="border-bottom: 1px solid lightgrey;">
+  <h1 class="text-center"> Dashboard </h1>
+</div>
 
-<% end %>
+<h3 class="text-center">Your cases</h3>
+<%= line_chart @user.cases.group(:created_at).count %>
+
+<h3 class="text-center">Cases in categories</h3>
+<%= bar_chart @user.cases.group(:category_id) %>
+

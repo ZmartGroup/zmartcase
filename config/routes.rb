@@ -1,6 +1,9 @@
 Zmartcase::Application.routes.draw do
 
-     
+  get "logout" => "sessions#destroy", :as => "logout"
+  get "login" => "sessions#new", :as => "login"
+  get "signup" => "users#new", :as => "signup"
+
   #get "welcome/index"
 
   get "filter_mail/index"
@@ -10,21 +13,23 @@ Zmartcase::Application.routes.draw do
   post "filter_mail/start_filtering"
 
 
-  
+
   post "filter_mail/index"
 
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
   get "signup" => "users#new", :as => "signup"
-  
+
   get "users/fetch"
   post "users/fetch"
-  
+
+  resources :priorities
   resources :users
   resources :sessions
   resources :emails
+  resources :notes
   resources :categories do
-    resources :emails
+    resources :cases
   end
 
   root :to => 'users#index'
