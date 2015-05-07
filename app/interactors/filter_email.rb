@@ -3,6 +3,38 @@ class FilterEmail
 	def initialize()
 
 	end
+
+	#Accepts a que with emails that's going to be categorized, and how many threads it should do it in
+	def execute_filter_threads(queue, num_of_threads)
+		@active_threads = 0
+		lock = Mutex.new
+
+		while queue.length > 0 do 
+			if @NUM_OF_THREADS > @active_threads # Checks so that not more than set threads run concurrently
+				lock.synchronize{ # lock variable so that only one thread can access it
+					@active_threads += 1
+				}
+
+				Rails.logger.debug "Num of threads: "
+				Rails.logger.debug @active_threads
+				Rails.logger.debug "\n"
+
+				Thread.new do # Start the threads
+					FilterEmail.new.filter_mail(queue.pop)
+					ActiveRecord::Base.connection.close
+					lock.synchronize{
+						@active_threads -=1
+					}
+				end
+			else 
+				sleep(10)
+			end
+		end 
+
+	end
+
+
+
 	#finds a case for the email or if non is found creates a new one and categorises it
 	def filter_mail(email)
 		Rails.logger.debug "\n START filter_mail\n Thread ID: "
@@ -61,24 +93,10 @@ class FilterEmail
 			accounts = cat.email_accounts
 			accounts.each do |to|
 				if to.email_address.downcase.eql? email.to.downcase
-
-					if @debug
-						Rails.logger.debug "\n FOUND matching email address: \n"
-						Rails.logger.debug "\nEmail Subject: "
-						Rails.logger.debug email.subject
-						Rails.logger.debug "\n Category: "
-						Rails.logger.debug cat.id
-						Rails.logger.debug "\n"
-						Rails.logger.debug "\nDEBUG WORD:\n"
-						Rails.logger.debug word
-						Rails.logger.debug "\n Email Category: "
-						Rails.logger.debug email.category_id
-						Rails.logger.debug "\n"
-					end
-
 					email.category = cat
           			email.case.category = cat
 					email.save
+					Rails.logger.debug "\n END checkEmailAddresses. Returning TRUE\n"
 					return true
 				end
 			end
@@ -236,8 +254,8 @@ class FilterEmail
 		Rails.logger.debug "\n START checkEmailAddresses\n"
 		Category.all.each do |cat|
 			accounts = cat.email_accounts
-			accounts.each do |to|
-				if to.email_address.downcase.eql? email.to.downcase
+			accounts.each do |account|
+				if account.email_address.downcase.eql? email.to.downcase
 
 					if @debug
 						Rails.logger.debug "\n FOUND matching email address: \n"
@@ -272,6 +290,7 @@ class FilterEmail
 		#Used to settle which word to use. 
 		tempPoints = 0 #The score for the current category
 		points = 0 # The highest score achived 
+
 		if @debug 
 			Rails.logger.debug "\n\n checkSubjectAndBody with mail from: "
 			Rails.logger.debug email.from
@@ -291,10 +310,10 @@ class FilterEmail
 		Category.all.each do |cat|
 
 			#Checks each word in subject and body against keywords in categories
-			tempPoints += checkWords(cat, subject_words, is_subject = true)
+			tempPoints += checkWords(cat.key_words, subject_words, is_subject = true)
 
 			#BODY
-			tempPoints += checkWords(cat, body_words, is_subject = false)
+			tempPoints += checkWords(cat.key_words, body_words, is_subject = false)
 
 			if tempPoints > points
 				points = tempPoints
@@ -310,14 +329,16 @@ class FilterEmail
 
 		#if debug logger.debug "\nENDING!!!!! \n\n\n"
 		Rails.logger.debug "\n END checkSubjectAndBody\n"
+
+
 	end
 
 		#check each word in either subject or body against the keywords in each category's key_words
-	def checkWords(cat, words, is_subject = false)
+	def checkWords(key_words, words, is_subject = false)
 		tempPoints = 0
 		words.each do |word|
 
-			tempPoints += checkKeyWords(word, cat.key_words, is_subject)
+			tempPoints += checkKeyWords(word, key_words, is_subject)
 			#check each word against each keyword
 
 		end 

@@ -5,6 +5,7 @@ class FilterMailController < ApplicationController
 		@emails = Email.all
 		#generate_random_emails(10)
 		#remove_all_cases_and_categories_from_emails
+
 	end
 
 
@@ -13,7 +14,7 @@ class FilterMailController < ApplicationController
 	def start_filtering
 		require 'thread'
 		@debug = true
-		@NUM_OF_THREADS = 4
+		@NUM_OF_THREADS = 4 # How many threads to executed concurrently
 
 		#Saves the tasks in a que to regulate num of threads
 		queue = Queue.new
@@ -29,59 +30,34 @@ class FilterMailController < ApplicationController
 					Rails.logger.debug "\n"
 				end
 				queue.push(email) 
+				#FilterEmail.new.filter_mail(email)
 			end
 		end
+#
 
-
-		Rails.logger.debug "\n\n\n QUE made, returning to index...\n\n"
+		#Rails.logger.debug "\n\n\n QUE made, returning to index...\n\n"
 		
-	 	FilterEmail.new.filter_mail(Email.last)
+		#Create new thread
+	 	#FilterEmail.new.filter_mail(Email.last)
 
-		redirect_to filter_mail_index_path
 		
-
 
 		#Start executing the threads
-		#execute_filter_threads(queue, @NUM_OF_THREADS)
+		FilterEmail.new.execute_filter_threads(queue, @NUM_OF_THREADS)
 
+		# Join the new thread
 		Rails.logger.debug "\n\n\n\n\n All threads done!!!!!!!!!!!!!!\n\n\n\n\n"
 
 		Rails.logger.debug "\n END Filtering\n\n\n\n\n"
 		#-------------------------------
+		redirect_to filter_mail_index_path
 		
 	end
 
 
 
 
-	#Accepts a que with emails that's going to be categorized, and how many threads it should do it in
-	def execute_filter_threads(queue, num_of_threads)
-		@active_threads = 0
-		lock = Mutex.new
 
-		while queue.length > 0 do 
-			if @NUM_OF_THREADS > @active_threads # Checks so that not more than set threads run concurrently
-				lock.synchronize{ # lock variable so that only one thread can access it
-					@active_threads += 1
-				}
-
-				Rails.logger.debug "Num of threads: "
-				Rails.logger.debug @active_threads
-				Rails.logger.debug "\n"
-
-				Thread.new do # Start the threads
-					filter_mail(queue.pop)
-					ActiveRecord::Base.connection.close
-					lock.synchronize{
-						@active_threads -=1
-					}
-				end
-			else 
-				sleep(10)
-			end
-		end 
-
-	end
 
 
 
