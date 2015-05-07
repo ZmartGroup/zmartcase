@@ -10,7 +10,7 @@
  
 <table border =1>
   <tr>
-    <th>Subject:</th>
+    <h1>Listing mails</h1><th>Subject:</th>
     <th>To:</th>
     <th>From:</th>
     <th>Category:</th>
@@ -49,4 +49,31 @@
 
 </table>
 
+<h1>Listing categories and their cases</h1>
+<table border =1>
+  <tr>
+    <th>Name:</th>
+    <th>cases:</th>
+  </tr>
+ 
+  <% @categories.each do |cat| %>
+    <tr>
+      <td><%= cat.name %></td>
+    </tr>
+    <tr>
+      <td>
+        <% cat.cases.each do |case1| %>
+          <tr>
+            <td>
+              <%= case1.id %>
+            </td>
+          </tr>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
 
+
+
+
+</table>

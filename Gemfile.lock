@@ -31,12 +31,17 @@ GEM
     arel (3.0.3)
     bcrypt (3.1.10)
     builder (3.0.4)
+<<<<<<< HEAD
     capybara (2.4.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+=======
+    byebug (4.0.5)
+      columnize (= 0.9.0)
+>>>>>>> origin/master
     chartkick (1.3.2)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -45,6 +50,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    columnize (0.9.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.5.2)
@@ -153,7 +159,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+<<<<<<< HEAD
   capybara
+=======
+  byebug
+>>>>>>> origin/master
   chartkick
   coffee-rails (~> 3.2.1)
   jquery-rails

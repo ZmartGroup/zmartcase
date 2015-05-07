@@ -2,10 +2,6 @@ require 'rails_helper'
 
 
 describe FilterEmail do 
-	 #before(:each) do
-    	#@widget = Widget.create
-  	#end
-
 
 
 	it "checkKeyWords: should return 10 with a keyWord = 10" do
@@ -80,6 +76,81 @@ describe FilterEmail do
 		expect(tempEmail.category).equal? feedbackCat
 
 	end
+
+	it "create_new_case_and_attach: both case category and email category should be same" do
+		#new_case = Case.new
+		#new_case.active = true
+		#new_case.save
+
+		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
+			body: "hejsan, Min brygga är trevlig")
+		#tempEmail.case = new_case
+		#tempEmail.save
+		feedbackCat = Category.new(name: "Feedback")
+
+		FilterEmail.new.create_new_case_and_attach(tempEmail,feedbackCat)
+		expect(tempEmail.category).equal? feedbackCat
+		expect(tempEmail.case).equal? feedbackCat.cases.last
+	end
+
+	it "create_new_case_and_attach: if email has case it should add that case to category" do
+		new_case = Case.new
+		new_case.active = true
+		new_case.save
+
+		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
+			body: "hejsan, Min brygga är trevlig")
+		tempEmail.case = new_case
+		tempEmail.save
+		feedbackCat = Category.new(name: "Feedback")
+
+		FilterEmail.new.create_new_case_and_attach(tempEmail,feedbackCat)
+		#expect(tempEmail.category).equal? feedbackCat
+		expect(tempEmail.case).equal? feedbackCat.cases.last
+	end
+
+
+
+	it "checkSubjectAndBody: email category should be same as case category" do
+		new_case = Case.new
+		new_case.active = true
+		new_case.save
+		#Attach case to email
+		#email.case = new_case
+		#email.save
+		
+		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
+			body: "hejsan, Min brygga är trevlig")
+		tempEmail.case = new_case
+		tempEmail.save
+
+
+		feedbackCat = Category.new(name: "Feedback")
+		felCat = Category.new(name: "fel kategori")
+
+		keyWordsDB = Array.new
+		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
+		keyWordsDB.push(KeyWord.new(word: "trappa", point: "10"))
+		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
+
+		keyWordsDB2 = Array.new
+		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "10"))
+		keyWordsDB2.push(KeyWord.new(word: "min", point: "10"))
+		keyWordsDB2.push(KeyWord.new(word: "info", point: "10"))
+
+
+
+		feedbackCat.key_words = keyWordsDB
+		felCat.key_words = keyWordsDB2
+
+		FilterEmail.new.checkSubjectAndBody(tempEmail)
+		#casesDB = feedbackCat.cases
+		
+		#expect(casesDB.fetch(0)).equal? tempEmail.category
+		expect(tempEmail.category).equal? new_case.category
+
+	end
+
 
 
 	it "checkEmailAddresses: should set category to feedbackCat" do
@@ -208,13 +279,6 @@ describe FilterEmail do
 
 	end
 
-	it "create_new_case: should create new case(duh!) and add it to email" do
-
-		tempEmail = Email.new(subject: "Hejs", to: "info@baraspara.se", from: "hej@hejsan.se", body: "JA JA JAJ A")
-		FilterEmail.new.create_new_case(tempEmail) 
-		expect(tempEmail.case).to be_truthy
-
-	end
 
 	it "check_case: filtering email with a case to check_case should return true" do
 
@@ -233,7 +297,8 @@ describe FilterEmail do
 		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se",
 			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
 
-		FilterEmail.new.create_new_case(tempEmail)
+		#FilterEmail.new.create_new_case(tempEmail)
+		tempEmail.case = Case.new
 		accountDB = Array.new
 		tempAccount = EmailAccount.new(email_address: to_email_address)
 		accountDB.push(tempAccount)
@@ -301,5 +366,51 @@ describe FilterEmail do
 		expect(tempEmail.category).equal? feedbackCat
 
 	end
+
+	it "execute_filter_threads: should add correct categories to both emails in queue" do
+		to_email_address = "feedback@baraspara.se"
+		tempEmail1 = Email.new(subject: "Hejsan", to: to_email_address,
+			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
+
+
+
+		tempEmail2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
+			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
+
+		queue = Queue.new
+		queue.push(tempEmail1) 
+		queue.push(tempEmail2) 
+
+		#FilterEmail.new.create_new_case(tempEmail)
+		accountDB = Array.new
+		tempAccount = EmailAccount.new(email_address: to_email_address)
+		accountDB.push(tempAccount)
+
+
+		keyWordsDB = Array.new
+		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
+		keyWordsDB.push(KeyWord.new(word: "pelle", point: "10"))
+		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
+
+
+		feedbackCat = Category.new(name: "Feedback")
+		feedbackCat.email_accounts = accountDB
+		feedbackCat.key_words = keyWordsDB
+
+		keyWordsDB2 = Array.new
+		keyWordsDB2.push(KeyWord.new(word: "falt", point: "4"))
+		keyWordsDB2.push(KeyWord.new(word: "trappa", point: "8"))
+		keyWordsDB2.push(KeyWord.new(word: "skorsten", point: "1"))
+		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "1"))
+		trappaCat = Category.new(name: "trappa kategori")
+
+		trappaCat.key_words = keyWordsDB2
+
+		FilterEmail.new.execute_filter_threads(queue,2)
+		expect(tempEmail1.category).equal? feedbackCat
+		expect(tempEmail2.category).equal? trappaCat 
+
+	end
+
 
 end

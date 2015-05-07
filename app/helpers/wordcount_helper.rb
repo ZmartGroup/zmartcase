@@ -1,0 +1,2 @@
+module WordcountHelper
+end

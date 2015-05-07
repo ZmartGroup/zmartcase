@@ -27,6 +27,7 @@ gem 'jquery-rails'
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'byebug'
 end
 
 # To use ActiveModel has_secure_password
@@ -45,3 +46,4 @@ end
 # gem 'debugger'
 gem 'test-unit'
 gem 'minitest'
+
