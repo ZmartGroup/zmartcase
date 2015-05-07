@@ -1,0 +1,106 @@
+<div class="navbar-default navbar-fixed-top" style="left:450px; background: rgb(37, 42, 58);">
+  <!-- Button trigger modal -->
+    <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalPrio" style="margin:15px;">
+      Edit case<%#= link_to "Edit Case", edit_category_case_path %>
+    </button>
+    <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalNote" style="margin:15px;">
+      Add note
+    </button>
+    <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalEmail" style="margin:15px;">
+      New email
+    </button>
+    <% if @case.priority.nil? %>
+      <p class="navbar-text lead pull-right">Priority: None </p>
+    <% else %>
+      <p class="navbar-text lead pull-right">Priority: <%= @case.priority.name %> </p>
+    <% end %>
+    <p class="navbar-text lead pull-right">Created at: <%= @case.priority.created_at %> </p>
+    <% if @case.user.nil? %>
+      <p class="navbar-text lead pull-right">Assigned to: <font color="red">Not assigned</font></p>
+    <% else %>
+      <p class="navbar-text lead pull-right">Assigned to: <%= @case.user.name %> </p>
+    <% end %>
+</div>
+
+<br>
+<div style="padding-top: 50px;">
+  <% @communications.each do |c| %>
+  <% if c.class == Email %>
+    <div class="panel panel-default pull-right" style="width:80%;">
+  <% else %>
+    <div class="panel panel-info pull-right" style="width:80%;">
+  <% end %>
+    <div class="panel-heading">
+      <h2 style="margin-top: 0px;">
+        <%#=link_to c.subject.capitalize, email_path(c) %>
+      </h2>
+      <h3 class="panel-title">
+          From <a>Tilo Mitra</a> at <span><%= c.created_at %></span>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <%= c.body %>
+    </div>
+  </div>
+  <%end%>
+</div>
+
+
+<!-- Email Modal -->
+<div class="modal fade" id="myModalEmail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Email</h4>
+      </div>
+      <div class="modal-body">
+        <%= render '/emails/form' %>
+      </div>
+      <!--<div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Send</button>
+      </div>-->
+    </div>
+  </div>
+</div>
+
+
+<!-- Note Modal -->
+<div class="modal fade" id="myModalNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Note</h4>
+      </div>
+      <div class="modal-body">
+        <%= render '/notes/form' %>
+      </div>
+      <!--<div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Add</button>
+      </div>-->
+    </div>
+  </div>
+</div>
+
+<!-- Prio Modal -->
+<div class="modal fade" id="myModalPrio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit case</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form' %>
+      </div>
+      <!--<div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Set</button>
+      </div>-->
+    </div>
+  </div>
+</div>
+

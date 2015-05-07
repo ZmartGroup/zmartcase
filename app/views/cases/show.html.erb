@@ -1,2 +1,10 @@
-<h1>Cases#show</h1>
-<p>Find me in app/views/cases/show.html.erb</p>
+<div class="col-md-3">
+  <%= render 'case_list' %>
+</div>
+<div class="col-md-9">
+  <% if @communications.empty? %>
+    <%= render 'empty_thread' %>
+  <% else %>
+    <%= render 'case_thread' %>
+  <% end %>
+</div>

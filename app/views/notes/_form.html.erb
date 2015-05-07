@@ -1,0 +1,12 @@
+<%= form_for @note, html: {class: "form-group"} do |f| %>
+
+  <%= f.label :subject %>:
+  <%= f.text_field :subject,class: "form-control", placeholder: "Subject" %><br />
+
+  <%= f.label :body %>:
+  <%= f.text_area :body,class: "form-control",rows: "5", placeholder: "Body" %><br />
+
+  <%= f.hidden_field :case_id, value: @case.id %>
+
+  <%= f.submit "Add", class: "btn btn-success" %>
+<% end %>

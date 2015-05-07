@@ -11,19 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150506112634) do
+ActiveRecord::Schema.define(:version => 20150506132725) do
 
   create_table "cases", :force => true do |t|
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "user_id"
+    t.integer  "category_id"
+    t.integer  "priority_id"
     t.string   "hashtag"
     t.boolean  "active"
-    t.integer  "category_id"
   end
 
-# Could not dump table "categories" because of following StandardError
-#   Unknown type 'KeyWord' for column 'key_words'
+  create_table "categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "filter_id"
+  end
 
   create_table "email_accounts", :force => true do |t|
     t.datetime "created_at",    :null => false
