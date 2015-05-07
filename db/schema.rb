@@ -11,28 +11,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150423120448) do
+ActiveRecord::Schema.define(:version => 20150428120354) do
 
   create_table "cases", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.integer  "user_id"
+    t.string   "hashtag"
+    t.boolean  "active"
+    t.integer  "category_id"
   end
 
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "filter_id"
   end
 
   create_table "email_accounts", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "imap"
     t.string   "port"
     t.string   "user_name"
     t.string   "password"
     t.boolean  "enable_ssl"
+    t.string   "email_address"
+    t.integer  "category_id"
   end
 
   create_table "emails", :force => true do |t|
@@ -45,6 +51,20 @@ ActiveRecord::Schema.define(:version => 20150423120448) do
     t.string   "to"
     t.string   "from"
     t.integer  "category_id"
+  end
+
+  create_table "filters", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "key_words", :force => true do |t|
+    t.string   "word"
+    t.integer  "point"
+    t.integer  "category_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "types", :force => true do |t|

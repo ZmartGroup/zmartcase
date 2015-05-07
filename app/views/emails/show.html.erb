@@ -3,9 +3,9 @@
     <div class="list-group">
       <% @emails.each do |email| %>
         <%= link_to(category_email_path(@category,email), class: "list-group-item") do %>
-          <h4 class="list-group-item-heading">Tilo Mitra</h4>
+          <h6 class="list-group-item-heading">FROM: <%=email.from %></h6>
           <h4 class="list-group-item-heading"><%= email.subject %></h4>
-          <p class="list-group-item-text"><%= email.body[0..30]+ "..." %></p>
+          <p class="list-group-item-text"><%= email.body[0..30] + "..." %></p>
         </a>
         <%end%>
       <% end %>

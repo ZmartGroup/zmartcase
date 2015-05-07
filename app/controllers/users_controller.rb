@@ -1,6 +1,12 @@
 class UsersController < ApplicationController
   def index
     @category = Category.all
+    @emails = Email.all
+  end
+
+  def fetch
+    FetchFromAll.new(false).perform
+    redirect_to root_path
   end
 
   def new

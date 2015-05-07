@@ -2,7 +2,11 @@ class CasesController < ApplicationController
   def index
   end
 
-  def new
+
+
+
+  def create
+
   end
 
   def show

@@ -1,0 +1,15 @@
+<%= form_for @email do |f| %>
+  <%= f.label :to %>:
+  <%= f.text_field :to %><br />
+
+  <%= f.label :case_id %>:
+  <%= f.text_field :case_id %><br />
+
+  <%= f.label :subject %>:
+  <%= f.text_field :subject %><br />
+
+  <%= f.label :body %>:
+  <%= f.text_field :body %><br />
+
+  <%= f.submit %>
+<% end %>

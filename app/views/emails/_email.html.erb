@@ -9,7 +9,9 @@
         <%=@email.subject.capitalize %>
     </h2>
     <h3 class="panel-title">
-        From <a>Tilo Mitra</a> at <span><%= @email.created_at %></span>
+        
+        From:  <a><%=@email.from %></a> at <span><%= @email.created_at %></span><BR>
+        To: <a><%=@email.to %>
     </h3>
   </div>
   <div class="panel-body">
