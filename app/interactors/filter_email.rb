@@ -4,13 +4,21 @@ class FilterEmail
 
 	end
 
+	
+
+
+
+
+
+
+
 	#Accepts a que with emails that's going to be categorized, and how many threads it should do it in
 	def execute_filter_threads(queue, num_of_threads)
 		@active_threads = 0
 		lock = Mutex.new
 
 		while queue.length > 0 do 
-			if @NUM_OF_THREADS > @active_threads # Checks so that not more than set threads run concurrently
+			if num_of_threads > @active_threads # Checks so that not more than set threads run concurrently
 				lock.synchronize{ # lock variable so that only one thread can access it
 					@active_threads += 1
 				}
@@ -21,10 +29,14 @@ class FilterEmail
 
 				Thread.new do # Start the threads
 					FilterEmail.new.filter_mail(queue.pop)
+
 					ActiveRecord::Base.connection.close
 					lock.synchronize{
 						@active_threads -=1
 					}
+					Rails.logger.debug "ENDING THREAD: "
+					Rails.logger.debug Thread.current.object_id
+					Rails.logger.debug "\n"
 				end
 			else 
 				sleep(10)
@@ -93,9 +105,7 @@ class FilterEmail
 			accounts = cat.email_accounts
 			accounts.each do |to|
 				if to.email_address.downcase.eql? email.to.downcase
-					email.category = cat
-          			email.case.category = cat
-					email.save
+					attach_category_to_email_and_case(email, cat)
 					Rails.logger.debug "\n END checkEmailAddresses. Returning TRUE\n"
 					return true
 				end
@@ -105,6 +115,17 @@ class FilterEmail
 		return false
 	end
 
+	def attach_category_to_email_and_case(email, cat)
+		email.category = cat
+        #email.case.category = cat
+        #email.case.save
+		email.save
+		tempCase = email.case
+		tempCase.category = cat
+		tempCase.save
+		cat.cases.push(tempCase)
+		#cat.save
+	end
 
 	#Checks each word against keywords in categories
 	def checkSubjectAndBody(email)
@@ -127,8 +148,6 @@ class FilterEmail
 		body_words = email.body.scan(/\w+/)
 		# DOEST NOT WORK WITH SWEDISH CHARACTERS!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
 		Category.all.each do |cat|
 
 			#Checks each word in subject and body against keywords in categories
@@ -138,18 +157,15 @@ class FilterEmail
 
 			if tempPoints > points
 				points = tempPoints
-				Rails.logger.debug "\n\n\n Category set!!!! \n\n\n"
-				#set cat % case
-          		email.category = cat
-          		email.case.category = cat
-          		email.save
+				#Rails.logger.debug "\n\n\n Category set!!!! \n\n\n"
+				attach_category_to_email_and_case(email, cat)
 			end
 			tempPoints = 0
-		end # end category
+		end 
 
 
 		#if debug logger.debug "\nENDING!!!!! \n\n\n"
-		Rails.logger.debug "\n END checkSubjectAndBody\n"
+		#Rails.logger.debug "\n END checkSubjectAndBody\n"
 	end
 
 		#check each word in either subject or body against the keywords in each category's key_words

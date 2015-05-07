@@ -82,6 +82,79 @@ describe FilterEmail do
 
 	end
 
+	it "attach_category_to_email_and_case: both case category and email category should be same" do
+		new_case = Case.new
+		new_case.active = true
+		new_case.save
+
+		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
+			body: "hejsan, Min brygga är trevlig")
+		tempEmail.case = new_case
+		tempEmail.save
+		feedbackCat = Category.new(name: "Feedback")
+
+		FilterEmail.new.attach_category_to_email_and_case(tempEmail,feedbackCat)
+		expect(tempEmail.category).equal? new_case.category
+
+	end
+
+	it "checkSubjectAndBody: email category should be same as case category" do
+		new_case = Case.new
+		new_case.active = true
+		new_case.save
+		#Attach case to email
+		#email.case = new_case
+		#email.save
+		
+		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
+			body: "hejsan, Min brygga är trevlig")
+		tempEmail.case = new_case
+		tempEmail.save
+
+
+		feedbackCat = Category.new(name: "Feedback")
+		felCat = Category.new(name: "fel kategori")
+
+		keyWordsDB = Array.new
+		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
+		keyWordsDB.push(KeyWord.new(word: "trappa", point: "10"))
+		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
+
+		keyWordsDB2 = Array.new
+		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "10"))
+		keyWordsDB2.push(KeyWord.new(word: "min", point: "10"))
+		keyWordsDB2.push(KeyWord.new(word: "info", point: "10"))
+
+
+
+		feedbackCat.key_words = keyWordsDB
+		felCat.key_words = keyWordsDB2
+
+		FilterEmail.new.checkSubjectAndBody(tempEmail)
+		#casesDB = feedbackCat.cases
+		
+		#expect(casesDB.fetch(0)).equal? tempEmail.category
+		expect(tempEmail.category).equal? new_case.category
+
+	end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	it "checkEmailAddresses: should set category to feedbackCat" do
 		to_email_address = "feedback@baraspara.se"
@@ -302,6 +375,9 @@ describe FilterEmail do
 		expect(tempEmail.category).equal? feedbackCat
 
 	end
+
+
+
 
 	
 end

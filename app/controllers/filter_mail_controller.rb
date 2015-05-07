@@ -5,7 +5,7 @@ class FilterMailController < ApplicationController
 		@emails = Email.all
 		#generate_random_emails(10)
 		#remove_all_cases_and_categories_from_emails
-
+		@categories = Category.all
 	end
 
 
@@ -23,7 +23,7 @@ class FilterMailController < ApplicationController
 
 		Email.all.each do |email| # Go through all emails and check if theres no case attached
 			#if email.category.blank? #or email.case.blank?
-			if email.case.blank?
+			if true #email.case.blank?
 				if false #@debug
 					Rails.logger.debug "\nFiltering mail with from: "
 					Rails.logger.debug email.from
