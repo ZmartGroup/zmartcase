@@ -5,6 +5,6 @@ describe EmailAccount do
 
 
 	it "imap should work" do
-  		expect(ea.imap).to eq("imap.gmail.com")
-  	end
+  	expect(ea.imap).to eq("imap.gmail.com")
+  end
 end

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
   # attr_accessible :title, :body
+  has_many :cases
   attr_accessible :email, :password, :password_confirmation, :first_name, :last_name
 
   validates_confirmation_of :password
