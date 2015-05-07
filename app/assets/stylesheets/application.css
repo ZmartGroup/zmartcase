@@ -188,5 +188,7 @@
 }
 
 .navbar-default > .navbar-text{
+    padding-top: 5px;
     color: white;
+    font-size: 15px;
 }

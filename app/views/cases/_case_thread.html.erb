@@ -9,7 +9,11 @@
     <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalEmail" style="margin:15px;">
       New email
     </button>
-    <p class="navbar-text lead pull-right">Priority: <%= @case.priority.name %> </p>
+    <% if @case.priority.nil? %>
+      <p class="navbar-text lead pull-right">Priority: None </p>
+    <% else %>
+      <p class="navbar-text lead pull-right">Priority: <%= @case.priority.name %> </p>
+    <% end %>
     <p class="navbar-text lead pull-right">Created at: <%= @case.priority.created_at %> </p>
     <% if @case.user.nil? %>
       <p class="navbar-text lead pull-right">Assigned to: <font color="red">Not assigned</font></p>
