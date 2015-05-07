@@ -33,7 +33,7 @@ describe FilterEmail do
 
 	end
 
-	
+
 	it "checkWords: should return 20 with 2 matching words worth 10" do
 
 		#
@@ -170,7 +170,7 @@ describe FilterEmail do
 
 		expect(tempEmail).equal? feedbackCat
 
-	end
+	#end
 
 
 	it "find_category: should set feedbackCat as its category cause its subject matches" do
