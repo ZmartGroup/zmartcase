@@ -13,8 +13,16 @@ class EmailsController < ApplicationController
   def edit
   end
 
+
+
+
+  def index
+    @emails = Email.all
+  end
+
   def new
     @email = Email.new
+
   end
 
   def create
@@ -29,4 +37,7 @@ class EmailsController < ApplicationController
 
   def destroy
   end
+
+
+
 end

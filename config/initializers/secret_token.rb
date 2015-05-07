@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Zmartcase::Application.config.secret_token = 'b3547d4e3417835e61a66b3c2785e18e29fb1e6c67d456e82906f8488543b423d273aea2174188dcab8b7f2060277e70de4bd518ebda7fd8ffdabfe97f289c27'
+Zmartcase::Application.config.secret_token = 'a3e3d0e98875431cf29fd3c1bed2c894e63b19241e9ca2e935720802fb3a00042897a919352e4ba2860e30b6160aef45116f77ec439890ba9c53d74fa943a069'

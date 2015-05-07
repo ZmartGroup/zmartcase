@@ -6,10 +6,6 @@ class CasesController < ApplicationController
 
   end
 
-  def create
-
-  end
-
   def edit
 
   end
@@ -23,6 +19,10 @@ class CasesController < ApplicationController
     else
       redirect_to category_case_path(@category,@case), alert: "Case was not updated!"
     end
+  end
+
+  def create
+
   end
 
   def show
