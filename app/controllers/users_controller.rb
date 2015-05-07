@@ -1,9 +1,13 @@
 class UsersController < ApplicationController
   def index
-    @category = Category.all
-    @cases = Case.all
-    @user = current_user
-    @emails = Email.all
+    if !current_user
+      redirect_to login_path
+    else
+      @category = Category.all
+      @cases = Case.all
+      @user = current_user
+      @emails = Email.all
+    end
   end
 
   def fetch
