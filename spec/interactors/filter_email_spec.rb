@@ -78,7 +78,6 @@ describe FilterEmail do
 		FilterEmail.new.checkSubjectAndBody(tempEmail)
 
 		expect(tempEmail.category).equal? feedbackCat
-	
 
 	end
 
@@ -170,7 +169,7 @@ describe FilterEmail do
 
 		expect(tempEmail).equal? feedbackCat
 
-	#end
+	end
 
 
 	it "find_category: should set feedbackCat as its category cause its subject matches" do
@@ -260,7 +259,7 @@ describe FilterEmail do
 		felCat.key_words = keyWordsDB2
 
 		FilterEmail.new.filter_mail(tempEmail)
- 
+
 		expect(tempEmail.category).equal? nil
 
 	end
@@ -298,10 +297,9 @@ describe FilterEmail do
 		felCat.key_words = keyWordsDB2
 
 		FilterEmail.new.filter_mail(tempEmail)
- 
+
 		expect(tempEmail.category).equal? feedbackCat
 
 	end
 
-	
 end
