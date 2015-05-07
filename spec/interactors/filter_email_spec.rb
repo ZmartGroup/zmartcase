@@ -33,7 +33,7 @@ describe FilterEmail do
 
 	end
 
-	
+
 	it "checkWords: should return 20 with 2 matching words worth 10" do
 
 		#
@@ -78,7 +78,6 @@ describe FilterEmail do
 		FilterEmail.new.checkSubjectAndBody(tempEmail)
 
 		expect(tempEmail.category).equal? feedbackCat
-	
 
 	end
 
@@ -333,7 +332,7 @@ describe FilterEmail do
 		felCat.key_words = keyWordsDB2
 
 		FilterEmail.new.filter_mail(tempEmail)
- 
+
 		expect(tempEmail.category).equal? nil
 
 	end
@@ -371,13 +370,9 @@ describe FilterEmail do
 		felCat.key_words = keyWordsDB2
 
 		FilterEmail.new.filter_mail(tempEmail)
- 
+
 		expect(tempEmail.category).equal? feedbackCat
 
 	end
 
-
-
-
-	
 end
