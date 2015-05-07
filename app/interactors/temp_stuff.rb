@@ -16,6 +16,7 @@ class TempStuff
 			imap.store(message_id, '+FLAGS', [:Seen])
 			msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
 			mail = Mail.new(msg)
+			
 
 			return mail
 
