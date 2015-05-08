@@ -4,10 +4,8 @@ class FilterEmail
 
 	end
 
-
-	#Accepts a que with emails that's going to be categorized, and how many threads it should do it in
+	#Accepts a que with emails that's going to be categorized, and how many threads it should use
 	def execute_filter_threads(queue, num_of_threads)
-		@active_threads = 0
 		lock = Mutex.new
 
 		num_of_threads.times do
@@ -25,14 +23,11 @@ class FilterEmail
 					else
 						continue = false
 					end
-
 				end
 				ActiveRecord::Base.connection.close
 				puts "\n\n\nEND TRHEAD: ", Thread.current.object_id ," \n\n\n\n"
 			end
 		end
-
-
 	end
 
 	#finds a case for the email or if non is found creates a new one and categorises it
@@ -76,7 +71,6 @@ class FilterEmail
 		return false
 	end
 
-
 	def create_new_case_and_attach(email, cat)
 		#temp_Case = email.case.blank? ? Case.new : email.case
 		if email.case.blank?
@@ -88,18 +82,14 @@ class FilterEmail
 			temp_Case = email.case
 		end
 
-		#check that case is not already added to category
-		#unless check_if_category_has_case(cat, temp_Case)
-			cat.cases << temp_Case
-       		cat.save
-       	#end
+		cat.cases << temp_Case
+       	cat.save
 
         email.case = temp_Case
 		email.case.active = true
 
 		email.category = cat
 		email.save
-
 	end
 
 	def check_if_category_has_case(cat, a_case)
@@ -127,7 +117,6 @@ class FilterEmail
 		# DOEST NOT WORK WITH SWEDISH CHARACTERS!!!!!!!!!!!!!!!!!!!!!!!
 
 		Category.all.each do |cat|
-
 			#Checks each word in subject and body against keywords in categories
 			tempPoints += checkWords(cat.key_words, subject_words, true)
 			#BODY
@@ -142,7 +131,6 @@ class FilterEmail
 		#if debug logger.debug "\nENDING!!!!! \n\n\n"
 		#Rails.logger.debug "\n END checkSubjectAndBody\n"
 	end
-
 
 	#check each word in either subject or body against the keywords in each category's key_words
 	def checkWords(key_words, words, is_subject = false)
