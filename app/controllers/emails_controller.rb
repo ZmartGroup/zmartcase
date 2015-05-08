@@ -19,13 +19,29 @@ class EmailsController < ApplicationController
 
   def new
     @email = Email.new
-
   end
 
   def create
     @email = Email.new(params[:email])
+
+    unless @email.subject.include?("[CaseID:")
+      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
+    end
+    mail = MailSender.create_email(@email)
+
+=begin                                    #get attachments from UI
+    attachments = Array.new
+    attachments.push "/home/olsom/testStuff.txt"
+    attachments.push "/home/olsom/anotherTest.txt"
+
+    attachments.each do |attachment|
+      mail.add_file(attachment)
+    end
+=end
+
+    mail.deliver
+    @email.raw = MailCompressor.compress_mail(mail)
     @email.save
-    #ZmartMailer.create_email(@email).deliver
     redirect_to new_category_path
   end
 
@@ -34,7 +50,5 @@ class EmailsController < ApplicationController
 
   def destroy
   end
-
-
 
 end

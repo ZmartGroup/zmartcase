@@ -3,9 +3,11 @@ require 'net/imap'
 require 'mail'
 
 describe FetchFromOne do
+  let (:valid_email_acc) {EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")}
+	let (:fetcher) {FetchFromOne.new(valid_email_acc, false)}
 
-	fetcher = FetchFromOne.new(EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!"), false)
-  badFetcher = FetchFromOne.new(EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasasdasadfest@gmail.com", password: "Kth2015!"))
+  let (:invalid_email_acc) {EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasasdasadfest@gmail.com", password: "Kth2015!")}
+  let (:bad_fetcher) {FetchFromOne.new(invalid_email_acc, false)}
 
   it "should be an IMAP" do
     expect(fetcher.create_imap).to be_an Net::IMAP
@@ -24,8 +26,7 @@ describe FetchFromOne do
   end
 
   it "should not log in via imap" do
-    badFetcher.create_imap
-    expect{badFetcher.imap_login}.to raise_error
+    bad_fetcher.create_imap
+    expect{bad_fetcher.imap_login}.to raise_error
   end
-
 end
