@@ -6,7 +6,7 @@ class MailSender < ActionMailer::Base
 
 	def create_email(email)
 		@email = email	
-		sub = @email.subject + " [CaseID:<" + @email.case_id.to_s + ">]"
+		sub = @email.subject
 		mail(to: @email.to, subject: sub)
 	end
 end

@@ -1,3 +1,5 @@
+require 'mail'
+
 class Email < ActiveRecord::Base
 
   attr_accessible :from, :to, :date, :subject, :case_id, :body, :raw
@@ -17,6 +19,8 @@ class Email < ActiveRecord::Base
   def get_decompressed_mail
   	@mail ||= Mail.new(ActiveSupport::Gzip.decompress(get_raw))
   end
+
+
 
   #Get the path for the raw mail
   def get_raw

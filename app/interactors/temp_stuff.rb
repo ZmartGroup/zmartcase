@@ -19,7 +19,7 @@ class TempStuff
     end
   end
 
-  
+
 
 	def self.zip
     email_account = EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
@@ -32,7 +32,7 @@ class TempStuff
       #case_id = 15
       #  Email.create(case_id: case_id, date: mail.date,
       #  to: email_account.user_name, from: mail.from[0].to_s,
-      #  raw: getA(msg), 
+      #  raw: getA(msg),
       #  subject: mail.subject, body: mail.text_part.body.to_s)
       #imap.store(message_id, '+FLAGS', [:Seen])
     end
@@ -57,9 +57,9 @@ class TempStuff
   end
 
 
-  
 
-	
+
+
 
 
 
@@ -116,7 +116,7 @@ class TempStuff
       begin
         File.open("/home/olsom/zmartcase/" + attachment.filename, "w+b") {|f| f.write attachment.body.decoded}
       rescue => e
-        puts "Unable to save data for #{attachment.filename} because #{e.message}" 
+        puts "Unable to save data for #{attachment.filename} because #{e.message}"
       end
     end
   end
