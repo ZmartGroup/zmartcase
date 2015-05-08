@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 
-describe FilterEmail do 
-
+describe FilterEmail do
 
 	it "checkKeyWords: should return 10 with a keyWord = 10" do
 
@@ -10,7 +9,7 @@ describe FilterEmail do
 		word = "hejsan"
 		#tempCat = Category.new()
 		tempKeyWord = KeyWord.new(word: "hejsan", point: "10")
-		
+
 		#tempCat.key_words << tempKeyWord
 		key_wordsDB = Array.new
 
@@ -118,7 +117,7 @@ describe FilterEmail do
 		#Attach case to email
 		#email.case = new_case
 		#email.save
-		
+
 		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
 			body: "hejsan, Min brygga är trevlig")
 		tempEmail.case = new_case

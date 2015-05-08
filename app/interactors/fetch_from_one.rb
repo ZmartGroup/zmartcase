@@ -12,12 +12,12 @@ class FetchFromOne
     imap_login
     imap_select_inbox
     imap_search
-    imap_logout  
+    imap_logout
   end
 
   #HELPER functions
   #Creates the imap
-	def create_imap   
+	def create_imap
     @imap = Net::IMAP.new(@email_account.imap, {:port => @email_account.port, :ssl => @email_account.enable_ssl})
 	end
 
@@ -28,7 +28,7 @@ class FetchFromOne
 
   #Mails are read from inbox
   def imap_select_inbox
-    @imap.select('INBOX') 
+    @imap.select('INBOX')
   end
 
   #Read the new mail, save in db, mark it seen
@@ -53,6 +53,6 @@ class FetchFromOne
   #logout from imap
   def imap_logout
     @imap.logout
-    @imap.disconnect 
+    @imap.disconnect
   end
 end

@@ -15,11 +15,11 @@ def count
 			subjectArray.each do |subjectword|
 				if checkTerm(subjectword) == false
 					createTerm(subjectword)
-				else	
+				else
 					addAmount(subjectword)
 				end
 			end
-			
+
 			bodyArray.each do |bodyword|
 				if checkTerm(bodyword) == false
 					createTerm(bodyword)

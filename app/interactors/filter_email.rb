@@ -9,13 +9,13 @@ class FilterEmail
 	def execute_filter_threads(queue, num_of_threads)
 		@active_threads = 0
 		lock = Mutex.new
-		
+
 		num_of_threads.times do
 			Thread.new do # Start the threads
 				puts "START TRHEAD: ", Thread.current.object_id ," \n"
 				continue = true
 				while continue == true
-					
+
 					tempMail = lock.synchronize{
 						queue.pop
 					}
@@ -26,13 +26,12 @@ class FilterEmail
 						continue = false
 					end
 
-					
 				end
 				ActiveRecord::Base.connection.close
 				puts "\n\n\nEND TRHEAD: ", Thread.current.object_id ," \n\n\n\n"
 			end
 		end
-		
+
 
 	end
 
@@ -48,7 +47,7 @@ class FilterEmail
 	def check_case(email)
 	    if email.case_id.blank?
 	      	return false
-	    else 
+	    else
 			return true
 	    end
 	end
@@ -60,7 +59,7 @@ class FilterEmail
 		unless checkEmailAddresses(email)
 			#Second check each word in subject and body against keywords in categories
 			checkSubjectAndBody(email)
-		end 
+		end
 	end
 
 	#Checks the email address in the email against the email addresses in each category
@@ -79,9 +78,10 @@ class FilterEmail
 
 
 	def create_new_case_and_attach(email, cat)
+		#temp_Case = email.case.blank? ? Case.new : email.case
 		if email.case.blank?
         	temp_Case = Case.new
-   
+
         #cat.cases.push(temp_Case)
 
 		else
@@ -113,12 +113,12 @@ class FilterEmail
 
 	#Checks each word against keywords in categories
 	def checkSubjectAndBody(email)
-		#Used to settle which word to use. 
+		#Used to settle which word to use.
 
 		tempPoints = 0 #The score for the current category
-		points = 0 # The highest score achived 
+		points = 0 # The highest score achived
 
-		
+
 		# DOEST NOT WORK WITH SWEDISH CHARACTERS!!!!!!!!!!!!!!!!!!!!!!!
 		#Seperate the words in the subject
 		#These will need to be improved since they don't work properly with swedish charaters
@@ -138,7 +138,7 @@ class FilterEmail
 				create_new_case_and_attach(email, cat)
 			end
 			tempPoints = 0
-		end 
+		end
 		#if debug logger.debug "\nENDING!!!!! \n\n\n"
 		#Rails.logger.debug "\n END checkSubjectAndBody\n"
 	end
@@ -151,7 +151,7 @@ class FilterEmail
 			tempPoints += checkKeyWords(word, key_words, is_subject)
 			#check each word against each keyword
 
-		end 
+		end
 		return tempPoints
 	end
 
