@@ -2,7 +2,10 @@ require 'net/imap'
 require 'mail'
 
 class FetchFromOne
-  def initialize(email_account, only_unseen = true)
+
+  attr_accessor :email_account, :imap_search_for, :imap_status_of
+
+  def initialize(email_account, only_unseen)
     @email_account = email_account
     @imap_search_for = only_unseen ? "UNSEEN" : "ALL"
     @imap_status_of = only_unseen ? "UNSEEN" : "MESSAGES"

@@ -59,8 +59,11 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    metaclass (0.0.4)
     mime-types (1.25.1)
     minitest (5.6.1)
+    mocha (1.1.0)
+      metaclass (~> 0.0.1)
     multi_json (1.11.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -150,6 +153,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   jquery-rails
   minitest
+  mocha (~> 1.1.0)
   rails (= 3.2.18)
   rspec-rails
   sass-rails (~> 3.2.3)
