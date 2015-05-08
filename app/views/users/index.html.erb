@@ -4,8 +4,8 @@
 </div>
 
 <h3 class="text-center">Your cases</h3>
-<%= line_chart @user.cases.group(:created_at).count %>
+<%= line_chart Case.group(:created_at).count %>
 
 <h3 class="text-center">Cases in categories</h3>
-<%= bar_chart @user.cases.group(:category_id) %>
+<%= bar_chart Case.group(:category_id).count %>
 
