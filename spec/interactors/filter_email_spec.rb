@@ -1,416 +1,284 @@
 require 'rails_helper'
 
 
-describe FilterEmail do 
+describe FilterEmail do
+    let (:word) {"hejsan"}
+    let (:temp_key_word) {KeyWord.new(word: word, point: '10')}
+    let (:key_words_DB) {Array.new}
+    let (:key_words_DB2) {Array.new}
+    let (:words_DB) {Array.new}
+    let (:temp_email1) {Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se",
+            body: "hejsan, Min brygga ar trevlig")}
+    let (:feedback_cat) {Category.new(name: "Feedback")}
+    let (:fel_cat) {Category.new(name: "fel kategori")}
+    let (:temp_case) {Case.new}
+    let (:to_email_address) {"feedback@baraspara.se"}
+    let (:account_DB) {Array.new}
+    let (:temp_account) {EmailAccount.new(email_address: to_email_address)}
 
 
-	it "checkKeyWords: should return 10 with a keyWord = 10" do
+    it "check_key_words: should return 10 with a keyWord = 10" do
+        key_words_DB.push(temp_key_word)
+        expect(FilterEmail.new.check_key_words(word,key_words_DB,false)).to be 10
+    end
 
-		#tempEmail = Email.new(subject: "nej", to: "info@baraspara.se", from: "hej@hejsan.se", body: "hejsan JA JAJ A")
-		word = "hejsan"
-		#tempCat = Category.new()
-		tempKeyWord = KeyWord.new(word: "hejsan", point: "10")
-		
-		#tempCat.key_words << tempKeyWord
-		key_wordsDB = Array.new
+    it "check_key_words: should return 20 with a keyWord = 10 with subject = true" do
+        key_words_DB.push(temp_key_word)
+        expect(FilterEmail.new.check_key_words(word,key_words_DB,true)).to be 20
+    end
 
-		key_wordsDB.push(tempKeyWord)
 
-		expect(FilterEmail.new.checkKeyWords(word,key_wordsDB,false)).to be 10
+    it "check_words: should return 20 with 2 matching words worth 10" do
+        words_DB.push("hejsan"); words_DB.push("rasp"); words_DB.push("pelle"); words_DB.push("trappa")
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "trappa", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
+        feedback_cat.key_words = key_words_DB
 
-	end
+        expect(FilterEmail.new.check_words(feedback_cat.key_words, words_DB, false)).to be 20
+    end
 
-	it "checkKeyWords: should return 20 with a keyWord = 10 with subject = true" do
-		word = "hejsan"
-		tempKeyWord = KeyWord.new(word: "hejsan", point: "10")
-		key_wordsDB = Array.new
-		key_wordsDB.push(tempKeyWord)
-		expect(FilterEmail.new.checkKeyWords(word,key_wordsDB,true)).to be 20
+    it "attach_case_to_category: both case category and email category should be same" do
+        temp_email1.case = temp_case
+        temp_email1.save
+        FilterEmail.new.attach_case_to_category(temp_email1,feedback_cat)
+
+        #expect(temp_email1.category).equal? feedback_cat
+        #expect(temp_email1.case).equal? feedback_cat.cases.last
 
-	end
+        expect(temp_email1.category).to eq(feedback_cat)
+        expect(temp_email1.case).to eq(feedback_cat.cases.last)
+    end
 
+    it "attach_case_to_category: if email has case it should add that case to category" do
+        temp_email1.case = temp_case
+        temp_email1.save
+        FilterEmail.new.attach_case_to_category(temp_email1,feedback_cat)
+        expect(temp_email1.case).to eq(feedback_cat.cases.last)
+    end
 
-	it "checkWords: should return 20 with 2 matching words worth 10" do
+    it "check_subject_and_body: should get category = feedback" do
+        temp_email1 = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se",
+            body: "hejsan, Min brygga har en trevlig")
+        temp_email1.case = Case.new
+        temp_email1.save
 
-		#
-		#word1 = "hejsan" , word2 = "svejsan"
-		wordsDB = Array.new
-		wordsDB.push("hejsan"); wordsDB.push("rasp"); wordsDB.push("pelle"); wordsDB.push("trappa");
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "trappa", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
-		tempCat = Category.new(name: "testCat")
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "trappa", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
-		tempCat.key_words = keyWordsDB
+        key_words_DB2.push(KeyWord.new(word: "rymden", point: '10'))
+        key_words_DB2.push(KeyWord.new(word: "operan", point: '10'))
+        key_words_DB2.push(KeyWord.new(word: "info", point: '10'))
 
+        feedback_cat.key_words = key_words_DB
+        feedback_cat.save
 
-		expect(FilterEmail.new.checkWords(tempCat.key_words, wordsDB, false)).to be 20
+        fel_cat.key_words = key_words_DB2
+        fel_cat.save
 
-	end
 
-	it "checkSubjectAndBody: should get category = feedback" do
+        FilterEmail.new.check_subject_and_body(temp_email1)
 
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
-			body: "hejsan, Min brygga är trevlig")
-		feedbackCat = Category.new(name: "Feedback")
-		felCat = Category.new(name: "fel kategori")
 
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "trappa", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
+        expect(FilterEmail.new.check_key_words(word,key_words_DB,false)).to be 10
+        expect(FilterEmail.new.check_key_words(word,key_words_DB2,false)).to be 0
 
-		keyWordsDB2 = Array.new
-		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "10"))
-		keyWordsDB2.push(KeyWord.new(word: "min", point: "10"))
-		keyWordsDB2.push(KeyWord.new(word: "info", point: "10"))
+        expect(temp_email1.category).to eq(feedback_cat)
+    end
 
+    it "check_subject_and_body: email category should be same as case category" do
+        temp_email1.case = temp_case
+        temp_email1.save
 
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "trappa", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
-		feedbackCat.key_words = keyWordsDB
-		felCat.key_words = keyWordsDB2
+        key_words_DB2.push(KeyWord.new(word: "trevlig", point: '10'))
+        key_words_DB2.push(KeyWord.new(word: "min", point: '10'))
+        key_words_DB2.push(KeyWord.new(word: "info", point: '10'))
 
-		FilterEmail.new.checkSubjectAndBody(tempEmail)
+        feedback_cat.key_words = key_words_DB
+        feedback_cat.save
+        fel_cat.key_words = key_words_DB2
+        fel_cat.save
+        FilterEmail.new.check_subject_and_body(temp_email1)
 
-		expect(tempEmail.category).equal? feedbackCat
+        expect(temp_email1.category).to eq(temp_case.category)
+    end
 
-	end
 
-	it "create_new_case_and_attach: both case category and email category should be same" do
-		#new_case = Case.new
-		#new_case.active = true
-		#new_case.save
 
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
-			body: "hejsan, Min brygga är trevlig")
-		#tempEmail.case = new_case
-		#tempEmail.save
-		feedbackCat = Category.new(name: "Feedback")
+    it "check_email_addresses: should set category to feedback_cat" do
+        temp_email1.case = temp_case
+        temp_email1.to = to_email_address
+        temp_email1.save
 
-		FilterEmail.new.create_new_case_and_attach(tempEmail,feedbackCat)
-		expect(tempEmail.category).equal? feedbackCat
-		expect(tempEmail.case).equal? feedbackCat.cases.last
-	end
 
-	it "create_new_case_and_attach: if email has case it should add that case to category" do
-		new_case = Case.new
-		new_case.active = true
-		new_case.save
+        account_DB.push(temp_account)
+        feedback_cat.email_accounts = account_DB
+        feedback_cat.save
 
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
-			body: "hejsan, Min brygga är trevlig")
-		tempEmail.case = new_case
-		tempEmail.save
-		feedbackCat = Category.new(name: "Feedback")
+        FilterEmail.new.check_email_addresses(temp_email1)
 
-		FilterEmail.new.create_new_case_and_attach(tempEmail,feedbackCat)
-		#expect(tempEmail.category).equal? feedbackCat
-		expect(tempEmail.case).equal? feedbackCat.cases.last
-	end
+        #expect(temp_email1.category).equal? feedback_cat
+        expect(temp_email1.category).to eq(feedback_cat)
+    end
 
+    it "find_category: should set feedback_cat as its category cause it has a matching email address" do
+        #IT should not chose fel_cat even though its keywords fit with contents of email
+        #cause feedback_cat has a matching email address
+        temp_email1.case = temp_case
+        temp_email1.to = to_email_address
+        temp_email1.save
+        account_DB.push(temp_account)
 
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "trappa", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
-	it "checkSubjectAndBody: email category should be same as case category" do
-		new_case = Case.new
-		new_case.active = true
-		new_case.save
-		#Attach case to email
-		#email.case = new_case
-		#email.save
-		
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se", 
-			body: "hejsan, Min brygga är trevlig")
-		tempEmail.case = new_case
-		tempEmail.save
+        feedback_cat.email_accounts = account_DB
+        feedback_cat.save
+        fel_cat.key_words = key_words_DB
+        fel_cat.save
+        FilterEmail.new.find_category(temp_email1)
 
+        expect(temp_email1.category).to eq(feedback_cat)
+    end
 
-		feedbackCat = Category.new(name: "Feedback")
-		felCat = Category.new(name: "fel kategori")
+    it "find_category: should set feedback_cat as its category cause it has matching words" do
+        temp_email1.case = temp_case
+        temp_email1.save
 
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "trappa", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
 
-		keyWordsDB2 = Array.new
-		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "10"))
-		keyWordsDB2.push(KeyWord.new(word: "min", point: "10"))
-		keyWordsDB2.push(KeyWord.new(word: "info", point: "10"))
+        account_DB.push(temp_account)
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "trappa", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
+        feedback_cat.email_accounts = account_DB
+        feedback_cat.key_words = key_words_DB
+        feedback_cat.save
 
+        key_words_DB2.push(KeyWord.new(word: "hejsan", point: '4'))
+        key_words_DB2.push(KeyWord.new(word: "trappa", point: '5'))
+        key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
+        key_words_DB2.push(KeyWord.new(word: "trevlig", point: '1'))
 
-		feedbackCat.key_words = keyWordsDB
-		felCat.key_words = keyWordsDB2
+        fel_cat.key_words = key_words_DB2
+        fel_cat.save
+        FilterEmail.new.find_category(temp_email1)
 
-		FilterEmail.new.checkSubjectAndBody(tempEmail)
-		#casesDB = feedbackCat.cases
-		
-		#expect(casesDB.fetch(0)).equal? tempEmail.category
-		expect(tempEmail.category).equal? new_case.category
+        expect(temp_email1.category).to eq(feedback_cat)
+    end
 
-	end
 
+    it "find_category: should set feedback_cat as its category cause its subject matches" do
+        temp_email1.case = temp_case
+        temp_email1.save
 
+        account_DB.push(temp_account)
 
-	it "checkEmailAddresses: should set category to feedbackCat" do
-		to_email_address = "feedback@baraspara.se"
-		tempEmail = Email.new(subject: "Hejsan", to: to_email_address, from: "hej@hejsan.se", 
-			body: "hejsan, Min brygga är trevlig")
-		tempEmail.case = Case.new
-		accountDB = Array.new
-		tempAccount = EmailAccount.new(email_address: to_email_address)
-		accountDB.push(tempAccount)
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "pelle", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
-		feedbackCat = Category.new(name: "Feedback")
-		feedbackCat.email_accounts = accountDB
+        feedback_cat.email_accounts = account_DB
+        feedback_cat.key_words = key_words_DB
+        feedback_cat.save
 
-		FilterEmail.new.checkEmailAddresses(tempEmail)
+        key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
+        key_words_DB2.push(KeyWord.new(word: "trappa", point: '8'))
+        key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
+        key_words_DB2.push(KeyWord.new(word: "trevlig", point: '1'))
 
-		expect(tempEmail.category).equal? feedbackCat
-	end
+        fel_cat.key_words = key_words_DB2
+        fel_cat.save
+        FilterEmail.new.find_category(temp_email1)
 
+        expect(temp_email1.category).to eq(feedback_cat)
+    end
 
 
+    it "check_case: filtering email with a case to check_case should return true" do
+        temp_email1.case = Case.new
+        filter = FilterEmail.new
+        temp_email1.save
+        expect(FilterEmail.new.check_case(temp_email1)).to be_truthy
+    end
 
 
+    it "filter_mail: should set category to feedback_cat" do
+        temp_email1.case = temp_case
+        temp_email1.save
 
-	it "find_category: should set feedbackCat as its category cause it has a matching email address" do
-		#IT should not chose felCat even though its keywords fit with contents of email
-		#cause feedbackCat has a matching email address
-		to_email_address = "feedback@baraspara.se"
-		tempEmail = Email.new(subject: "Hejsan", to: to_email_address, from: "hej@hejsan.se", 
-			body: "hejsan, Min trappa är trevlig")
+        account_DB = Array.new
+        temp_account = EmailAccount.new(email_address: to_email_address)
+        account_DB.push(temp_account)
 
-		tempEmail.case = Case.new
-		accountDB = Array.new
-		tempAccount = EmailAccount.new(email_address: to_email_address)
-		accountDB.push(tempAccount)
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "pelle", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
+        feedback_cat.email_accounts = account_DB
+        feedback_cat.key_words = key_words_DB
+        feedback_cat.save
 
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "trappa", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
+        key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
+        key_words_DB2.push(KeyWord.new(word: "trappa", point: '8'))
+        key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
+        key_words_DB2.push(KeyWord.new(word: "trevlig", point: '1'))
+        fel_cat.key_words = key_words_DB2
+        fel_cat.save
+        FilterEmail.new.filter_mail(temp_email1)
 
+        expect(temp_email1.category).to eq(feedback_cat)
+    end
 
-		feedbackCat = Category.new(name: "Feedback")
-		feedbackCat.email_accounts = accountDB
+    it "execute_filter_threads: should add correct categories to both emails in queue" do
+        temp_email1.case = Case.new
+        temp_email1.save
 
-		felCat = Category.new(name: "fel kategori")
-		felCat.key_words = keyWordsDB
+        temp_email2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
+             from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
+        temp_email2.case = Case.new
+        temp_email2.save
 
-		FilterEmail.new.find_category(tempEmail)
 
-		expect(tempEmail).equal? feedbackCat
 
-	end
+        email_queue = Queue.new
+        email_queue.push(temp_email1)
+        email_queue.push(temp_email2)
+        #email_queue.save
 
-	it "find_category: should set feedbackCat as its category cause it has matching words" do
-		to_email_address = "feedback@baraspara.se"
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "hejsan, Min trappa är trevlig")
 
-		#tempEmail.case = Case.new
-		accountDB = Array.new
-		tempAccount = EmailAccount.new(email_address: to_email_address)
-		accountDB.push(tempAccount)
 
 
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "trappa", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
+        account_DB.push(temp_account)
 
+        key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "pelle", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
-		feedbackCat = Category.new(name: "Feedback")
-		feedbackCat.email_accounts = accountDB
-		feedbackCat.key_words = keyWordsDB
+        feedback_cat.email_accounts = account_DB
+        feedback_cat.key_words = key_words_DB
+        feedback_cat.save
 
-		keyWordsDB2 = Array.new
-		keyWordsDB2.push(KeyWord.new(word: "hejsan", point: "4"))
-		keyWordsDB2.push(KeyWord.new(word: "trappa", point: "5"))
-		keyWordsDB2.push(KeyWord.new(word: "skorsten", point: "1"))
-		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "1"))
-		felCat = Category.new(name: "fel kategori")
+        key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
+        key_words_DB2.push(KeyWord.new(word: "trappa", point: '8'))
+        key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
+        key_words_DB2.push(KeyWord.new(word: "trevlig", point: '1'))
+        trappa_cat = Category.new(name: "trappa kategori")
 
-		felCat.key_words = keyWordsDB2
+        trappa_cat.key_words = key_words_DB2
+        trappa_cat.save
+        FilterEmail.new.execute_filter_threads(email_queue,1)
 
-		FilterEmail.new.find_category(tempEmail)
+        expect(temp_email1.category).to eq(feedback_cat)
 
-		expect(tempEmail).equal? feedbackCat
-
-	end
-
-
-	it "find_category: should set feedbackCat as its category cause its subject matches" do
-		to_email_address = "feedback@baraspara.se"
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
-
-		#tempEmail.case = Case.new
-		accountDB = Array.new
-		tempAccount = EmailAccount.new(email_address: to_email_address)
-		accountDB.push(tempAccount)
-
-
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "pelle", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
-
-
-		feedbackCat = Category.new(name: "Feedback")
-		feedbackCat.email_accounts = accountDB
-		feedbackCat.key_words = keyWordsDB
-
-		keyWordsDB2 = Array.new
-		keyWordsDB2.push(KeyWord.new(word: "falt", point: "4"))
-		keyWordsDB2.push(KeyWord.new(word: "trappa", point: "8"))
-		keyWordsDB2.push(KeyWord.new(word: "skorsten", point: "1"))
-		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "1"))
-		felCat = Category.new(name: "fel kategori")
-
-		felCat.key_words = keyWordsDB2
-
-		FilterEmail.new.find_category(tempEmail)
-
-		expect(tempEmail).equal? feedbackCat
-
-	end
-
-
-	it "check_case: filtering email with a case to check_case should return true" do
-
-		tempCase = Case.new
-		tempEmail = Email.new(subject: "Hejs", to: "info@baraspara.se", from: "hej@hejsan.se", body: "JA JA JAJ A")
-		tempEmail.case = tempCase
-		filter = FilterEmail.new
-		tempEmail.save
-		expect(FilterEmail.new.check_case(tempEmail)).to be_truthy
-
-	end
-
-	it "filter_mail: should not set a category since it has a case" do
-		#expect(true).to be true
-		to_email_address = "feedback@baraspara.se"
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
-
-		#FilterEmail.new.create_new_case(tempEmail)
-		tempEmail.case = Case.new
-		accountDB = Array.new
-		tempAccount = EmailAccount.new(email_address: to_email_address)
-		accountDB.push(tempAccount)
-
-
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "pelle", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
-
-
-		feedbackCat = Category.new(name: "Feedback")
-		feedbackCat.email_accounts = accountDB
-		feedbackCat.key_words = keyWordsDB
-
-		keyWordsDB2 = Array.new
-		keyWordsDB2.push(KeyWord.new(word: "falt", point: "4"))
-		keyWordsDB2.push(KeyWord.new(word: "trappa", point: "8"))
-		keyWordsDB2.push(KeyWord.new(word: "skorsten", point: "1"))
-		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "1"))
-		felCat = Category.new(name: "fel kategori")
-
-		felCat.key_words = keyWordsDB2
-
-		FilterEmail.new.filter_mail(tempEmail)
-
-		expect(tempEmail.category).equal? nil
-
-	end
-
-
-	it "filter_mail: should set category to feedbackCat" do
-		#expect(true).to be true
-		to_email_address = "feedback@baraspara.se"
-		tempEmail = Email.new(subject: "Hejsan", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
-
-		#FilterEmail.new.create_new_case(tempEmail)
-		accountDB = Array.new
-		tempAccount = EmailAccount.new(email_address: to_email_address)
-		accountDB.push(tempAccount)
-
-
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "pelle", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
-
-
-		feedbackCat = Category.new(name: "Feedback")
-		feedbackCat.email_accounts = accountDB
-		feedbackCat.key_words = keyWordsDB
-
-		keyWordsDB2 = Array.new
-		keyWordsDB2.push(KeyWord.new(word: "falt", point: "4"))
-		keyWordsDB2.push(KeyWord.new(word: "trappa", point: "8"))
-		keyWordsDB2.push(KeyWord.new(word: "skorsten", point: "1"))
-		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "1"))
-		felCat = Category.new(name: "fel kategori")
-
-		felCat.key_words = keyWordsDB2
-
-		FilterEmail.new.filter_mail(tempEmail)
-
-		expect(tempEmail.category).equal? feedbackCat
-
-	end
-
-	it "execute_filter_threads: should add correct categories to both emails in queue" do
-		to_email_address = "feedback@baraspara.se"
-		tempEmail1 = Email.new(subject: "Hejsan", to: to_email_address,
-			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
-
-
-
-		tempEmail2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
-
-		queue = Queue.new
-		queue.push(tempEmail1) 
-		queue.push(tempEmail2) 
-
-		#FilterEmail.new.create_new_case(tempEmail)
-		accountDB = Array.new
-		tempAccount = EmailAccount.new(email_address: to_email_address)
-		accountDB.push(tempAccount)
-
-
-		keyWordsDB = Array.new
-		keyWordsDB.push(KeyWord.new(word: "hejsan", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "pelle", point: "10"))
-		keyWordsDB.push(KeyWord.new(word: "skorsten", point: "10"))
-
-
-		feedbackCat = Category.new(name: "Feedback")
-		feedbackCat.email_accounts = accountDB
-		feedbackCat.key_words = keyWordsDB
-
-		keyWordsDB2 = Array.new
-		keyWordsDB2.push(KeyWord.new(word: "falt", point: "4"))
-		keyWordsDB2.push(KeyWord.new(word: "trappa", point: "8"))
-		keyWordsDB2.push(KeyWord.new(word: "skorsten", point: "1"))
-		keyWordsDB2.push(KeyWord.new(word: "trevlig", point: "1"))
-		trappaCat = Category.new(name: "trappa kategori")
-
-		trappaCat.key_words = keyWordsDB2
-
-		FilterEmail.new.execute_filter_threads(queue,2)
-		expect(tempEmail1.category).equal? feedbackCat
-		expect(tempEmail2.category).equal? trappaCat 
-
-	end
+        expect(temp_email2.category).to eq(trappa_cat)
+    end
 
 
 end
