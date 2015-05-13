@@ -9,7 +9,6 @@ gem 'rails', '3.2.18'
 gem 'sqlite3'
 gem "sorcery"
 gem 'carrierwave'
-gem 'mocha', '~> 1.1.0'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -28,7 +27,6 @@ gem 'jquery-rails'
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'byebug'
   gem 'simplecov', :require => false, :group => :test
   gem 'mocha', '~> 1.1.0'
 end

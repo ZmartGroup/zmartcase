@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 describe FilterEmail do
     let (:word) {"hejsan"}
     let (:temp_key_word) {KeyWord.new(word: word, point: '10')}
@@ -79,6 +78,7 @@ describe FilterEmail do
         expect(FilterEmail.new.check_key_words(word,key_words_DB,false)).to be 10
         expect(FilterEmail.new.check_key_words(word,key_words_DB2,false)).to be 0
 
+
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
@@ -111,6 +111,7 @@ describe FilterEmail do
         temp_email1.save
 
 
+
         account_DB.push(temp_account)
         feedback_cat.email_accounts = account_DB
         feedback_cat.save
@@ -120,6 +121,7 @@ describe FilterEmail do
         #expect(temp_email1.category).equal? feedback_cat
         expect(temp_email1.category).to eq(feedback_cat)
     end
+
 
     it "find_category: should set feedback_cat as its category cause it has a matching email address" do
         #IT should not chose fel_cat even though its keywords fit with contents of email
@@ -145,6 +147,7 @@ describe FilterEmail do
     it "find_category: should set feedback_cat as its category cause it has matching words" do
         temp_email1.case = temp_case
         temp_email1.save
+
 
 
         account_DB.push(temp_account)
@@ -188,6 +191,7 @@ describe FilterEmail do
         key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
         key_words_DB2.push(KeyWord.new(word: "trevlig", point: '1'))
 
+
         fel_cat.key_words = key_words_DB2
         fel_cat.save
         FilterEmail.new.find_category(temp_email1)
@@ -220,6 +224,7 @@ describe FilterEmail do
         feedback_cat.key_words = key_words_DB
         feedback_cat.save
 
+
         key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
         key_words_DB2.push(KeyWord.new(word: "trappa", point: '8'))
         key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
@@ -250,6 +255,7 @@ describe FilterEmail do
 
 
 
+
         account_DB.push(temp_account)
 
         key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
@@ -275,11 +281,5 @@ describe FilterEmail do
         expect(feedback_cat.cases.last).to eq(temp_email1.case)
         expect(trappa_cat.cases.last).to eq(temp_email2.case)
     end
-
-
-
-
-
-
 
 end

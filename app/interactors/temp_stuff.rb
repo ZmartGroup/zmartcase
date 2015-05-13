@@ -2,6 +2,7 @@ require 'net/imap'
 require 'mail'
 
 class TempStuff
+=begin
 	def self.create_email_acc
 		EmailAccount.create(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
 	end
@@ -179,4 +180,6 @@ end
       end
     end
   end
+
+=end
 end

@@ -4,11 +4,14 @@ describe FilterMailController do
 
 	it "filter_all_emails: Should place all emails in a category and assign it a case" do
 		to_email_address = "feedback@baraspara.se"
-		temp_email1 = Email.new(subject: "Hejsan", to: to_email_address,
-			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
 
-		temp_email2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
+
+		tempEmail1 = Email.new(subject: "Hejsan", to: to_email_address,
+			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
+
+		tempEmail2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
+			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
+
 
 		accountDB = Array.new
 		temp_account = EmailAccount.new(email_address: to_email_address)
