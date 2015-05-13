@@ -1,5 +1,7 @@
 class FetchFromAll
-	#CONSTRUCTOR
+  
+  attr_accessor :only_unseen
+
 	def initialize(only_unseen = true)
 		@email_accounts = EmailAccount.all
   	@only_unseen = only_unseen
