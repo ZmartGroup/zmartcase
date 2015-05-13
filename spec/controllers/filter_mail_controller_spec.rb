@@ -6,10 +6,10 @@ describe FilterMailController do
 		to_email_address = "feedback@baraspara.se"
 
 
-		tempEmail1 = Email.new(subject: "Hejsan", to: to_email_address,
+		temp_email1 = Email.new(subject: "Hejsan", to: to_email_address,
 			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
 
-		tempEmail2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
+		temp_email2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
 			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
 
 
