@@ -33,12 +33,17 @@
               <%= link_to(root_path, class: "pure-menu-link") do %> Inbox <%end%> 
             </li>
             <li>
-              <a href="#">
-                  Sent
-                </a>
+              <% if @closed_cases.empty? %>
+                <a class="pure-menu-link"> Closed <span class="email-count"> (0)</span></a>
+              <% else %>
+                <%= link_to show_closed_path(@closed_cases.first) do %>
+                  Closed
+                  <span class="email-count"> (<%= @closed_cases.size %>)</span>
+                <% end %>
+              <% end %>
             </li>
             <li>
-              <%= link_to(new_email_path, class: "pure-menu-link") do %> Send new <%end%>  
+              <%= link_to(new_email_path, class: "pure-menu-link") do %> Send new <%end%>
             </li>
             <li class="sidebar-label">
               Categories
@@ -48,7 +53,7 @@
                 <% if category.cases.empty? %>
                   <a class="pure-menu-link"> <%= category.name %><span class="email-count"> (0)</span></a>
                 <% else %>
-                  <%= link_to(category_case_path(category.id,category.cases.first), class: "pure-menu-link") do %> <%= category.name %>
+                  <%= link_to(category_case_path(category.id,category.cases.where(closed: [nil,false]).first), class: "pure-menu-link") do %> <%= category.name %>
                   <span class="email-count"> (<%= category.cases.size %>)</span>
                   <%end%>
                 <% end %>

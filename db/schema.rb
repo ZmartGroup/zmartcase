@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150506132725) do
+ActiveRecord::Schema.define(:version => 20150513083425) do
 
   create_table "cases", :force => true do |t|
     t.datetime "created_at",  :null => false
@@ -20,7 +20,8 @@ ActiveRecord::Schema.define(:version => 20150506132725) do
     t.integer  "category_id"
     t.integer  "priority_id"
     t.string   "hashtag"
-    t.boolean  "active"
+    t.boolean  "closed"
+    t.datetime "closed_at"
   end
 
   create_table "categories", :force => true do |t|

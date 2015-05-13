@@ -1,5 +1,6 @@
 <div class="navbar-default navbar-fixed-top" style="left:450px; background: rgb(37, 42, 58);">
   <!-- Button trigger modal -->
+    <% if !@case.closed %>
     <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalPrio" style="margin:15px;">
       Edit case<%#= link_to "Edit Case", edit_category_case_path %>
     </button>
@@ -9,16 +10,20 @@
     <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalEmail" style="margin:15px;">
       New email
     </button>
+    <% end %>
     <% if @case.priority.nil? %>
       <p class="navbar-text lead pull-right">Priority: None </p>
     <% else %>
       <p class="navbar-text lead pull-right">Priority: <%= @case.priority.name %> </p>
     <% end %>
-    <p class="navbar-text lead pull-right">Created at: <%= @case.priority.created_at %> </p>
+    <p class="navbar-text lead pull-right">Created at: <%= @case.priority.created_at.strftime("%F") %> </p>
     <% if @case.user.nil? %>
       <p class="navbar-text lead pull-right">Assigned to: <font color="red">Not assigned</font></p>
     <% else %>
       <p class="navbar-text lead pull-right">Assigned to: <%= @case.user.name %> </p>
+    <% end %>
+    <% if @case.closed %>
+      <p class="lead pull-left" style="margin:0px; padding-left:10px;"><font size="7" color="red">Closed</font></p>
     <% end %>
 </div>
 
@@ -54,7 +59,7 @@
   <%end%>
 </div>
 
-
+<% if !@case.closed %>
 <!-- Email Modal -->
 <div class="modal fade" id="myModalEmail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -112,4 +117,4 @@
     </div>
   </div>
 </div>
-
+<% end %>

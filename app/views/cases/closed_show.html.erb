@@ -1,0 +1,19 @@
+<div class="col-md-3">
+  <div class="list-group">
+    <% @cases.each do |c| %>
+      <%= link_to(show_closed_path(c), class: "list-group-item") do %>
+        <h4 class="list-group-item-heading" style="color:grey;"><%= c.emails.empty? ? "EMPTY" : "#{c.emails.first.subject.capitalize}" %></h4>
+        <h4 class="list-group-item-heading"><%= c.created_at.to_date %> </h4>
+        <% if c.user.nil? %>
+          <p class="list-group-item-text">Assigned to: <font color="red">Not assigned</font></p>
+        <% else %>
+          <p class="list-group-item-text">Assigned to: <%= c.user.name %> </p>
+        <% end %>
+      </a>
+      <%end%>
+    <% end %>
+  </div>
+</div>
+<div class="col-md-9">
+<%= render 'case_thread' %>
+</div>
