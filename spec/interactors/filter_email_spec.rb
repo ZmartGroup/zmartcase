@@ -16,7 +16,6 @@ describe FilterEmail do
     let (:account_DB) {Array.new}
     let (:temp_account) {EmailAccount.new(email_address: to_email_address)}
 
-
     it "check_key_words: should return 10 with a keyWord = 10" do
         key_words_DB.push(temp_key_word)
         expect(FilterEmail.new.check_key_words(word,key_words_DB,false)).to be 10
@@ -43,10 +42,6 @@ describe FilterEmail do
         temp_email1.save
         FilterEmail.new.attach_case_to_category(temp_email1,feedback_cat)
 
-        #expect(temp_email1.category).equal? feedback_cat
-        #expect(temp_email1.case).equal? feedback_cat.cases.last
-
-        expect(temp_email1.category).to eq(feedback_cat)
         expect(temp_email1.case).to eq(feedback_cat.cases.last)
     end
 
@@ -236,7 +231,7 @@ describe FilterEmail do
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
-    it "execute_filter_threads: should add correct categories to both emails in queue" do
+    it "filter thread: add correct categories and cases to both emails" do
         temp_email1.case = Case.new
         temp_email1.save
 
@@ -273,12 +268,18 @@ describe FilterEmail do
 
         trappa_cat.key_words = key_words_DB2
         trappa_cat.save
-        FilterEmail.new.execute_filter_threads(email_queue,1)
-
+        FilterEmail.new.filter_mail(temp_email1)
+        FilterEmail.new.filter_mail(temp_email2)
         expect(temp_email1.category).to eq(feedback_cat)
-
         expect(temp_email2.category).to eq(trappa_cat)
+        expect(feedback_cat.cases.last).to eq(temp_email1.case)
+        expect(trappa_cat.cases.last).to eq(temp_email2.case)
     end
+
+
+
+
+
 
 
 end

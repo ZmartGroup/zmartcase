@@ -1,112 +1,66 @@
 class FilterEmail
+    def initialize
+        @all_categories = Category.all
+    end
+    
+	#Accepts a que with emails that's going to be categorized, and how many threads it should do it in
+	def execute_filter_threads(queue, num_of_threads)
+        require 'thread'
+		@active_threads = 0
+		@lock = Mutex.new
+        #@all_categories = Category.all
+        print "START THREADS\n\n"
+        @all_categories.each do |cat|
+            print "cat.name: ", cat.name, " cat.key_words.length: ", cat.key_words.length, "\n\n"
+        end
 
-	def initialize()
+		while queue.length > 0 do
+			if num_of_threads > @active_threads # Checks so that not more than set threads run concurrently
+				@lock.synchronize{ # lock variable so that only one thread can access it
+					@active_threads += 1
+				}
 
-	end
+				print "Num of threads: ", @active_threads, "\n"
 
-	#Accepts a que with emails that's going to be categorized, and how many threads it should use
-	def execute_filter_threads(email_queue, num_of_threads)
-		lock = Mutex.new
-        filter_threads = []
-        #email = email_queue.pop 
-
-        #puts email.subject
-        #email = email_queue.pop 
-        #puts email.subject
-
-
-		num_of_threads.times do
-			filter_threads << Thread.new do # Start the threads
-				n = 0
-				puts "\nSTART TRHEAD: ", Thread.current.object_id ," \n"
-				continue = true
-				=begin
-				while continue == true
-					temp_email = nil
-					n+=1
-					print "at start of while loop: ", n, "\n"
-					
-					print "que empty? ", email_queue.empty?, "\n"
-					temp_email = email_queue.pop
-					#if !email_queue.empty?
-						print "not empty \n"
-						#temp_email = lock.synchronize{
-							#email_queue.pop
-						#}
-					#	temp_email = email_queue.pop
-					#else
-					#	print "temp_email is empty", n, "\n"
-					#	continue = false
-
-					#end
-					#if !email_queue.empty?
-					#	lock.synchronize{
-					#		temp_email = email_queue.pop
-					#	}
-					#end
-					print "temp_email.subject: ", temp_email.subject, " \n"
-					print "klar sync", n, "\n"
-					#puts "temp_email.subject: ". temp_email.subject
-					#if temp_email != nil
-					if temp_email != nil
-						print "Filtering email..", n, "\n"
-						FilterEmail.new.filter_mail(temp_email)
-						print "done filtering email.", n, "\n"
-					else
-						print "temp_email is empty", n, "\n"
-						continue = false
-
-					end
-					print "at end of while loop ", n, "\n"
+				Thread.new do # Start the threads
+                    this_thread = @active_threads
+                    print "new thread: ", this_thread, "\n"
+					filter_mail(queue.pop)
+                    puts "poped from que, length of que: ", queue.length, "\n"
+					ActiveRecord::Base.connection.close
+					@lock.synchronize{
+						@active_threads -=1
+					}
+                    print "thread: ", this_thread, " done! \n"
 				end
-				
-
-				while !email_queue.empty?
-						temp_email = nil
-						n+=1
-						print "at start of while loop: ", n, "\n"
-
-						temp_email = lock.synchronize{
-							email_queue.pop
-						}
-
-
-				end
-				=end
-				puts "outside while loop"
-
+			else
+				sleep(0.001)
 			end
 		end
-		puts "at end. Joining threads"
-		#filter_threads.each do |x_thread|
-		#	puts "hello"
-		#	x_thread.join
-		#end
-		puts "at end. Joined threads"
-		sleep(10)
-		puts "Exiting"
+        sleep(4)
+        print "Filters done, done sleeping \n"
 	end
+
+    #Checks if theres a prior case to add email to. Otherwise returns false
+    def check_case(email)
+
+        #print "check_case email.subject: ", email.subject, "\n"
+        if email.case_id.blank?
+            return false
+        else
+            return true
+        end
+    end
 
 	#finds a case for the email or if non is found creates a new one and categorises it
 	def filter_mail(email)
-
-		#unless check_case(email) #FIRST CHECK IF THERE'S ALREADY A CASE!!!!!
-			find_category(email) #and finally place that case in a category
-		#end
+		find_category(email) #and finally place that case in a category
 	end
 
-	#Checks if theres a prior case to add email to. Otherwise returns false
-	def check_case(email)
-	    if email.case_id.blank?
-	      	return false
-	    else
-			return true
-	    end
-	end
+
 
 	#Starts the proccess to find a category for an email
 	def find_category(email)
-    #puts "\n START find_category\n"
 		#Check each category's email address to see if it fits:
 		unless check_email_addresses(email)
 			#Second check each word in subject and body against keywords in categories
@@ -123,9 +77,9 @@ class FilterEmail
             #    attach_case_to_category(email,cat)
             #    return true
             #end
-
 			accounts.each do |to|
 				if to.email_address.downcase.eql? email.to.downcase
+                    attach_category_to_email(email,cat)
 					attach_case_to_category(email, cat)
 					return true
 				end
@@ -138,8 +92,8 @@ class FilterEmail
 
 	#Checks each word against keywords in categories
 	def check_subject_and_body(email)
+        winning_category = nil
 		#Used to settle which word to use.
-		#puts "\n\n\ncheck_subject_and_body\n\n\n"
 		temp_points = 0 #The score for the current category
 		points = 0 # The highest score achived
 
@@ -148,66 +102,63 @@ class FilterEmail
 		#Seperate the words in the subject
 		#These will need to be improved since they don't work properly with swedish charaters
 		subject_words = email.subject.scan(/\w+/)
-		#puts "Subject words: "
-		#subject_words.each do |sub|
-		#	puts sub
-		#end
-		#puts "Body words: "
-
 		body_words = email.body.scan(/\w+/)
-		#body_words.each do |bod|
-		#	puts bod
-		#end
-
 
 		# DOEST NOT WORK WITH SWEDISH CHARACTERS!!!!!!!!!!!!!!!!!!!!!!!
 
-		Category.all.each do |cat|
-			#puts "Cat name: ", cat.name
+
+        #Category.all.each do |cat|
+		@all_categories.each do |cat|
+
 			#Checks each word in subject and body against keywords in categories
 			temp_points += check_words(cat.key_words, subject_words, true)
-			#print "Subject temp_points: ", temp_points ,"\n"
+
 			#BODY
 			temp_points += check_words(cat.key_words, body_words)
-			#print "Body temp_points: ", temp_points ,"\n"
+
 			if temp_points > points
-                #puts "found something, attaching cat"
+
 				points = temp_points
-				attach_case_to_category(email, cat)
-                #puts "Attached: ", email.category.name
+                winning_category = cat
+
 			end
 			temp_points = 0
 		end
+        attach_category_to_email(email,winning_category)
+        attach_case_to_category(email, winning_category)
 	end
 
-    def attach_case_to_category(email, cat)
-        #email should always have a case attached to it
-        #temp_Case = email.case
-
-        temp_case = email.case
-        cat.cases << temp_case
-        cat.save
-
-        email.case = temp_case
-        email.case.active = true
-
+    def attach_category_to_email(email,cat)
+        print "Adding CATEGORY to email \n"
         email.category = cat
-        email.save
+        #email.save
+        print "DONE ADDING CATEGORY TO EMAIL \n"
+    end
+
+    def attach_case_to_category(email, cat)
+        require 'thread'
+        print "trying to add email case to category\n"
+        cat.cases << email.case
+        print "done w case\n"
     end
 
 	#check each word in either subject or body against the keywords in each category's key_words
 	def check_words(key_words, words, is_subject = false)
+        #print "check_words: \n"
 		temp_points = 0
 		words.each do |word|
 			temp_points += check_key_words(word, key_words, is_subject)
 		end
+        #print "check_words: Points awarded:", temp_points, "\n"
 		return temp_points
 	end
 
 	#check each word against each keyword
 	def check_key_words(word, key_words, is_subject = false)
+        #print "check_key_words: \n ", word, "\n key_words.length: ", key_words.length, "\n\n"
 		temp_points = 0
 		key_words.each do |key|
+            #print "checking word: ", key.word ,"\n\n"
 			if key.word.downcase.eql? word.downcase
 				if is_subject
 					#if found in subject score * 2
@@ -219,6 +170,7 @@ class FilterEmail
 			end
 		end
 		return temp_points
+        #print "check_key_words: END, Points awarded: ", temp_points, "\n\n"
 	end
 
 end
