@@ -10,10 +10,6 @@ class CasesController < ApplicationController
 
   end
 
-  def closed_cases
-    @cases = Case.where(closed: true)
-  end
-
   def closed_show
     @cases = Case.where(closed: true)
     @case = Case.find(params[:id])
