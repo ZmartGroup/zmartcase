@@ -30,7 +30,6 @@ group :development, :test do
   gem 'byebug'
   gem 'simplecov', :require => false, :group => :test
 end
-
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
