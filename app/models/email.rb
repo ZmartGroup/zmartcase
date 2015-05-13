@@ -2,7 +2,7 @@ require 'mail'
 
 class Email < ActiveRecord::Base
 
-  attr_accessible :from, :to, :date, :subject, :case_id, :body, :raw
+  attr_accessible :from, :to, :date, :subject, :case_id, :body, :raw, :is_sent
 
   belongs_to :case
   belongs_to :type

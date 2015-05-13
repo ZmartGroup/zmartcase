@@ -43,24 +43,20 @@ class FetchFromOne
       msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
       mail = Mail.new(msg)
       case_id = get_case_id(mail)
-      Email.create(case_id: case_id, date: mail.date, raw: MailCompressor.compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
+      Email.create(case_id: case_id, date: mail.date, is_sent: false, raw: MailCompressor.compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
       imap.store(message_id, '+FLAGS', [:Seen])
     end
   end
 
   def get_case_id(mail)
-
     case_id = mail.subject.include?("[CaseID:") ? mail.subject[/.*<([^>]*)/,1] : nil
     if case_id.nil?
      case_id = mail.text_part.body.to_s.include?("[CaseID:") ? mail.text_part.body.to_s[/.*<([^>]*)/,1] : nil
     end
+    if case_id.nil?
+      case_id = Case.create.id
+    end
     return case_id
-
-  # mail.subject.include?("[CaseID:") ? case_id =  mail.subject[/.*<([^>]*)/,1] : case_id = nil
-  # if case_id.nil?
-  #  mail.text_part.body.to_s.include?("[CaseID:") ? case_id =  mail.text_part.body.to_s[/.*<([^>]*)/,1] : case_id = nil
-  # end
-  # return case_id
   end
 
   #logout from imap

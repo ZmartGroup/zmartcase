@@ -22,7 +22,7 @@ class EmailsController < ApplicationController
 
   def create
     @email = Email.new(params[:email])
-
+    @email.is_sent = true;
     unless @email.subject.include?("[CaseID:")
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
