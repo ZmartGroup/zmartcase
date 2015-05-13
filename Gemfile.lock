@@ -172,7 +172,6 @@ DEPENDENCIES
   capybara
   carrierwave
   chartkick
-  carrierwave
   coffee-rails (~> 3.2.1)
   jquery-rails
   minitest
