@@ -8,5 +8,4 @@
 
 <h3 class="text-center">Cases in categories</h3>
 <%= bar_chart Category.joins(:cases).group("categories.name").count %>
-<%#= bar_chart Case.group().count %>
 
