@@ -28,7 +28,11 @@ class EmailsController < ApplicationController
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
     mail = MailSender.create_email(@email)
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 67691026f8b37308186295e456e6138a171cdd84
 =begin                                    #get attachments from UI
     attachments = Array.new
     attachments.push "/home/olsom/testStuff.txt"
@@ -42,6 +46,10 @@ class EmailsController < ApplicationController
     mail.deliver
     @email.raw = MailCompressor.compress_mail(mail)
     @email.save
+<<<<<<< HEAD
+=======
+
+>>>>>>> 67691026f8b37308186295e456e6138a171cdd84
     redirect_to new_category_path
   end
 
@@ -51,4 +59,8 @@ class EmailsController < ApplicationController
   def destroy
   end
 
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> 67691026f8b37308186295e456e6138a171cdd84

@@ -59,7 +59,10 @@ module Zmartcase
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+<<<<<<< HEAD
     config.autoload_paths += %W(#{config.root}/lib)
+=======
+>>>>>>> 67691026f8b37308186295e456e6138a171cdd84
 
     config.exceptions_app = self.routes
   end

@@ -9,6 +9,10 @@ gem 'rails', '3.2.18'
 gem 'sqlite3'
 gem "sorcery"
 gem 'carrierwave'
+<<<<<<< HEAD
+=======
+gem 'mocha', '~> 1.1.0'
+>>>>>>> 67691026f8b37308186295e456e6138a171cdd84
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -21,7 +25,11 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+<<<<<<< HEAD
 gem 'chartkick'
+=======
+
+>>>>>>> 67691026f8b37308186295e456e6138a171cdd84
 gem 'jquery-rails'
 
 group :development, :test do
