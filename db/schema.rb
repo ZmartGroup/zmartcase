@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20150513115516) do
-=======
-ActiveRecord::Schema.define(:version => 20150513074344) do
->>>>>>> 67691026f8b37308186295e456e6138a171cdd84
 
   create_table "cases", :force => true do |t|
     t.datetime "created_at",  :null => false

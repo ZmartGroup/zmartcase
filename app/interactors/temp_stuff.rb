@@ -19,7 +19,6 @@ class TempStuff
       return mail
     end
   end
-<<<<<<< HEAD
 
 
 	def self.zip
@@ -113,37 +112,6 @@ class TempStuff
 
 
 end
-=======
-
-
-
-	def self.zip
-    email_account = EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
-    imap = Net::IMAP.new(email_account.imap, {:port => email_account.port, :ssl => email_account.enable_ssl})
-    imap.login(email_account.user_name, email_account.password)
-    imap.select('INBOX')
-    imap.search(["UNSEEN"]).each do |message_id|
-     return msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
-      #mail = Mail.new(msg)
-      #case_id = 15
-      #  Email.create(case_id: case_id, date: mail.date,
-      #  to: email_account.user_name, from: mail.from[0].to_s,
-      #  raw: getA(msg),
-      #  subject: mail.subject, body: mail.text_part.body.to_s)
-      #imap.store(message_id, '+FLAGS', [:Seen])
-    end
-  end
-
-  def self.create_file(msg)
-    file = StringIO.new(ActiveSupport::Gzip.compress(msg))
-    file.class.class_eval { attr_accessor :original_filename, :content_type }
-    file.original_filename = 'rawMail.gzip'
-    file.content_type = 'application/x-gzip'
-    return file
-  end
-
-
->>>>>>> 67691026f8b37308186295e456e6138a171cdd84
 
   def self.dezip(email)
     uploader = ZmartUploader.new
@@ -158,17 +126,6 @@ end
 
 
 
-
-
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> 67691026f8b37308186295e456e6138a171cdd84
   def self.zip2
     email_account = EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
     imap = Net::IMAP.new(email_account.imap, {:port => email_account.port, :ssl => email_account.enable_ssl})
@@ -220,9 +177,5 @@ end
       end
     end
   end
-<<<<<<< HEAD
-
 =end
-=======
->>>>>>> 67691026f8b37308186295e456e6138a171cdd84
 end

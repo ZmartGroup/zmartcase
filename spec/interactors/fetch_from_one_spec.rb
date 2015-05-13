@@ -69,12 +69,8 @@ describe FetchFromOne do
     expect(imap).to receive(:login){}
     expect(imap).to receive(:logout){}
     expect(imap).to receive(:disconnect){}
-<<<<<<< HEAD
     fetcher.imap
     fetcher.imap_logout
-=======
-    fetcher.logout
->>>>>>> 67691026f8b37308186295e456e6138a171cdd84
   end
 
   it "should have right imap address" do
