@@ -37,6 +37,7 @@ describe FetchFromOne do
     expect(imap).to receive(:search).with(any_args){[1]}
     expect(imap).to receive(:fetch).with(any_args){[double(:attr => "")]}
     expect(Mail).to receive(:new){double(:date => "", :from => [1,2], :subject => "", :text_part => double(:body => ""))}
+    expect(Email).to receive(:create)
     expect(imap).to receive(:store).with(any_args){}
     expect(fetcher).to receive(:get_case_id){2}
 
