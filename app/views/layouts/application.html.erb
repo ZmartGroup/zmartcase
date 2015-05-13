@@ -33,6 +33,12 @@
               <%= link_to(root_path, class: "pure-menu-link") do %> Inbox <%end%> 
             </li>
             <li>
+              <%= link_to(new_email_path, class: "pure-menu-link") do %> Send new <%end%>
+            </li>
+            <li class="sidebar-label">
+              Categories
+            </li>
+            <li>
               <% if @closed_cases.empty? %>
                 <a class="pure-menu-link"> Closed <span class="email-count"> (0)</span></a>
               <% else %>
@@ -41,12 +47,6 @@
                   <span class="email-count"> (<%= @closed_cases.size %>)</span>
                 <% end %>
               <% end %>
-            </li>
-            <li>
-              <%= link_to(new_email_path, class: "pure-menu-link") do %> Send new <%end%>
-            </li>
-            <li class="sidebar-label">
-              Categories
             </li>
             <% @categories.each do |category| %>
               <li>
