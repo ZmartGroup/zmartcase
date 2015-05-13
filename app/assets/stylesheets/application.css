@@ -192,3 +192,21 @@
     color: white;
     font-size: 15px;
 }
+
+.panel-email a {
+    color: #4B7A4A;
+}
+
+.panel-email a:hover {
+    color: #2D492C;
+    text-decoration: none;
+}
+
+.panel-note a {
+    color: #196CA3;
+}
+
+.panel-note a:hover{
+    color: #003B62;
+    text-decoration: none;
+}

@@ -4,7 +4,7 @@ class TempStuff
 	end
 
 
- 	
+
 	def self.test2
 
 		email_account = EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
@@ -16,13 +16,10 @@ class TempStuff
 			imap.store(message_id, '+FLAGS', [:Seen])
 			msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
 			mail = Mail.new(msg)
-			
 
 			return mail
 
-			
 		end
-		
 	end
 
 
@@ -33,7 +30,7 @@ class TempStuff
 			email.case = nil
 			#email.category = nil
 			email.save
-			
+
 		end
 	end
 
@@ -41,7 +38,7 @@ class TempStuff
 		require 'open-uri'
 		until 0>num do
 			#generate subject with 1 -5 words
-			knum = rand(4) +1 
+			knum = rand(4) +1
 			email_subject = ""
 			until 1 > knum do
 				word = open('http://randomword.setgetgo.com/get.php').read.to_s
@@ -50,7 +47,7 @@ class TempStuff
 				email_subject += " "
 				knum -=1
 			end
-			
+
 
 			#generate body with 40-70 words
 			knum = rand(30) +40
@@ -70,7 +67,7 @@ class TempStuff
 			email_from = ""
 			word = open('http://randomword.setgetgo.com/get.php').read.to_s
 			word = word.chomp
-			email_from += word 
+			email_from += word
 			email_from += "@"
 			word = open('http://randomword.setgetgo.com/get.php').read.to_s
 			word = word.chomp
@@ -86,9 +83,9 @@ class TempStuff
 			tempEmail.to = email_to
 			tempEmail.save
 			num-=1
-		end	
+		end
 		#redirect_to filter_mail_index_path
 	end
 
 
-end	
+end

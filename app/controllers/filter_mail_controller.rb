@@ -52,6 +52,7 @@ class FilterMailController < ApplicationController
 		queue = Queue.new
 
 		Email.all.each do |email| # Go through all emails and check if theres no case attached
+
 			if email.case.blank?
 				email.case = Case.new
 			end

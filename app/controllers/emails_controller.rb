@@ -13,9 +13,6 @@ class EmailsController < ApplicationController
   def edit
   end
 
-
-
-
   def index
     @emails = Email.all
   end

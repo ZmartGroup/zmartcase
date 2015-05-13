@@ -25,23 +25,32 @@
 <br>
 <div style="padding-top: 50px;">
   <% @communications.each do |c| %>
-  <% if c.class == Email %>
-    <div class="panel panel-default pull-right" style="width:80%;">
-  <% else %>
-    <div class="panel panel-info pull-right" style="width:80%;">
-  <% end %>
-    <div class="panel-heading">
-      <h2 style="margin-top: 0px;">
-        <%#=link_to c.subject.capitalize, email_path(c) %>
-      </h2>
-      <h3 class="panel-title">
-          From <a>Tilo Mitra</a> at <span><%= c.created_at %></span>
-      </h3>
-    </div>
-    <div class="panel-body">
-      <%= c.body %>
-    </div>
-  </div>
+    <% if c.class == Email %>
+      <div class="panel panel-success pull-right" style="width:60%;">
+        <div class="panel-heading panel-email pull-left">
+          <h4 style="margin: 0px;"><%= link_to "Email", email_path(c) %></h4>
+        </div>
+        <p class="panel-title lead pull-left" style=" padding-left: 20px;padding-top:10px;">
+          <b><%= c.subject[0..30] %></b>
+        </p>
+      </div>
+    <% else %>
+      <div class="panel panel-info pull-right" style="width:60%;">
+        <div class="panel-heading panel-note pull-left">
+          <h4 style="margin: 0px;"><%= link_to "Note", note_path(c) %></h4>
+        </div>
+        <p class="panel-title lead pull-right" style="font-size: 13px; padding-right: 5px; padding-top:0px;">
+            <% if !c.user.nil? %>
+              <b>Added by:</b></br> <%= c.user.name %>
+            <% else %>
+              <b>Added by:</b></br> None
+            <% end %>
+        </p>
+        <p class="panel-title lead pull-left" style=" padding-left: 20px;padding-top:10px;">
+          <b><%= c.subject[0..30] %></b>
+        </p>
+      </div>
+    <% end %>
   <%end%>
 </div>
 
