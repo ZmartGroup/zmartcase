@@ -27,7 +27,7 @@ class CasesController < ApplicationController
     @case = Case.find(params[:id])
     if @case.update_attributes(params[:case])
       if @case.closed
-        @case.update_attributes(closed_at: DateTime.now)
+        @case.update_attributes(closed_at: DateTime.now, category: nil)
       end
       redirect_to category_case_path(@category,@case), notice: "Case is updated!"
     else

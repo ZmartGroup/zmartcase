@@ -18,7 +18,10 @@ class EmailsController < ApplicationController
   end
 
   def new
+    @categories = Category.all
     @email = Email.new
+    @case = Case.new
+    @case.emails << @email
   end
 
   def create
@@ -28,8 +31,13 @@ class EmailsController < ApplicationController
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
     if @email.case_id == nil
-      @email.case_id = Case.create.id
+      @case = Case.new
+      @email.case = @case
+      @case.user = current_user
+      @case.category_id = @email.category_id
+      @case.save
     end
+
     mail = MailSender.create_email(@email)
 
 =begin                                    #get attachments from UI
@@ -45,7 +53,7 @@ class EmailsController < ApplicationController
     mail.deliver
     @email.raw = MailCompressor.compress_mail(mail)
     @email.save
-    redirect_to new_category_path
+    redirect_to new_email_path
   end
 
   def update

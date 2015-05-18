@@ -16,7 +16,7 @@
     <% else %>
       <p class="navbar-text lead pull-right">Priority: <%= @case.priority.name %> </p>
     <% end %>
-    <p class="navbar-text lead pull-right">Created at: <%= @case.priority.created_at.strftime("%F") %> </p>
+    <p class="navbar-text lead pull-right">Created at: <%= @case.created_at.strftime("%F") %> </p>
     <% if @case.user.nil? %>
       <p class="navbar-text lead pull-right">Assigned to: <font color="red">Not assigned</font></p>
     <% else %>
@@ -31,7 +31,11 @@
 <div style="padding-top: 50px;">
   <% @communications.each do |c| %>
     <% if c.class == Email %>
+      <% if !c.is_sent? %>
+      <div class="panel panel-success pull-left" style="width:60%; margin-left:0px;">
+      <% else %>
       <div class="panel panel-success pull-right" style="width:60%;">
+      <% end %>
         <div class="panel-heading panel-email pull-left">
           <h4 style="margin: 0px;"><%= link_to "Email", email_path(c) %></h4>
         </div>
