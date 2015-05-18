@@ -23,6 +23,8 @@ Zmartcase::Application.routes.draw do
   get "users/fetch"
   post "users/fetch"
 
+  get "closed/:id" => "cases#closed_show", :as => "show_closed"
+
   resources :priorities
   resources :users
   resources :sessions

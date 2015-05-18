@@ -8,5 +8,8 @@
   <%= f.label "Set priority"  %>:
   <%= f.collection_select :priority_id, Priority.all, :id, :name, {prompt: "select user"}, {class: "form-control"}  %><br />
 
+  <%= f.label "Close case" %>
+  <%= f.check_box :closed %> <br />
+
   <%= f.submit "Save", class: "btn btn-success" %>
 <% end %>

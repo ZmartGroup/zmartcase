@@ -1,6 +1,6 @@
 <%= form_for @email, html: {class: "form-group"} do |f| %>
   <%= f.label :to %>:
-  <%= f.text_field :to,class: "form-control", placeholder: "To" %><br />
+  <%= f.email_field :to,class: "form-control", placeholder: "To" %><br />
 
   <%= f.label :subject %>:
   <%= f.text_field :subject,class: "form-control", placeholder: "Subject" %><br />

@@ -1,0 +1,19 @@
+<div class="col-sm-5">
+  <h1>Closed cases</h1>
+  <table class="table table-striped">
+    <tr>
+      <th>#</td>
+      <th>Name</td>
+      <th>Created at</td>
+    </tr>
+    <% @cases.each do |c| %>
+      <tr>
+        <td><%= link_to c.id, show_closed_path(c) %></td>
+        <td><%= c.user_id %></td>
+        <td><%= c.closed_at %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <%#= link_to "New priority", new_priority_path, class: "btn btn-primary" %>
+</div>

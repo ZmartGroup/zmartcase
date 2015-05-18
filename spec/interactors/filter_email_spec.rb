@@ -78,6 +78,7 @@ describe FilterEmail do
         expect(FilterEmail.new.check_key_words(word,key_words_DB,false)).to be 10
         expect(FilterEmail.new.check_key_words(word,key_words_DB2,false)).to be 0
 
+
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
@@ -108,6 +109,7 @@ describe FilterEmail do
         temp_email1.case = temp_case
         temp_email1.to = to_email_address
         temp_email1.save
+
 
 
         account_DB.push(temp_account)
@@ -144,6 +146,7 @@ describe FilterEmail do
     it "filter_mail: should set feedback_cat as its category cause it has matching words" do
         temp_email1.case = temp_case
         temp_email1.save
+
 
 
         account_DB.push(temp_account)
@@ -187,6 +190,7 @@ describe FilterEmail do
         key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
         key_words_DB2.push(KeyWord.new(word: "trevlig", point: '1'))
 
+
         fel_cat.key_words = key_words_DB2
         fel_cat.save
         FilterEmail.new.filter_mail(temp_email1)
@@ -219,6 +223,7 @@ describe FilterEmail do
         feedback_cat.key_words = key_words_DB
         feedback_cat.save
 
+
         key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
         key_words_DB2.push(KeyWord.new(word: "trappa", point: '8'))
         key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
@@ -235,7 +240,7 @@ describe FilterEmail do
         temp_email1.save
 
         temp_email2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
-             from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
+             from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
         temp_email2.case = Case.new
         temp_email2.save
 
@@ -245,6 +250,7 @@ describe FilterEmail do
         email_queue.push(temp_email1)
         email_queue.push(temp_email2)
         #email_queue.save
+
 
 
 
@@ -274,9 +280,5 @@ describe FilterEmail do
         expect(feedback_cat.cases.last).to eq(temp_email1.case)
         expect(trappa_cat.cases.last).to eq(temp_email2.case)
     end
-
-
-
-
 
 end
