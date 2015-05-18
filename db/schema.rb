@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20150513115516) do
     t.integer  "category_id"
     t.datetime "closed_at"
     t.boolean  "active"
+    t.integer  "priority_id"
   end
 
   create_table "categories", :force => true do |t|
