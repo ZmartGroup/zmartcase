@@ -24,7 +24,7 @@ describe FilterMailController do
 			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
 
 		temp_email2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
+			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
 
 
 		accountDB = Array.new
