@@ -8,8 +8,11 @@
   <%= f.label :body %>:
   <%= f.text_area :body,class: "form-control",rows: "5", placeholder: "Body" %><br />
 
-  <%= f.hidden_field :case_id, value: @case.id %>
-  <%= f.hidden_field :category_id, value: @category.id %>
-
+  <% if current_page?('/emails/new') %>
+    <%= f.collection_select :category_id, @categories, :id, :name, {prompt: "select category"}, {class: "form-control"}  %><br />
+  <%else %>
+    <%= f.hidden_field :case_id, value: @case.id %>
+    <%= f.hidden_field :category_id, value: @category.id %>
+  <% end %>
   <%= f.submit "Send", class: "btn btn-success" %>
 <% end %>
