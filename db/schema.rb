@@ -19,9 +19,9 @@ ActiveRecord::Schema.define(:version => 20150513115516) do
     t.integer  "user_id"
     t.string   "hashtag"
     t.boolean  "closed"
-    t.datetime "closed_at"
     t.integer  "priority_id"
     t.integer  "category_id"
+    t.datetime "closed_at"
   end
 
   create_table "categories", :force => true do |t|
