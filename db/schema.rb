@@ -17,10 +17,9 @@ ActiveRecord::Schema.define(:version => 20150506132725) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "user_id"
-    t.integer  "category_id"
-    t.integer  "priority_id"
     t.string   "hashtag"
     t.boolean  "active"
+    t.integer  "priority_id"
   end
 
   create_table "categories", :force => true do |t|
