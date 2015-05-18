@@ -27,6 +27,9 @@ class EmailsController < ApplicationController
     unless @email.subject.include?("[CaseID:")
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
+    if @email.case_id == nil
+      @email.case_id = Case.create.id
+    end
     mail = MailSender.create_email(@email)
 
 =begin                                    #get attachments from UI

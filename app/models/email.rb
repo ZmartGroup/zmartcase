@@ -16,24 +16,7 @@ class Email < ActiveRecord::Base
   #validates :to, presence: true
   #validates :from, presence: true
 
-  #Decompress the raw mail
-  def get_decompressed_mail
-  	@mail ||= Mail.new(ActiveSupport::Gzip.decompress(get_raw))
-  end
-
-
-
-  #Get the path for the raw mail
-  def get_raw
-  	 @data ||= File.read raw_path
-  end
-
-  def raw_path
-    @tmp_path ||= self.raw.tap { |u| u.cache_stored_file! }.path
-  end
-
-
-  #Decompress the raw mail
+ #Decompress the raw mail
   def get_decompressed_mail
   	@mail ||= Mail.new(ActiveSupport::Gzip.decompress(get_raw))
   end
