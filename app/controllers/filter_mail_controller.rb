@@ -13,13 +13,8 @@ class FilterMailController < ApplicationController
 	#This will not be used when in production
 	def start_filtering
 		filter_all_emails
-		#filter_all_caseless_emails
-		# Join the new thread
-		#FilterEmail.new.check_subject_and_body(Email.last)
-		#-------------------------------
-		redirect_to filter_mail_index_path
 
-		#filter_all_caseless_emails
+		redirect_to filter_mail_index_path
 
 	end
 
@@ -45,8 +40,7 @@ class FilterMailController < ApplicationController
 
 	def filter_all_emails
 		require 'thread'
-
-		@debug = true
+		
 		@NUM_OF_THREADS = 4 # How many threads to executed concurrently
 		#Saves the tasks in a que to regulate num of threads
 		queue = Queue.new

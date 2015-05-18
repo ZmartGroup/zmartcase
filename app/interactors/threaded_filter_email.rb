@@ -1,12 +1,12 @@
 class ThreadedFilterEmail
 	require 'thread'
     #TODO
-    #Change execute_filter_threads
+    #thread does not exti correctly
     #join threads
 
 
     #Accepts a que with emails that's going to be categorized, and how many threads it should do it in
-    def execute_filter_threads(task_queue, num_of_threads)
+    def execute_filter_threads(queue, num_of_threads)
         require 'thread'
         @active_threads = 0
         @lock = Mutex.new
@@ -14,42 +14,61 @@ class ThreadedFilterEmail
         @all_categories = Category.all
 
         #IF I dont do this, the keywords will be nil
-        print_all_keywords
-
+        activate_keywords
+        
+        task_queue = queue
         email_queue = Queue.new
 
-        while task_queue.length > 0 do
-            if num_of_threads > @active_threads # Checks so that not more than set threads run concurrently
-                @lock.synchronize{ # lock variable so that only one thread can access it
+        num_of_threads.times do
+            Thread.new do # Start the threads
+                continue = true
+                email = nil
+                #@lock.synchronize do
                     @active_threads += 1
-                }
-
-                #print "Num of threads: ", @active_threads, "\n"
-
-                Thread.new do # Start the threads
                     this_thread = @active_threads
-                    print "new thread: ", this_thread, "\n"
-                    #FilterEmail.new(@all_categories).filter_mail(queue.pop)
-                    test_cat = @all_categories.fetch(0)
-                    print test_cat.name, "<- cat name \n"
-                    email = task_queue.pop
-                    email_queue.push(FilterEmail.new(@all_categories).filter_mail(email,threaded=true))
-                    print "Adding cat to email in THREAD\n"
+                #end
+                
+                while continue
+                    @lock.synchronize do
+                        print "Thread nr: ", this_thread, " Check if que is empty? Que length: ", task_queue.length, "\n"
+                        if task_queue.length!=0
+                            print "que not empty\n"
+                            email = task_queue.pop
+                        else
+                            print "que empty\n"
+                            email = nil
+                        end
+                    end
+                    
 
-
-                    #puts "popped from que, length of que: ", queue.length, "\n"
-                    ActiveRecord::Base.connection.close
-                    @lock.synchronize{
-                        @active_threads -=1
-                    }
-                    #print "thread: ", this_thread, " done! \n"
-
+                    #while email = @task_queue.pop
+                    @lock.synchronize do
+                        print "Thread nr: ", this_thread, ": ", email.subject, "<---subject, task_queue.length: ", task_queue.length, "\n"
+                    end
+                    unless email == nil
+                        #@lock.synchronize do
+                        #    print email.subject, "<-email subject.  FILTERING IT!!!\n\n"
+                        #end
+                        email_queue.push(FilterEmail.new(@all_categories).filter_mail(email,threaded=true))
+                    else
+                        @lock.synchronize do
+                            print "Thread nr: ", this_thread," continue set to false\n"
+                        end
+                        continue = false
+                    end
+                    @lock.synchronize do
+                        print "THREAD nr: ", this_thread, " at end of while loop \n"
+                    end
                 end
-            else
-                sleep(0.001)
-            end
 
+                #@lock.synchronize do
+                    print "THREAD nr: ", this_thread, " DONE!!!!!!!!!!!!! \n\n"
+                #end
+
+            end
         end
+
+
         #join all threads
 
 
@@ -68,7 +87,8 @@ class ThreadedFilterEmail
         print " DONE!!!!!!!\n"
     end
 
-    def print_all_keywords
+    #Needs to be done, otherwise no keywords will work
+    def activate_keywords
         #print "PRINT KEYWORDS\n\n"
         @all_categories.each do |cat|
             #print cat.name, "\n"
