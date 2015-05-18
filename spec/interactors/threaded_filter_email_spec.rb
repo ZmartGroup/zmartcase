@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require 'rails_helper'
 require 'thread'
 
@@ -19,14 +17,7 @@ describe ThreadedFilterEmail do
     let (:account_DB) {Array.new}
     let (:temp_account) {EmailAccount.new(email_address: to_email_address)}
 
-    it "SeperateWords should seperaate swedish characters correctly" do
-        sentance = "Ån ligger långt härifrån. Hur tycker du att vi ska lösa det? Många har gått för att hämta vatten där!"
-        sep_sentance =SeperateWords.new.seperate(sentance)
-        #print sep_sentance, "\n\n"
-        #sep_sentance.each do |word|
-        #    print word, "\n\n"
-        #end
-    end
+
 =begin
     it "filter thread: add correct categories and cases to both emails" do
         temp_email1.case = Case.new
@@ -43,9 +34,6 @@ describe ThreadedFilterEmail do
         email_queue.push(temp_email1)
         email_queue.push(temp_email2)
         #email_queue.save
-
-
-
 
         account_DB.push(temp_account)
 
@@ -65,14 +53,20 @@ describe ThreadedFilterEmail do
 
         trappa_cat.key_words = key_words_DB2
         trappa_cat.save
-        FilterEmail.new.filter_mail(temp_email1)
-        FilterEmail.new.filter_mail(temp_email2)
+
+
+
+        categories = Category.all
+
+        FilterEmail.new(temp_email1, categories).filter_mail()
+        FilterEmail.new(temp_email2, categories).filter_mail()
         expect(temp_email1.category).to eq(feedback_cat)
         expect(temp_email2.category).to eq(trappa_cat)
         expect(feedback_cat.cases.last).to eq(temp_email1.case)
         expect(trappa_cat.cases.last).to eq(temp_email2.case)
     end
-
+#
+=end
 	it "execute_filter_threads: should add correct categories to both emails in queue" do
         temp_email1.case = Case.new
         #temp_email1.subject = "thread test hejsan"
@@ -96,6 +90,8 @@ describe ThreadedFilterEmail do
 
         feedback_cat.email_accounts = account_DB
         feedback_cat.key_words = key_words_DB
+        new_case2 = Case.new
+        feedback_cat.cases << new_case2
         feedback_cat.save
 
         key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
@@ -105,7 +101,12 @@ describe ThreadedFilterEmail do
         trappa_cat = Category.new(name: "trappa kategori")
 
         trappa_cat.key_words = key_words_DB2
+        new_case1 = Case.new
+        trappa_cat.cases << new_case1
         trappa_cat.save
+
+
+
         ThreadedFilterEmail.new.execute_filter_threads(email_queue,1)
 
         expect(temp_email1.category).to eq(feedback_cat)
@@ -115,5 +116,5 @@ describe ThreadedFilterEmail do
         expect(feedback_cat.cases.last).to eq(temp_email1.case)
         expect(trappa_cat.cases.last).to eq(temp_email2.case)
     end
-=end
+
 end

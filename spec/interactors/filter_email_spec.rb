@@ -72,13 +72,10 @@ describe FilterEmail do
         fel_cat.key_words = key_words_DB2
         fel_cat.save
 
-
         FilterEmail.new.check_subject_and_body(temp_email1)
-
 
         expect(FilterEmail.new.check_key_words(word,key_words_DB,false)).to be 10
         expect(FilterEmail.new.check_key_words(word,key_words_DB2,false)).to be 0
-
 
         expect(temp_email1.category).to eq(feedback_cat)
     end
@@ -200,14 +197,6 @@ describe FilterEmail do
     end
 
 
-    it "check_case: filtering email with a case to check_case should return true" do
-        temp_email1.case = Case.new
-        filter = FilterEmail.new
-        temp_email1.save
-        expect(FilterEmail.new.check_case(temp_email1)).to be_truthy
-    end
-
-
     it "filter_mail: should set category to feedback_cat" do
         temp_email1.case = temp_case
         temp_email1.save
@@ -217,6 +206,40 @@ describe FilterEmail do
         account_DB.push(temp_account)
 
         key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "pelle", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
+
+        feedback_cat.email_accounts = account_DB
+        feedback_cat.key_words = key_words_DB
+        feedback_cat.save
+
+
+        key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
+        key_words_DB2.push(KeyWord.new(word: "trappa", point: '8'))
+        key_words_DB2.push(KeyWord.new(word: "skorsten", point: '1'))
+        key_words_DB2.push(KeyWord.new(word: "trevlig", point: '1'))
+        fel_cat.key_words = key_words_DB2
+        fel_cat.save
+        FilterEmail.new.filter_mail(temp_email1)
+
+        expect(temp_email1.category).to eq(feedback_cat)
+    end
+
+    it "filter_mail: should set category to feedback_cat" do
+
+
+        temp_email1 = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se",
+            body: "hejsan, Min brygga ar trevlig\nfeedback\n")
+
+
+        temp_email1.case = temp_case
+        temp_email1.save
+
+        account_DB = Array.new
+        temp_account = EmailAccount.new(email_address: to_email_address)
+        account_DB.push(temp_account)
+
+        key_words_DB.push(KeyWord.new(word: "feedback", point: '10'))
         key_words_DB.push(KeyWord.new(word: "pelle", point: '10'))
         key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
 
