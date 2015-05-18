@@ -12,10 +12,10 @@ class FilterMailController < ApplicationController
 	#Filters all mails that has no category or case assigned to it
 	#This will not be used when in production
 	def start_filtering
-		#filter_all_emails
+		filter_all_emails
 		#filter_all_caseless_emails
 		# Join the new thread
-		FilterEmail.new.check_subject_and_body(Email.last)
+		#FilterEmail.new.check_subject_and_body(Email.last)
 		#-------------------------------
 		redirect_to filter_mail_index_path
 
@@ -39,7 +39,7 @@ class FilterMailController < ApplicationController
 		end
 
 		#Start executing the threads
-		FilterEmail.new.execute_filter_threads(queue, @NUM_OF_THREADS)
+		ThreadedFilterEmail.new.execute_filter_threads(queue, @NUM_OF_THREADS)
 		return true
 	end
 
@@ -60,7 +60,7 @@ class FilterMailController < ApplicationController
 		end
 
 		#Start executing the threads
-		FilterEmail.new.execute_filter_threads(queue, @NUM_OF_THREADS)
+		ThreadedFilterEmail.new.execute_filter_threads(queue, @NUM_OF_THREADS)
 		return true
 	end
 
