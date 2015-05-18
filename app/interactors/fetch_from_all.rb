@@ -9,7 +9,7 @@ class FetchFromAll
 
 	def perform
 		@email_accounts.each do |email_acc|
-		  FetchFromOne.new(email_acc, @only_unseen) #.perform
+		  FetchFromOne.new(email_acc, @only_unseen).perform
 		end
 	end
 end

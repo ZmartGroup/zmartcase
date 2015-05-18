@@ -43,7 +43,8 @@ class FetchFromOne
       msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
       mail = Mail.new(msg)
       case_id = get_case_id(mail)
-      Email.create(case_id: case_id, date: mail.date, is_sent: false, raw: MailCompressor.compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
+      e = Email.create(case_id: case_id, date: mail.date, is_sent: false, raw: MailCompressor.compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
+      FilterEmail.new.filter_mail(e)
       imap.store(message_id, '+FLAGS', [:Seen])
     end
   end
