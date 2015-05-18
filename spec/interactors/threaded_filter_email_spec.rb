@@ -90,8 +90,8 @@ describe ThreadedFilterEmail do
 
         feedback_cat.email_accounts = account_DB
         feedback_cat.key_words = key_words_DB
-        new_case2 = Case.new
-        feedback_cat.cases << new_case2
+        #new_case2 = Case.new
+        #feedback_cat.cases << new_case2
         feedback_cat.save
 
         key_words_DB2.push(KeyWord.new(word: "falt", point: '4'))
@@ -101,13 +101,11 @@ describe ThreadedFilterEmail do
         trappa_cat = Category.new(name: "trappa kategori")
 
         trappa_cat.key_words = key_words_DB2
-        new_case1 = Case.new
-        trappa_cat.cases << new_case1
+        #new_case1 = Case.new
+        #trappa_cat.cases << new_case1
         trappa_cat.save
 
-
-
-        ThreadedFilterEmail.new.execute_filter_threads(email_queue,1)
+        ThreadedFilterEmail.new.execute_filter_threads(email_queue,2)
 
         expect(temp_email1.category).to eq(feedback_cat)
 
