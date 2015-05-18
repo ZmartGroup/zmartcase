@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'rails_helper'
 
 describe FilterEmail do
@@ -122,8 +123,7 @@ describe FilterEmail do
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
-
-    it "find_category: should set feedback_cat as its category cause it has a matching email address" do
+    it "filter_mail: should set feedback_cat as its category cause it has a matching email address" do
         #IT should not chose fel_cat even though its keywords fit with contents of email
         #cause feedback_cat has a matching email address
         temp_email1.case = temp_case
@@ -139,12 +139,12 @@ describe FilterEmail do
         feedback_cat.save
         fel_cat.key_words = key_words_DB
         fel_cat.save
-        FilterEmail.new.find_category(temp_email1)
+        FilterEmail.new.filter_mail(temp_email1)
 
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
-    it "find_category: should set feedback_cat as its category cause it has matching words" do
+    it "filter_mail: should set feedback_cat as its category cause it has matching words" do
         temp_email1.case = temp_case
         temp_email1.save
 
@@ -166,13 +166,13 @@ describe FilterEmail do
 
         fel_cat.key_words = key_words_DB2
         fel_cat.save
-        FilterEmail.new.find_category(temp_email1)
+        FilterEmail.new.filter_mail(temp_email1)
 
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
 
-    it "find_category: should set feedback_cat as its category cause its subject matches" do
+    it "filter_mail: should set feedback_cat as its category cause its subject matches" do
         temp_email1.case = temp_case
         temp_email1.save
 
@@ -194,7 +194,7 @@ describe FilterEmail do
 
         fel_cat.key_words = key_words_DB2
         fel_cat.save
-        FilterEmail.new.find_category(temp_email1)
+        FilterEmail.new.filter_mail(temp_email1)
 
         expect(temp_email1.category).to eq(feedback_cat)
     end

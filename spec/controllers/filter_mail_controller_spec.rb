@@ -1,6 +1,20 @@
+# encoding: UTF-8
 require 'rails_helper'
 
 describe FilterMailController do
+    let (:word) {"hejsan"}
+    let (:temp_key_word) {KeyWord.new(word: word, point: '10')}
+    let (:key_words_DB) {Array.new}
+    let (:key_words_DB2) {Array.new}
+    let (:words_DB) {Array.new}
+    let (:temp_email1) {Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se",
+            body: "hejsan, Min brygga ar trevlig")}
+    let (:feedback_cat) {Category.new(name: "Feedback")}
+    let (:fel_cat) {Category.new(name: "fel kategori")}
+    let (:temp_case) {Case.new}
+    let (:to_email_address) {"feedback@baraspara.se"}
+    let (:account_DB) {Array.new}
+    let (:temp_account) {EmailAccount.new(email_address: to_email_address)}
 
 	it "filter_all_emails: Should place all emails in a category and assign it a case" do
 		to_email_address = "feedback@baraspara.se"
@@ -10,7 +24,7 @@ describe FilterMailController do
 			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
 
 		temp_email2 = Email.new(subject: "Trappa", to: "info@baraspara.se",
-			 from: "hej@hejsan.se", body: "trappa, Min trappa ar trevlig")
+			 from: "hej@hejsan.se", body: "trappa, Min trappa är trevlig")
 
 
 		accountDB = Array.new
