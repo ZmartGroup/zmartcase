@@ -1,6 +1,8 @@
 require 'mail'
 
 class Email < ActiveRecord::Base
+  scope :sent, -> {where(is_sent: true)}
+  scope :received, -> {where(is_sent: false)}
 
   attr_accessible :from, :to, :date, :subject, :case_id, :body, :raw, :category_id, :is_sent, :case
 
