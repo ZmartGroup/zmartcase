@@ -39,20 +39,11 @@ class EmailsController < ApplicationController
     end
 
     mail = MailSender.create_email(@email)
-    path = params[:attachment].path
-    mail.attachments[params[:attachment].original_filename] = File.read(path)
-  #  mail.parts.first.mime_type = params[:attachment].content_type
-
-
-=begin                                    #get attachments from UI
-    attachments = Array.new
-    attachments.push "/home/olsom/testStuff.txt"
-    attachments.push "/home/olsom/anotherTest.txt"
-
-    attachments.each do |attachment|
-      mail.add_file(attachment)
+    unless params[:attachment] == nil
+      path = params[:attachment].path
+      mail.attachments[params[:attachment].original_filename] = File.read(path)
     end
-=end
+
 
     mail.deliver
     @email.raw = MailCompressor.compress_mail(mail)
