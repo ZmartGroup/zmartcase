@@ -109,8 +109,8 @@ describe FilterEmail do
         account_DB.push(temp_account)
 
         key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
-        key_words_DB.push(KeyWord.new(word: "trappa", point: '10'))
-        key_words_DB.push(KeyWord.new(word: "skorsten", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "brygga", point: '10'))
+        key_words_DB.push(KeyWord.new(word: "trevlig", point: '10'))
 
         feedback_cat.email_accounts = account_DB
         feedback_cat.save

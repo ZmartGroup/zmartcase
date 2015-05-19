@@ -13,13 +13,12 @@ class FilterEmail
 
     #finds a case for the email or if non is found creates a new one and categorises it
     def filter_mail(email, threaded=false)
-        print "Start filter_email"
-
+        #print "Start filter_email: proccessing email w subject: ", email.subject,"\n"
         unless check_email_addresses(email)
             #Second check each word in subject and body against keywords in categories
             check_subject_and_body(email)
         end
-        print "RETURNING EMAIL !!!!!!!!!!!\n"
+        #print "RETURNING EMAIL !!!!!!!!!!!\n"
         if !threaded
             email.save
             email.category.cases << email.case
@@ -29,7 +28,7 @@ class FilterEmail
 
     #Checks the email address in the email against the email addresses in each category
     def check_email_addresses(email)
-        print "Start check email\n"
+        #print "Start check email address\n"
         @all_categories.each do |cat|
             accounts = cat.email_accounts
             #accounts.find_each(:conditions => "email_address.eql? email.to.downcase") do
@@ -38,7 +37,9 @@ class FilterEmail
             #end
             accounts.each do |to|
                 if to.email_address.downcase.eql? email.to.downcase
+                    #print "\n\n FOUND ADDRESS MATCH!!!! \n\n "
                     attach_category_to_email(email,cat)
+                    #print "\n\n FOUND ADDRESS MATCH DONE!!!! \n\n "
                     #attach_case_to_category(email, cat)
                     return true
                 end
@@ -50,15 +51,13 @@ class FilterEmail
     #Checks each word against keywords in categories
     def check_subject_and_body(email)
         winning_category = nil
-        #Used to settle which word to use.
         temp_points = 0 #The score for the current category
         points = 0 # The highest score achived
 
         subject_words = SeperateWords.new.seperate(email.subject)
-
         body_words = SeperateWords.new.seperate(email.body)
 
-        print "STARTING!\n"
+        #print "STARTING!\n"
         #print "FIRST cat.name: ",  @this_categories.first.name, "\n"
         @all_categories.each do |cat|
         #@this_categories.each do |cat|
@@ -76,7 +75,7 @@ class FilterEmail
             temp_points += check_words(cat.key_words, body_words)
 
             if temp_points > points
-                print "WINS!!!!!!!!!!!!!!!!!!! \n\n"
+                #print "WINS!!!!!!!!!!!!!!!!!!! \n\n"
                 points = temp_points
                 winning_category = cat
                 #attach_category_to_email(email,cat)
@@ -85,40 +84,28 @@ class FilterEmail
             end
             temp_points = 0
         end
-        #BETTER, this way removes unesseccary transactions
+        #This way removes unesseccary transactions
         if !winning_category.blank?
             attach_category_to_email(email,winning_category)
             #attach_case_to_category(email, winning_category)
         else
-            print "no winning category\n\n"
+            #print "no winning category\n\n"
         end
-        print " DONE check_subject_and_body\n"
+        #print " DONE check_subject_and_body\n"
     end
 
     def attach_category_to_email(email,cat)
-        print "Adding CATEGORY to email \n"
-        print "Cat name: ", cat.name ,"\n"
+        #print "Adding CATEGORY to email \n"
+        #print "Cat name: ", cat.name ,"\n"
         #print "Email subject: ", email.subject, "\n"
         email.category = cat
         #Does not work with threads
         #email.save
-        print "DONE ADDING CATEGORY TO EMAIL \n"
+        #print "DONE ADDING CATEGORY TO EMAIL \n"
 
         #return email
     end
 
-    def attach_case_to_category(email, cat)
-        #require 'thread'
-        #@lock.synchronize{
-            #Works
-            #print "cat id: ", cat.cases.first.id, "\n"
-            #print "email id: ", email.case.id, "\n"
-            #cat.cases << email.case
-            #cat.cases.push(email.case)
-            #funkar ej
-            #email.case.category = cat
-        #}
-    end
 
     #check each word in either subject or body against the keywords in each category's key_words
     def check_words(key_words, words, is_subject = false)
