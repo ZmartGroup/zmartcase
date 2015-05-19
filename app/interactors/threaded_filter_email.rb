@@ -1,13 +1,9 @@
 class ThreadedFilterEmail
 	require 'thread'
     #TODO
-    #thread does not exit correctly
-    #join threads
-
 
     #Accepts a que with emails that's going to be categorized, and how many threads it should do it in
     def execute_filter_threads(queue, num_of_threads)
-        #require 'thread'
         @active_threads = 0
         @lock = Mutex.new
         @thread_array = Array.new
@@ -19,19 +15,19 @@ class ThreadedFilterEmail
         @task_queue = queue
         @email_queue = Queue.new
 
-        #start threads
+        #start threads & add them to array for later joining
         num_of_threads.times do
             @thread_array.push(Thread.new {perform_task})
         end
 
         #join all threads
         @thread_array.map(&:join)
-        #print "Threads joined!!\n"
 
-         #Save all emails in queue
+        #Save all emails and add case to category if it exists in queue
         @email_queue.length.times do
             temp_email = @email_queue.pop
             unless temp_email.category.blank?
+                #add case to category
                 temp_email.category.cases << temp_email.case
             end
             temp_email.save

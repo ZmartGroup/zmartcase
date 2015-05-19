@@ -3,14 +3,11 @@ class FilterMailController < ApplicationController
 
 	def index
 		@emails = Email.all
-		#generate_random_emails(10)
-		#remove_all_cases_and_categories_from_emails
 		@categories = Category.all
 	end
 
 
-	#Filters all mails that has no category or case assigned to it
-	#This will not be used when in production
+	#Filters all mails that has no category assigned to it
 	def start_filtering
 		filter_all_emails
 
@@ -26,6 +23,7 @@ class FilterMailController < ApplicationController
 		queue = Queue.new
 
 		Email.all.each do |email| # Go through all emails and check if theres no case attached
+
 			if  email.case.blank?
 				email.case = Case.new
 				queue.push(email)
@@ -50,7 +48,10 @@ class FilterMailController < ApplicationController
 			if email.case.blank?
 				email.case = Case.new
 			end
-			queue.push(email)
+
+			if email.category.blank?
+				queue.push(email)
+			end
 		end
 
 		#Start executing the threads
