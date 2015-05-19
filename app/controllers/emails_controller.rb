@@ -27,9 +27,6 @@ class EmailsController < ApplicationController
   def create
     @email = Email.new(params[:email])
     @email.is_sent = true;
-    unless @email.subject.include?("[CaseID:")
-      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
-    end
     if @email.case_id == nil
       @case = Case.new
       @email.case = @case
@@ -37,8 +34,15 @@ class EmailsController < ApplicationController
       @case.category_id = @email.category_id
       @case.save
     end
+    unless @email.subject.include?("[CaseID:")
+      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
+    end
 
     mail = MailSender.create_email(@email)
+    path = params[:attachment].path
+    mail.attachments[params[:attachment].original_filename] = File.read(path)
+  #  mail.parts.first.mime_type = params[:attachment].content_type
+
 
 =begin                                    #get attachments from UI
     attachments = Array.new
