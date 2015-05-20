@@ -3,6 +3,35 @@ require 'mail'
 
 class TempStuff
 
+  def generate_categories_w_keywords
+    #uncat_cat = Category.new(name: "Uncategorized")
+    #uncat_cat.save
+
+
+
+    feedback_cat = Category.new(name: "Feedback")
+    feedback_cat.key_words.push(KeyWord.new(word: "feedback", point: '10'))
+    feedback_cat.key_words.push(KeyWord.new(word: "tycker", point: '4'))
+    feedback_cat.key_words.push(KeyWord.new(word: "bra", point: '2'))
+    feedback_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
+    feedback_cat.key_words.push(KeyWord.new(word: "förbättring", point: '8'))
+
+    #feedback_cat.accounts.push(EmailAccount.new(email_address: "feedback@baraspara.se")
+    feedback_cat.save
+=begin
+    avregistera_cat = Category.new(name: "Avregistrera")
+    avregistera_cat.key_words.push(KeyWord.new(word: "avregistrera", point: '10'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "sluta", point: '8'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "missnöjd", point: '6'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "avsluta", point: '9'))
+
+    feedback_cat.accounts.push(EmailAccount.new(email_address: "avregistrera@baraspara.se")
+    avregistera_cat.save
+
+=end
+
+  end
 
   def generate_random_emails(num)
     require 'open-uri'
