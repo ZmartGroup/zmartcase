@@ -3,9 +3,8 @@
   <h1 class="text-center"> Dashboard </h1>
 </div>
 
-<h3 class="text-center">Your cases</h3>
-<%= line_chart Case.group(:created_at).count %>
-
 <h3 class="text-center">Cases in categories</h3>
-<%= bar_chart Category.joins(:cases).group("categories.name").count %>
+<%#= bar_chart Category.joins(:cases).group("categories.name").count %>
 
+<h3 class="text-center">Your cases</h3>
+<%= line_chart Case.group(:user).count %>

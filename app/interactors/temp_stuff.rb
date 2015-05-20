@@ -2,6 +2,60 @@ require 'net/imap'
 require 'mail'
 
 class TempStuff
+
+
+  def generate_random_emails(num)
+    require 'open-uri'
+    until 0>num do
+      #generate subject with 1 -5 words
+      knum = rand(4) +1
+      email_subject = ""
+      until 1 > knum do
+        word = open('http://randomword.setgetgo.com/get.php').read.to_s
+        word = word.chomp
+        email_subject += word.to_s
+        email_subject += " "
+        knum -=1
+      end
+
+
+      #generate body with 40-70 words
+      knum = rand(30) +40
+      email_body = ""
+
+      until 1 > knum do
+        word = open('http://randomword.setgetgo.com/get.php').read.to_s
+        word = word.chomp
+
+        email_body += word.to_s
+        email_body += " "
+        knum -=1
+      end
+
+      #generate from and to
+      email_from = ""
+      word = open('http://randomword.setgetgo.com/get.php').read.to_s
+      word = word.chomp
+      email_from += word
+      email_from += "@"
+      word = open('http://randomword.setgetgo.com/get.php').read.to_s
+      word = word.chomp
+      email_from += word
+      email_from +=".com"
+
+      email_to = "info@baraspara.se"
+
+      tempEmail = Email.new
+      tempEmail.subject = email_subject
+      tempEmail.body = email_body
+      tempEmail.from = email_from
+      tempEmail.to = email_to
+      tempEmail.save
+      num-=1
+    end
+    #redirect_to filter_mail_index_path
+  end
+
 =begin
 	def self.create_email_acc
 		EmailAccount.create(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
