@@ -54,13 +54,23 @@ class FilterEmail
 
             if temp_points > points
                 points = temp_points
-                winning_category = cat
+               winning_category = cat
             end
 
             temp_points = 0
         end
         #This way removes unesseccary transactions
-        attach_category_to_email(email,winning_category) unless winning_category.blank? 
+        unless winning_category.blank?
+            attach_category_to_email(email,winning_category)
+        else
+            #This asumes there's a category called "Uncategorized"
+            uncategorized = Category.find_by_name("Uncategorized")
+            #using scopes: not working for some reason
+            #uncategorized = Category.uncategorized
+            print "cat found,  : ", uncategorized.name, "\n"
+            attach_category_to_email(email,uncategorized)
+        end
+
     end
 
     def attach_category_to_email(email,cat)

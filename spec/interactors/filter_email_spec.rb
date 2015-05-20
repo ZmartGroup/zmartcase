@@ -26,7 +26,6 @@ describe FilterEmail do
         expect(FilterEmail.new.check_key_words(word,key_words_DB,true)).to be 20
     end
 
-
     it "check_words: should return 20 with 2 matching words worth 10" do
         words_DB.push("hejsan"); words_DB.push("rasp"); words_DB.push("pelle"); words_DB.push("trappa")
         key_words_DB.push(KeyWord.new(word: "hejsan", point: '10'))
@@ -36,22 +35,6 @@ describe FilterEmail do
 
         expect(FilterEmail.new.check_words(feedback_cat.key_words, words_DB, false)).to be 20
     end
-
-    #Does not exist anymore
-    #it "attach_case_to_category: both case category and email category should be same" do
-    #    temp_email1.case = temp_case
-    #    temp_email1.save
-    #    FilterEmail.new.attach_case_to_category(temp_email1,feedback_cat)
-    #
-    #    expect(temp_email1.case).to eq(feedback_cat.cases.last)
-    #end
-
-    #it "attach_case_to_category: if email has case it should add that case to category" do
-    #    temp_email1.case = temp_case
-    #    temp_email1.save
-    #    FilterEmail.new.attach_case_to_category(temp_email1,feedback_cat)
-    #    expect(temp_email1.case).to eq(feedback_cat.cases.last)
-    #end
 
     it "check_subject_and_body: should get category = feedback" do
         temp_email1 = Email.new(subject: "Hejsan", to: "info@baraspara.se", from: "hej@hejsan.se",
@@ -81,7 +64,23 @@ describe FilterEmail do
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
+    it "check_subject_and_body: should set category to  uncategorized if nothing found" do
+        temp_email1.case = Case.new
+        temp_email1.save
 
+        uncategorized_cat = Category.new(name: "Uncategorized")
+        uncategorized_cat.save
+
+        key_words_DB2.push(KeyWord.new(word: "rymden", point: '10'))
+        key_words_DB2.push(KeyWord.new(word: "operan", point: '10'))
+        key_words_DB2.push(KeyWord.new(word: "info", point: '10'))
+
+        fel_cat.key_words = key_words_DB2
+        fel_cat.save
+
+        FilterEmail.new.check_subject_and_body(temp_email1)
+        expect(temp_email1.category).to eq(uncategorized_cat)
+    end
 
     it "check_email_addresses: should set category to feedback_cat" do
         temp_email1.case = temp_case
