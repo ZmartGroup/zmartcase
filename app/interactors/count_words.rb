@@ -2,29 +2,26 @@ class CountWords
 
 	##################FIXA SÅ ATT REDAN GENOMSKANNADE MAIL INTE SKANNAS IGEN
 	
-	def count
+	def count(email)
 
-	Email.all.each do |email|
+		subject_array = seperate_words(email.subject)
+		body_array = seperate_words(email.body)
 
-			subjectArray = seperate_words(email.subject)
-			bodyArray = seperate_words(email.body)
-
-			subjectArray.each do |subjectword|
-				if check_term(subjectword) == false
-					create_term(subjectword)
-				else	
-					add_amount(subjectword)
-				end
-			end
+		subject_array.each do |subjectword|
+			if check_term(subjectword) == false
+				create_term(subjectword)
+			else	
+				add_amount(subjectword)
+			end			
+		end
 			
-			bodyArray.each do |bodyword|
-				if check_term(bodyword) == false
-					create_term(bodyword)
-				else
-					add_amount(bodyword)
-				end
+		body_array.each do |bodyword|
+			if check_term(bodyword) == false
+				create_term(bodyword)
+			else
+				add_amount(bodyword)
 			end
-	end
+		end
 end
 
 def check_term(emailword)
