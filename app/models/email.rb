@@ -18,7 +18,7 @@ class Email < ActiveRecord::Base
   #validates :to, presence: true
   #validates :from, presence: true
 
- #Decompress the raw mail
+  #Decompress the raw mail
   def get_decompressed_mail
   	@mail ||= Mail.new(ActiveSupport::Gzip.decompress(get_raw))
   end

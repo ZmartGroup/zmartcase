@@ -9,7 +9,7 @@
   <%= text_area_tag 'email[body]', nil, rows: "5" %><br />
 
   <%= label_tag 'attachment:'%>:
-  <%= file_field_tag 'attachment' %><br />
+  <%= file_field_tag 'attachment[]', :multiple => true %><br />
 
   <% if current_page?('/emails/new') %>
     <%= select_tag 'email[category_id]', options_from_collection_for_select(@categories,  'id', 'name'), prompt: "Select category" %><br />
@@ -18,5 +18,5 @@
     <%= hidden_field_tag 'email[category_id]', @category.id %>
   <% end %>
 
-  <br /><%= submit_tag %>
+  <br /><%= submit_tag 'Send'%>
 <% end %>
