@@ -57,8 +57,8 @@ class FetchFromOne
     end
     if case_id.nil?
       @case = Case.new
-      print "\n\n\n" + current_user + "\n\n\n"
-      @case.user = current_user
+      #print "\n\n\n" + current_user + "\n\n\n"
+      #@case.user = current_user
       @case.save
       case_id = @case.id
     end
