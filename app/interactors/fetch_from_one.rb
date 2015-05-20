@@ -44,8 +44,10 @@ class FetchFromOne
       mail = Mail.new(msg)
       case_id = get_case_id(mail)
       Email.create(case_id: case_id, date: mail.date, is_sent: false, raw: MailCompressor.compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
+
       imap.store(message_id, '+FLAGS', [:Seen])
     end
+    #call keyword and filtering code
   end
 
   def get_case_id(mail)
@@ -54,7 +56,11 @@ class FetchFromOne
      case_id = mail.text_part.body.to_s.include?("[CaseID:") ? mail.text_part.body.to_s[/.*<([^>]*)/,1] : nil
     end
     if case_id.nil?
-      case_id = Case.create.id
+      @case = Case.new
+      print "\n\n\n" + current_user + "\n\n\n"
+      @case.user = current_user
+      @case.save
+      case_id = @case.id
     end
     return case_id
   end
