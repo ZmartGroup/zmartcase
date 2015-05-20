@@ -53,8 +53,9 @@ class FilterEmail
             temp_points += check_words(cat.key_words, body_words)
 
             if temp_points > points
+
                 points = temp_points
-               winning_category = cat
+                winning_category = cat
             end
 
             temp_points = 0
@@ -67,7 +68,7 @@ class FilterEmail
             uncategorized = Category.find_by_name("Uncategorized")
             #using scopes: not working for some reason
             #uncategorized = Category.uncategorized
-            print "cat found,  : ", uncategorized.name, "\n"
+
             attach_category_to_email(email,uncategorized)
         end
 
@@ -75,6 +76,7 @@ class FilterEmail
 
     def attach_category_to_email(email,cat)
         email.category = cat
+
     end
 
     #check each word in either subject or body against the keywords in each category's key_words
@@ -90,6 +92,7 @@ class FilterEmail
     def check_key_words(word, key_words, is_subject = false)
         temp_points = 0
         key_words.each do |key|
+
             if key.word.downcase.eql? word.downcase
                 is_subject ? temp_points += key.point * 2 : temp_points += key.point
             end

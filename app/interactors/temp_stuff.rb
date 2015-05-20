@@ -4,8 +4,8 @@ require 'mail'
 class TempStuff
 
   def generate_categories_w_keywords
-    #uncat_cat = Category.new(name: "Uncategorized")
-    #uncat_cat.save
+    uncat_cat = Category.new(name: "Uncategorized")
+    uncat_cat.save
 
 
 
@@ -16,9 +16,9 @@ class TempStuff
     feedback_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
     feedback_cat.key_words.push(KeyWord.new(word: "förbättring", point: '8'))
 
-    #feedback_cat.accounts.push(EmailAccount.new(email_address: "feedback@baraspara.se")
+    feedback_cat.email_accounts.push(EmailAccount.new(email_address: "feedback@baraspara.se"))
     feedback_cat.save
-=begin
+
     avregistera_cat = Category.new(name: "Avregistrera")
     avregistera_cat.key_words.push(KeyWord.new(word: "avregistrera", point: '10'))
     avregistera_cat.key_words.push(KeyWord.new(word: "sluta", point: '8'))
@@ -26,22 +26,28 @@ class TempStuff
     avregistera_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
     avregistera_cat.key_words.push(KeyWord.new(word: "avsluta", point: '9'))
 
-    feedback_cat.accounts.push(EmailAccount.new(email_address: "avregistrera@baraspara.se")
+    feedback_cat.email_accounts.push(EmailAccount.new(email_address: "avregistrera@baraspara.se"))
     avregistera_cat.save
 
-=end
 
   end
 
   def generate_random_emails(num)
     require 'open-uri'
+    key_words_db = KeyWord.all
     until 0>num do
       #generate subject with 1 -5 words
       knum = rand(4) +1
       email_subject = ""
       until 1 > knum do
-        word = open('http://randomword.setgetgo.com/get.php').read.to_s
-        word = word.chomp
+        if rand(4)==3
+          #rand_num = 
+          word = key_words_db.fetch(rand(key_words_db.length)-1).word
+          print "subject this: ", word, "\n"
+        else
+          word = open('http://randomword.setgetgo.com/get.php').read.to_s
+          word = word.chomp
+        end
         email_subject += word.to_s
         email_subject += " "
         knum -=1
@@ -53,8 +59,13 @@ class TempStuff
       email_body = ""
 
       until 1 > knum do
-        word = open('http://randomword.setgetgo.com/get.php').read.to_s
-        word = word.chomp
+        if rand(4)==3
+          word = key_words_db.fetch(rand(key_words_db.length)-1).word
+          print "body this: ", word, "\n"
+        else
+          word = open('http://randomword.setgetgo.com/get.php').read.to_s
+          word = word.chomp
+        end
 
         email_body += word.to_s
         email_body += " "

@@ -8,11 +8,13 @@ class ThreadedFilterEmail
         @lock = Mutex.new
         @thread_array = Array.new
         @all_categories = Category.all
-
+        #print "\n\n LENGTH", queue.length, "<- length\n\n"
+        #print "num of threads used: ", num_of_threads, "\n\n"
+        #print "first category: ", @all_categories.fetch(0).name , "\n"
         #If I dont do this, the keywords & email addresses will be nil
-        activate
 
         @task_queue = queue
+        activate
         @email_queue = Queue.new
 
         #start threads & add them to array for later joining
@@ -22,16 +24,21 @@ class ThreadedFilterEmail
 
         #join all threads
         @thread_array.map(&:join)
-
+        #print "Threads joined!!\n"
         #Save all emails and add case to category if it exists in queue
         @email_queue.length.times do
             temp_email = @email_queue.pop
             unless temp_email.category.blank?
                 #add case to category
+
                 temp_email.category.cases << temp_email.case
+                #print "temp_email.category: ", temp_email.category.name, "\n"
             end
             temp_email.save
+            #print "temp_email.category: ", temp_email.category.name, "\n"
         end
+        #print_all_emails
+
     end
 
     def perform_task
@@ -46,17 +53,24 @@ class ThreadedFilterEmail
 
     #Needs to be done, otherwise no keywords will work
     def activate
+        #print "\n\n TASK LENGTH", @task_queue.length, "<- length\n\n"
         #print "PRINT KEYWORDS\n\n"
         @all_categories.each do |cat|
-            #print cat.name, ":\n"
+            print cat.name, ":\n"
             cat.key_words.each do |key|
-                #print key.word, "\n"
+                print key.word, "\n"
             end
             cat.email_accounts.each do |acc|
-                #print acc.email_address, "\n"
+                print acc.email_address, "\n"
             end
         end
         #print "DONE PRINT!!!!\n\n"
+    end
+
+    def print_all_emails
+        Email.all.each do |email|
+            #print "email.category.name: ", email.category.name, "\n"
+        end
     end
 
 end

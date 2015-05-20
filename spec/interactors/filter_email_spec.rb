@@ -87,8 +87,6 @@ describe FilterEmail do
         temp_email1.to = to_email_address
         temp_email1.save
 
-
-
         account_DB.push(temp_account)
         feedback_cat.email_accounts = account_DB
         feedback_cat.save
