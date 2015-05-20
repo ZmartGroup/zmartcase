@@ -33,9 +33,5 @@ class Email < ActiveRecord::Base
   def raw_path
     @tmp_path ||= self.raw.tap { |u| u.cache_stored_file! }.path
   end
-
-  def cleanup
-    File.delete(raw_path) if File.exist?(raw_path)
-  end
 end
 
