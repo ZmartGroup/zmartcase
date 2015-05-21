@@ -112,6 +112,7 @@ GEM
     rake (10.4.2)
     rdoc (3.12.2)
       json (~> 1.4)
+    rolify (3.2.0)
     rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
     rspec-expectations (3.2.1)
@@ -175,6 +176,7 @@ DEPENDENCIES
   minitest
   mocha (~> 1.1.0)
   rails (= 3.2.18)
+  rolify
   rspec-rails
   sass-rails (~> 3.2.3)
   simplecov

@@ -32,6 +32,7 @@ Zmartcase::Application.routes.draw do
 
   resources :priorities
   resources :users
+  get "dashboard" => "users#dashboard"
   resources :sessions
   resources :emails
   resources :notes
@@ -39,7 +40,7 @@ Zmartcase::Application.routes.draw do
     resources :cases
   end
 
-  root :to => 'users#index'
+  root :to => 'users#dashboard'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
