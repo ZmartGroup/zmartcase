@@ -11,6 +11,21 @@ class UsersController < ApplicationController
 
   end
 
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    @user.update_attributes(params[:user])
+
+    if @user.save
+      redirect_to users_path, notice:  'User updated'
+    else
+      render action: 'edit'
+    end
+  end
+
   def fetch
     FetchFromAll.new.perform
     redirect_to root_path
