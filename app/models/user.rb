@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  rolify
   authenticates_with_sorcery!
   # attr_accessible :title, :body
   has_many :cases
