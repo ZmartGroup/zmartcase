@@ -1,0 +1,28 @@
+
+<legend><h1>New user</h1></legend>
+<%= form_for @user do |f| %>
+  <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, placeholder: "First name", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, placeholder: "Last name", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.text_field :email, placeholder: "Email", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, placeholder: "Password", class: "form-control"  %>
+  </div>
+  <div class="form-group">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, placeholder: "Password confirmation", class: "form-control"  %>
+  </div>
+  <div class="form-group">
+    <%= f.submit "Create user", class: "btn btn-primary"%>
+  </div>
+  <%= link_to "Back", users_path %>
+<% end %>

@@ -30,19 +30,14 @@
                 <%= link_to "ZmartCase", root_path %>
             </li>
 
-            <% if current_user.has_role? :user %>
-              <li>
-                <%= link_to(root_path, class: "pure-menu-link") do %> Dashboard <%end%>
-              </li>
-              <li>
-                <%= link_to(new_email_path, class: "pure-menu-link") do %> New Email <%end%>
-              </li>
-            <% end %>
-
             <%# ======================================= %>
             <%# ============= CATEGORIES ============== %>
             <%# ======================================= %>
             <% if current_user.has_role? :user %>
+              <li>
+                <%= link_to(new_email_path, class: "pure-menu-link") do %> New Email <%end%>
+              </li>
+
               <li class="sidebar-label">
                 Categories
               </li>
@@ -81,6 +76,9 @@
               </li>
               <li>
                   <%= link_to "Priorities", priorities_path, class: "pure-menu-link"%>
+              </li>
+              <li>
+                  <%= link_to "Users", users_path, class: "pure-menu-link"%>
               </li>
             <% end %>
 

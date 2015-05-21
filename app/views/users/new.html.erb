@@ -1,1 +1,7 @@
-<%= render "signup" %>
+<% if current_page?('/signup') %>
+  <%= render "signup" %>
+<% elsif current_page?('/users/new') %>
+<div class="col-sm-5">
+  <%= render "form" %>
+</div>
+<% end %>

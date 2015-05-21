@@ -3,11 +3,12 @@ class UsersController < ApplicationController
     if !current_user
       redirect_to login_path
     else
-      @category = Category.all
-      @cases = Case.all
-      @user = current_user
-      @emails = Email.all
+      @users = User.all
     end
+  end
+
+  def dashboard
+
   end
 
   def fetch
@@ -22,7 +23,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      redirect_to login_path, :notice => "Signed up!"
+      if !current_user
+        redirect_to login_path, :notice => "Signed up!"
+      else
+        redirect_to users_path, :notice => "New user created1"
+      end
     else
       redirect_to signup_path, :notice => "Try again!"
     end
