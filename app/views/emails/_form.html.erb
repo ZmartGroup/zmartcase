@@ -1,22 +1,22 @@
-<%= form_tag('/emails', :method=>'post', :multipart => true) do %>
+<%= form_tag('/emails', :method=>'post', :multipart => true, html: {class: "form-group"} ) do %>
   <%= label_tag 'to'%>:
-  <%= email_field_tag 'email[to]' %><br />
+  <%= email_field_tag 'email[to]', nil, class: "form-control" %><br />
 
   <%= label_tag 'subject'%>:
-  <%= text_field_tag 'email[subject]' %><br />
+  <%= text_field_tag 'email[subject]', nil, class: "form-control" %><br />
 
   <%= label_tag 'body'%>:
-  <%= text_area_tag 'email[body]', nil, rows: "5" %><br />
+  <%= text_area_tag 'email[body]', nil, rows: "5",class: "form-control" %><br />
 
   <%= label_tag 'attachment:'%>:
   <%= file_field_tag 'attachment[]', :multiple => true %><br />
 
   <% if current_page?('/emails/new') %>
-    <%= select_tag 'email[category_id]', options_from_collection_for_select(@categories,  'id', 'name'), prompt: "Select category" %><br />
+    <%= select_tag 'email[category_id]', options_from_collection_for_select(@categories,  'id', 'name'), prompt: "Select category",class: "form-control" %><br />
   <%else %>
     <%= hidden_field_tag 'email[case_id]', @case.id %>
     <%= hidden_field_tag 'email[category_id]', @category.id %>
   <% end %>
 
-  <br /><%= submit_tag 'Send'%>
+  <br /><%= submit_tag 'Send', class: "btn btn-success"%>
 <% end %>
