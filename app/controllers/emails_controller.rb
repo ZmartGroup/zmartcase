@@ -43,17 +43,6 @@ class EmailsController < ApplicationController
     end
 
     ZmartJob.new.async.perform(@email, params[:attachment])
-
-=begin
-    mail = MailSender.create_email(@email)
-      unless params[:attachment].nil?
-        params[:attachment].each do |attachment|
-          mail.attachments[attachment.original_filename] = File.read(attachment.path)
-        end
-      end
-      mail.deliver
-=end
-
     redirect_to new_email_path
   end
 
