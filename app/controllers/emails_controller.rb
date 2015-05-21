@@ -40,7 +40,6 @@ class EmailsController < ApplicationController
     end
 
     mail = MailSender.create_email(@email)
-
     unless params[:attachment].nil?
       params[:attachment].each do |attachment|
         mail.attachments[attachment.original_filename] = File.read(attachment.path)
