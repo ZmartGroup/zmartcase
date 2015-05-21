@@ -2,35 +2,32 @@ class CountWords
 
 	##################FIXA SÅ ATT REDAN GENOMSKANNADE MAIL INTE SKANNAS IGEN
 	
-	def count
+	def count(email)
 
-	Email.all.each do |email|
+		subject_array = seperate_words(email.subject)
+		body_array = seperate_words(email.body)
 
-			subjectArray = splitSubject(email)
-			bodyArray = splitBody(email)
-
-			subjectArray.each do |subjectword|
-				if checkTerm(subjectword) == false
-					createTerm(subjectword)
-				else	
-					addAmount(subjectword)
-				end
-			end
+		subject_array.each do |subjectword|
+			if check_term(subjectword) == false
+				create_term(subjectword)
+			else	
+				add_amount(subjectword)
+			end			
+		end
 			
-			bodyArray.each do |bodyword|
-				if checkTerm(bodyword) == false
-					createTerm(bodyword)
-				else
-					addAmount(bodyword)
-				end
+		body_array.each do |bodyword|
+			if check_term(bodyword) == false
+				create_term(bodyword)
+			else
+				add_amount(bodyword)
 			end
-	end
+		end
 end
 
-def checkTerm(emailword)
+def check_term(emailword)
 
 	if Term.all == []
-		createTerm("hej")
+		create_term("hej")
 	end
 
 	state = true
@@ -48,14 +45,13 @@ def checkTerm(emailword)
 
 end
 
-def createTerm(emailword)
+def create_term(emailword)
 
-	new_term = Term.new(word: emailword, amount: 1)
-	new_term.save
+	Term.create(word: emailword, amount: 1)
 
 end
 
-def addAmount(emailword)
+def add_amount(emailword)
 
 	Term.all.each do |term|
 		if emailword.eql? term.word.downcase
@@ -66,12 +62,10 @@ def addAmount(emailword)
 	end
 end
 
-def splitSubject(email)
-	email.subject.downcase.split
-end
+def seperate_words(emailword)
 
-def splitBody(email)	
-	email.body.downcase.split
+	SeperateWords.new.seperate(emailword)
+
 end
 
 end
