@@ -6,6 +6,11 @@ class KeyWordsController < ApplicationController
   def delete
   end
 
+
+  def new
+    @key_word = KeyWord.new
+  end
+
   def create
   	@key_word = KeyWord.new(params[:key_word])
     @key_word.save
