@@ -38,6 +38,15 @@ describe CountWords do
 
 	end
 
+	it "Should add +1 to the amount for the word hej by going through method count" do
+
+		test_mail = Email.new(subject: "hej", body: "hej")
+		CountWords.new.count(test_mail)
+
+		expect(Term.first.amount) == 3
+
+	end
+
 	it "Should split an emails subject and body into an array" do
 
 		test_mail = Email.create(subject: "Feedback till kundservice", body: "Ni är duktiga")

@@ -2,6 +2,7 @@
 require 'rails_helper'
 
 describe FilterEmail do
+
     let (:word) {"hejsan"}
     let (:temp_key_word) {KeyWord.new(word: word, point: '10')}
     let (:key_words_DB) {Array.new}
@@ -15,6 +16,12 @@ describe FilterEmail do
     let (:to_email_address) {"feedback@baraspara.se"}
     let (:account_DB) {Array.new}
     let (:temp_account) {EmailAccount.new(email_address: to_email_address)}
+
+    it "Returns false for an email with no case" do
+
+        expect(FilterEmail.new.check_case(temp_email1)) == false
+
+    end
 
     it "check_key_words: should return 10 with a keyWord = 10" do
         key_words_DB.push(temp_key_word)
