@@ -2,6 +2,97 @@ require 'net/imap'
 require 'mail'
 
 class TempStuff
+
+  def generate_categories_w_keywords
+    uncat_cat = Category.new(name: "Uncategorized")
+    uncat_cat.save
+
+    feedback_cat = Category.new(name: "Feedback")
+    feedback_cat.key_words.push(KeyWord.new(word: "feedback", point: '10'))
+    feedback_cat.key_words.push(KeyWord.new(word: "tycker", point: '4'))
+    feedback_cat.key_words.push(KeyWord.new(word: "bra", point: '2'))
+    feedback_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
+    feedback_cat.key_words.push(KeyWord.new(word: "förbättring", point: '8'))
+
+    feedback_cat.email_accounts.push(EmailAccount.new(email_address: "feedback@baraspara.se"))
+    feedback_cat.save
+
+    avregistera_cat = Category.new(name: "Avregistrera")
+    avregistera_cat.key_words.push(KeyWord.new(word: "avregistrera", point: '10'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "sluta", point: '8'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "missnöjd", point: '6'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
+    avregistera_cat.key_words.push(KeyWord.new(word: "avsluta", point: '9'))
+
+    feedback_cat.email_accounts.push(EmailAccount.new(email_address: "avregistrera@baraspara.se"))
+    avregistera_cat.save
+
+  end
+
+  def generate_random_emails(num)
+    require 'open-uri'
+    key_words_db = KeyWord.all
+    until 0>num do
+      #generate subject with 1 -5 words
+      knum = rand(4) +1
+      email_subject = ""
+      until 1 > knum do
+        if rand(4)==3
+          #rand_num = 
+          word = key_words_db.fetch(rand(key_words_db.length)-1).word
+          print "subject this: ", word, "\n"
+        else
+          word = open('http://randomword.setgetgo.com/get.php').read.to_s
+          word = word.chomp
+        end
+        email_subject += word.to_s
+        email_subject += " "
+        knum -=1
+      end
+
+
+      #generate body with 40-70 words
+      knum = rand(30) +40
+      email_body = ""
+
+      until 1 > knum do
+        if rand(4)==3
+          word = key_words_db.fetch(rand(key_words_db.length)-1).word
+          print "body this: ", word, "\n"
+        else
+          word = open('http://randomword.setgetgo.com/get.php').read.to_s
+          word = word.chomp
+        end
+
+        email_body += word.to_s
+        email_body += " "
+        knum -=1
+      end
+
+      #generate from and to
+      email_from = ""
+      word = open('http://randomword.setgetgo.com/get.php').read.to_s
+      word = word.chomp
+      email_from += word
+      email_from += "@"
+      word = open('http://randomword.setgetgo.com/get.php').read.to_s
+      word = word.chomp
+      email_from += word
+      email_from +=".com"
+
+      email_to = "info@baraspara.se"
+
+      tempEmail = Email.new
+      tempEmail.subject = email_subject
+      tempEmail.body = email_body
+      tempEmail.from = email_from
+      tempEmail.to = email_to
+      tempEmail.save
+      num-=1
+    end
+    #redirect_to filter_mail_index_path
+  end
+
 =begin
 	def self.create_email_acc
 		EmailAccount.create(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")

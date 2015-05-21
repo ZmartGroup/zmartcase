@@ -59,9 +59,12 @@ describe FetchFromOne do
 
   it "should create a new case" do
     mail = double(Mail)
+    case_ = double(Case.new)
     expect(mail).to receive(:subject).once{"hej"}
     expect(mail).to receive(:text_part).once{double(:body => "hej")}
-    expect(Case).to receive(:create){double(:id => "0")}
+    expect(Case).to receive(:new){case_}
+    expect(case_).to receive(:save){}
+    expect(case_).to receive(:id){"0"}
     expect(fetcher.get_case_id(mail)).to eq("0")
   end
 
@@ -92,5 +95,14 @@ describe FetchFromOne do
 
   it "should check status of emails" do
     expect(fetcher.imap_status_of).to eq("MESSAGES")
+  end
+
+  it "should call all methods during perform" do
+    expect(fetcher).to receive(:check_number_of_emails).and_return(0, 1)
+    expect(fetcher).to receive(:imap_select_inbox){}
+    expect(fetcher).to receive(:imap_readmail){}
+    expect(fetcher).to receive(:imap_logout).twice{}
+    fetcher.perform
+    fetcher.perform
   end
 end

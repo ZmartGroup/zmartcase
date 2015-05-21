@@ -1,6 +1,13 @@
 Zmartcase::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+
+  #solves thread stuff
+  #config.threadsafe!
+  #config.eager_load_paths << "#{RAILS_ROOT}/lib"
+
+
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
