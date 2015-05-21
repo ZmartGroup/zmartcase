@@ -1,0 +1,11 @@
+<%= form_for @key_word, html: {class: "form-group"} do |f| %>
+  <%= f.label :word %>
+  <%= f.text_field :word,class: "form-control", placeholder: "Word"%>
+  <br>
+  <%= f.text_field :point,class: "form-control", placeholder: "Point"%>
+  <% if current_page?('key_words/new') %>
+  	<%= f.submit "Create", class: "btn btn-primary"%>
+  <%else %>
+  	<%= f.submit "Edit", class: "btn btn-primary"%>
+  <% end %>
+<% end %>

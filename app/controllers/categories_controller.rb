@@ -41,7 +41,8 @@ class CategoriesController < ApplicationController
     @category.update_attributes(params[:category])
 
     if @category.save
-      redirect_to root_path, notice:  'Name updated'
+      #redirect_to categories_path, notice:  'Name updated'
+      redirect_to(:back)
     else
       render action: 'edit'
     end
