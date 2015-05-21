@@ -37,11 +37,17 @@ class CategoriesController < ApplicationController
   end
 
   def update
+    @category = Category.find(params[:id])
+    @category.update_attributes(params[:category])
+
+    if @category.save
+      redirect_to root_path, notice:  'Name updated'
+    else
+      render action: 'edit'
+    end
   end
 
-  def rename
-      @category = Category.find(params[:id])
-  end
+
 
   def destory
     #TODO
