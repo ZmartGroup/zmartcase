@@ -7,8 +7,6 @@ class TempStuff
     uncat_cat = Category.new(name: "Uncategorized")
     uncat_cat.save
 
-
-
     feedback_cat = Category.new(name: "Feedback")
     feedback_cat.key_words.push(KeyWord.new(word: "feedback", point: '10'))
     feedback_cat.key_words.push(KeyWord.new(word: "tycker", point: '4'))
@@ -28,7 +26,6 @@ class TempStuff
 
     feedback_cat.email_accounts.push(EmailAccount.new(email_address: "avregistrera@baraspara.se"))
     avregistera_cat.save
-
 
   end
 

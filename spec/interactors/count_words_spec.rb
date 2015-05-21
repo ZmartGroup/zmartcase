@@ -6,12 +6,12 @@ describe CountWords do
 
 	it "Should count the words for an email" do
 
-		test_mail = 	Email.create(subject: "Feedback till kundservice", body: "Ni är duktiga")
+		test_mail = 	Email.create(subject: "Feedback till kundservice", body: "Ni är duktiga duktiga")
 
 		CountWords.new.count(test_mail)
 
 		expect(Term.last.word).equal? "duktiga"
-		expect(Term.last.amount) == 1
+		expect(Term.last.amount) == 2
 
 	end
 

@@ -16,32 +16,25 @@ class FilterMailController < ApplicationController
 
 	end
 
-	def filter_all_caseless_emails
-		#require 'thread'
-		@debug = true
-		@NUM_OF_THREADS = 4 # How many threads to executed concurrently
+	def filter_all_caseless_emails(num_of_threads = 4)
+
 		#Saves the tasks in a que to regulate num of threads
 		queue = Queue.new
 
 		Email.all.each do |email| # Go through all emails and check if theres no case attached
-
 			if  email.case.blank?
 				email.case = Case.new
 				queue.push(email)
 			end
-
 		end
 
 		#Start executing the threads
-		ThreadedFilterEmail.new.execute_filter_threads(queue, @NUM_OF_THREADS)
+		ThreadedFilterEmail.new.execute_filter_threads(queue, num_of_threads)
 		return true
 	end
 
 	def filter_all_emails(num_of_threads = 4)
-		require 'thread'
 
-
-		print "num of threads: ", num_of_threads, "\n"
 		#Saves the tasks in a que to regulate num of threads
 		queue = Queue.new
 
@@ -55,7 +48,6 @@ class FilterMailController < ApplicationController
 				queue.push(email)
 			end
 		end
-		print "queue.length: ", queue.length, "\n"
 		#Start executing the threads
 		ThreadedFilterEmail.new.execute_filter_threads(queue, num_of_threads)
 		return true

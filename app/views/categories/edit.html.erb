@@ -1,2 +1,57 @@
-<h1>Categories#edit</h1>
-<p>Find me in app/views/categories/edit.html.erb</p>
+
+<h2><%= @category.name %></h2>
+<BR>
+
+
+<h3>Attached key words:</h3>
+<table cellpadding="2">
+	<tr>
+      <td>
+      	Word: 
+      </td>
+      <td>
+      	Point: 
+      </td>
+      <td>
+
+      </td>
+      <td>
+
+      </td>
+    </tr>
+    <% @category.key_words.each do |key| %>
+    <tr>
+        <td>
+          <%= key.word %>
+        </td>
+        <td>
+        	<%= key.point %>
+        </td>
+        <td>
+        	<%= button_to "edit" %>
+      	</td>
+      	<td>
+			<%= button_to "delete" %>
+      	</td>
+    </tr>
+    <% end %>
+</table>
+<BR>
+<%= link_to "Add key word", root_path , class: "btn btn-primary" %>
+
+<h3>Attached cases:</h3>
+<table>
+	<tr>
+      <td>
+      	<%= @category.name %>
+      </td>
+    </tr>
+    <% @category.cases.each do |case1| %>
+    <tr>
+        <td>
+          <%= case1.id %>
+        </td>
+    </tr>
+    <% end %>
+</table>
+

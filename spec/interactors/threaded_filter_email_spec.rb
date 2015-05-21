@@ -130,12 +130,6 @@ describe ThreadedFilterEmail do
         feedback_cat.key_words = key_words_DB
         feedback_cat.save
 
-
-        
-        
-        
-        
-
         ThreadedFilterEmail.new.execute_filter_threads(email_queue,1)
         #FilterEmail.new.filter_mail(temp_email1)
 
