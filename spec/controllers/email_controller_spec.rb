@@ -22,23 +22,6 @@ describe EmailsController do
     expect(Email.last.case_id).to be_truthy
   end
 
-  it "should " do
-    email = double(Email)
-    mail = double(Mail)
-    expect(Email).to receive(:new){email}
-    expect(email).to receive(:is_sent=){}
-    expect(email).to receive(:case_id){0}
-    expect(email).to receive(:subject){"[CaseID:"}
-    expect(MailSender).to receive(:create_email){mail}
-    expect(mail).to receive(:deliver)
-    expect(email).to receive(:raw=){}
-    expect(email).to receive(:save){}
-    post :create, email: { to: "a@b.c", subject: "hej", body: "hej", attachment: 5}
-
-    expect(File).to receive(:read).twice{}
- end
-
-
 
   it "should test SHOW" do
     e = Email.create( to: "a@b.c", subject: "hej", body: "hej")
