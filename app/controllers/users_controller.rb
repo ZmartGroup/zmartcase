@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def dashboard
-
+    @user = current_user
   end
 
   def edit
