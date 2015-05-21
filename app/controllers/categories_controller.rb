@@ -39,6 +39,13 @@ class CategoriesController < ApplicationController
   def update
   end
 
+  def rename
+      @category = Category.find(params[:id])
+  end
+
   def destory
+    #TODO
+    #What happens with cases?
+    #delete alla associated key words
   end
 end

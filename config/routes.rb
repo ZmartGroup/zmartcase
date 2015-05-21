@@ -13,15 +13,14 @@ Zmartcase::Application.routes.draw do
   #get "welcome/index"
 
   get "filter_mail/index"
-  #get "filter_mail/filter_all_uncategorized_emails"
-  #post "filter_mail/filter_all_uncategorized_emails"
+  post "filter_mail/index"
   get "filter_mail/start_filtering"
   post "filter_mail/start_filtering"
 
+  get "categories/rename"
+  post "categories/rename"
 
-
-  post "filter_mail/index"
-
+  #get "Catego"
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
   get "signup" => "users#new", :as => "signup"
