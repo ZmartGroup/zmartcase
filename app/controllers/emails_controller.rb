@@ -27,15 +27,15 @@ class EmailsController < ApplicationController
   def create
     @email = Email.new(params[:email])
     @email.is_sent = true;
-    unless @email.subject.include?("[CaseID:")
-      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
-    end
     if @email.case_id == nil
       @case = Case.new
       @email.case = @case
       @case.user = current_user
       @case.category_id = @email.category_id
       @case.save
+    end
+    unless @email.subject.include?("[CaseID:")
+      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
 
     mail = MailSender.create_email(@email)
