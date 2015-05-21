@@ -26,6 +26,8 @@ class EmailsController < ApplicationController
 
   def create
     @email = Email.new(params[:email])
+
+#=begin
     @email.is_sent = true
     if @email.case_id.nil?
       @case = Case.new
@@ -37,10 +39,7 @@ class EmailsController < ApplicationController
     unless @email.subject.include?("[CaseID:")
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
-
-    unless @email.subject.include?("[CaseID:")
-      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
-    end
+#=end
 
     ZmartJob.new.async.perform(@email, params[:attachment])
     redirect_to new_email_path
