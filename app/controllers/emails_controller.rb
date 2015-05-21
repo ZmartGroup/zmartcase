@@ -42,16 +42,18 @@ class EmailsController < ApplicationController
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
 
-    mail = MailSender.create_email(@email)
-    unless params[:attachment].nil?
-      params[:attachment].each do |attachment|
-        mail.attachments[attachment.original_filename] = File.read(attachment.path)
-      end
-    end
+    ZmartJob.new.async.perform(@email, params[:attachment])
 
-    mail.deliver
-    @email.raw = MailCompressor.compress_mail(mail)
-    @email.save
+=begin
+    mail = MailSender.create_email(@email)
+      unless params[:attachment].nil?
+        params[:attachment].each do |attachment|
+          mail.attachments[attachment.original_filename] = File.read(attachment.path)
+        end
+      end
+      mail.deliver
+=end
+
     redirect_to new_email_path
   end
 
