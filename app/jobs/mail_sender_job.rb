@@ -1,4 +1,4 @@
-class ZmartJob
+class MailSenderJob
 	include SuckerPunch::Job
 
 	def perform(email, attach, current_user)
