@@ -1,40 +1,61 @@
 class ThreadedFilterEmail
 	require 'thread'
-
-
+    #TODO
 
     #Accepts a que with emails that's going to be categorized, and how many threads it should do it in
     def execute_filter_threads(queue, num_of_threads)
-        require 'thread'
         @active_threads = 0
         @lock = Mutex.new
-        #@all_categories = Category.all
-        #print "START THREADS\n\n"
-        while queue.length > 0 do
-            if num_of_threads > @active_threads # Checks so that not more than set threads run concurrently
-                @lock.synchronize{ # lock variable so that only one thread can access it
-                    @active_threads += 1
-                }
+        @thread_array = Array.new
+        @all_categories = Category.all
+        @task_queue = queue
+        @email_queue = Queue.new
 
-                #print "Num of threads: ", @active_threads, "\n"
+        #If I dont do this, the keywords & email addresses will be nil
+        activate
 
-                Thread.new do # Start the threads
-                    this_thread = @active_threads
-                    #print "new thread: ", this_thread, "\n"
-                    FilterEmail.new.filter_mail(queue.pop)
-                    #puts "popped from que, length of que: ", queue.length, "\n"
-                    ActiveRecord::Base.connection.close
-                    @lock.synchronize{
-                        @active_threads -=1
-                    }
-                    #print "thread: ", this_thread, " done! \n"
-                end
-            else
-                sleep(0.001)
+        #start threads & add them to array for later joining
+        num_of_threads.times do
+            @thread_array.push(Thread.new {perform_task})
+        end
+
+        #join all threads
+        @thread_array.map(&:join)
+        #Save all emails and add case to category if it exists in queue
+        @email_queue.length.times do
+            temp_email = @email_queue.pop
+            unless temp_email.category.blank?
+                #add case to category
+                temp_email.category.cases << temp_email.case
+            end
+            temp_email.save
+        end
+
+    end
+
+    def perform_task
+        email = nil
+        begin
+            while email = @task_queue.pop(true)
+                @email_queue.push(FilterEmail.new(@all_categories).filter_mail(email,threaded=true))
             end
         end
-        #sleep(4)
-        #print "Filters done, done sleeping \n"
+        rescue ThreadError
     end
+
+    #Needs to be done, otherwise no keywords will work
+    def activate
+        @all_categories.each do |cat|
+            #print cat.name, ":\n"
+            cat.key_words.each do |key|
+                #print key.word, "\n"
+            end
+            cat.email_accounts.each do |acc|
+                #print acc.email_address, "\n"
+            end
+        end
+        #print "DONE PRINT!!!!\n\n"
+    end
+
 
 end

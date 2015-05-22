@@ -18,34 +18,41 @@ class EmailsController < ApplicationController
   end
 
   def new
+    @categories = Category.all
     @email = Email.new
+    @case = Case.new
+    @case.emails << @email
   end
 
   def create
     @email = Email.new(params[:email])
-    @email.is_sent = true;
+    @email.is_sent = true
+    if @email.case_id.nil?
+      @case = Case.new
+      @case.user = current_user
+      @case.category_id = @email.category_id
+      @case.save
+      @email.case = @case
+    end
     unless @email.subject.include?("[CaseID:")
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
-    if @email.case_id == nil
-      @email.case_id = Case.create.id
+
+    unless @email.subject.include?("[CaseID:")
+      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
     end
+
     mail = MailSender.create_email(@email)
-
-=begin                                    #get attachments from UI
-    attachments = Array.new
-    attachments.push "/home/olsom/testStuff.txt"
-    attachments.push "/home/olsom/anotherTest.txt"
-
-    attachments.each do |attachment|
-      mail.add_file(attachment)
+    unless params[:attachment].nil?
+      params[:attachment].each do |attachment|
+        mail.attachments[attachment.original_filename] = File.read(attachment.path)
+      end
     end
-=end
 
     mail.deliver
     @email.raw = MailCompressor.compress_mail(mail)
     @email.save
-    redirect_to new_category_path
+    redirect_to new_email_path
   end
 
   def update
