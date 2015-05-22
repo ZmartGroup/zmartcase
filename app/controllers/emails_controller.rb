@@ -26,7 +26,7 @@ class EmailsController < ApplicationController
 
   def create
     @email = Email.new(params[:email])
-    ZmartJob.new.async.perform(@email, params[:attachment], current_user)
+    MailSenderJob.new.async.perform(@email, params[:attachment], current_user)
     redirect_to new_email_path
   end
 
