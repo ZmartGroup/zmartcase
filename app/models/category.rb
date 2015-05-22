@@ -1,6 +1,5 @@
 class Category < ActiveRecord::Base
   attr_accessible :name
-
   scope :uncategorized, -> {where(name: 'Uncategorized')}
 
   has_many :cases

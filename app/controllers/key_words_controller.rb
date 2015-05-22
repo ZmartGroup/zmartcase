@@ -9,6 +9,8 @@ class KeyWordsController < ApplicationController
 
   def new
     @key_word = KeyWord.new
+    @categories = Category.all
+    
   end
 
   def create
