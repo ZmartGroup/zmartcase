@@ -1,5 +1,5 @@
 class Case < ActiveRecord::Base
-  attr_accessible :created_at, :user_id, :priority_id, :closed, :closed_at, :user, :category
+  attr_accessible :created_at, :user_id, :priority_id, :closed, :closed_at, :user, :category, :category_id
 
   has_many :emails
   has_many :notes

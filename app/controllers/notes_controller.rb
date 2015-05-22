@@ -3,7 +3,7 @@ class NotesController < ApplicationController
   end
 
   def show
-    @case = Case.find(params[:id])
+    @case = Note.find(params[:id])
   end
 
   def edit

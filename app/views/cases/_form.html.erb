@@ -6,7 +6,10 @@
   <%= f.collection_select :user_id, User.all, :id, :name, {prompt: "select user"}, {class: "form-control"}  %><br />
 
   <%= f.label "Set priority"  %>:
-  <%= f.collection_select :priority_id, Priority.all, :id, :name, {prompt: "select user"}, {class: "form-control"}  %><br />
+  <%= f.collection_select :priority_id, Priority.all, :id, :name, {prompt: "select priority"}, {class: "form-control"}  %><br />
+
+  <%= f.label "Set Category"  %>:
+  <%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "select category"}, {class: "form-control"}  %><br />
 
   <%= f.label "Close case" %>
   <%= f.check_box :closed %> <br />

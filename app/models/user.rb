@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
 
   def name
-    first_name + " " + last_name
+    first_name.capitalize + " " + last_name.capitalize
   end
 
 end
