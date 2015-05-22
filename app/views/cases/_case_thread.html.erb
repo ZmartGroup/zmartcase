@@ -1,29 +1,26 @@
 <div class="navbar-default navbar-fixed-top" style="left:450px; background: rgb(37, 42, 58);">
   <!-- Button trigger modal -->
     <% if !@case.closed %>
-    <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalPrio" style="margin:15px;">
+    <button class="btn btn-sm btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalPrio" style="margin:15px;">
       Edit case<%#= link_to "Edit Case", edit_category_case_path %>
     </button>
-    <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalNote" style="margin:15px;">
+    <button class="btn btn-sm btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalNote" style="margin:15px;">
       Add note
     </button>
-    <button class="btn btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalEmail" style="margin:15px;">
+    <button class="btn btn-sm btn-primary navbar-btn pull-right" data-toggle="modal" data-target="#myModalEmail" style="margin:15px;">
       New email
     </button>
     <% end %>
     <% if @case.priority.nil? %>
-      <p class="navbar-text lead pull-right">Priority: None </p>
+      <p class="navbar-text lead pull-right"><font color="#999999">Priority:</font> None </p>
     <% else %>
-      <p class="navbar-text lead pull-right">Priority: <%= @case.priority.name %> </p>
+      <p class="navbar-text lead pull-right"><font color="#999999">Priority:</font> <%= @case.priority.name %> </p>
     <% end %>
-    <p class="navbar-text lead pull-right">Created at: <%= @case.created_at.strftime("%F") %> </p>
+    <p class="navbar-text lead pull-right"><font color="#999999">Created at:</font> <%= @case.created_at.strftime("%F") %> </p>
     <% if @case.user.nil? %>
-      <p class="navbar-text lead pull-right">Assigned to: <font color="red">Not assigned</font></p>
+      <p class="navbar-text lead pull-right"><font color="#999999">Assigned to:</font> <font color="red">Not assigned</font></p>
     <% else %>
-      <p class="navbar-text lead pull-right">Assigned to: <%= @case.user.name %> </p>
-    <% end %>
-    <% if @case.closed %>
-      <p class="lead pull-left" style="margin:0px; padding-left:10px;"><font size="7" color="red">Closed</font></p>
+      <p class="navbar-text lead pull-right"><font color="#999999">Assigned to:</font> <%= @case.user.name %> </p>
     <% end %>
 </div>
 
@@ -36,28 +33,37 @@
       <% else %>
       <div class="panel panel-success pull-right" style="width:60%;">
       <% end %>
-        <div class="panel-heading panel-email pull-left">
-          <h4 style="margin: 0px;"><%= link_to "Email", email_path(c) %></h4>
+        <div class="panel-heading panel-email" id="clickme">
+        <h4 class="pull-left" style="margin:0px;">Email</h4>
+          <!--<h4 style="margin: 0px;"><%= link_to "Email", email_path(c) %></h4>-->
+          <font color="black" style="padding-left:20px; font-weight: bold;"><%= c.subject[0..30] %></font>
         </div>
-        <p class="panel-title lead pull-left" style=" padding-left: 20px;padding-top:10px;">
-          <b><%= c.subject[0..30] %></b>
-        </p>
+        <div class="panel-body toggler" style="display: none">
+          From: <font color="#999999" size="3"><%= c.from %></font>
+          To: <font color="#999999" size="3"><%= c.to %></font>
+          Sent: <font color="#999999" size="3"><%= c.created_at.strftime("%F") %></font>
+          <legend></legend>
+          <%= c.body %>
+        </div>
       </div>
     <% else %>
       <div class="panel panel-info pull-right" style="width:60%;">
-        <div class="panel-heading panel-note pull-left">
-          <h4 style="margin: 0px;"><%= link_to "Note", note_path(c) %></h4>
+        <div class="panel-heading panel-note" id="clickme" style="margin: 0px;">
+          <h4 class="pull-left" style="margin:0px;">Note</h3>
+          <font color="black" style="padding-left:20px; font-weight: bold;"><%= c.subject[0..30].capitalize %></font>
+          <p class="pull-right" style=" color:black; font-size: 10px; margin-top:-7px;">
+              <% if !c.user.nil? %>
+                <b>Added by:</b></br> <%= c.user.name %>
+              <% else %>
+                <b>Added by:</b></br> None
+              <% end %>
+          </p>
         </div>
-        <p class="panel-title lead pull-right" style="font-size: 13px; padding-right: 5px; padding-top:0px;">
-            <% if !c.user.nil? %>
-              <b>Added by:</b></br> <%= c.user.name %>
-            <% else %>
-              <b>Added by:</b></br> None
-            <% end %>
-        </p>
-        <p class="panel-title lead pull-left" style=" padding-left: 20px;padding-top:10px;">
-          <b><%= c.subject[0..30] %></b>
-        </p>
+        <div id="div<%=c.id%>" class="panel-body toggler" >
+          <p >
+            <%= c.body %>
+          </p>
+        </div>
       </div>
     <% end %>
   <%end%>
@@ -122,3 +128,9 @@
   </div>
 </div>
 <% end %>
+
+<script>
+  $("#clickme").click(function() {
+    $(".toggler").slideToggle('slow');
+  });
+</script
