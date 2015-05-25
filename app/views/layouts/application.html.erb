@@ -36,31 +36,31 @@
               <%= link_to(new_email_path, class: "pure-menu-link") do %> New Email <%end%>
             </li>
             <li class="sidebar-label">
-              Categories
+              <font color="6BB050">Categories</font>
             </li>
             <li>
               <% if @closed_cases.empty? %>
-                <a class="pure-menu-link"> Closed <span class="email-count"> (0)</span></a>
+                <a class="pure-menu-link"> Closed <span class="email-count"><font color="6BB050">(0)</font></span></a>
               <% else %>
                 <%= link_to show_closed_path(@closed_cases.first) do %>
                   Closed
-                  <span class="email-count"> (<%= @closed_cases.size %>)</span>
+                  <span class="email-count"> <font color="6BB050">(<%= @closed_cases.size %>)</font></span>
                 <% end %>
               <% end %>
             </li>
             <% @categories.each do |category| %>
               <li>
                 <% if category.cases.empty? %>
-                  <a class="pure-menu-link"> <%= category.name %><span class="email-count"> (0)</span></a>
+                  <a class="pure-menu-link"> <%= category.name %><span class="email-count"> <font color="6BB050">(0)</font></span></a>
                 <% else %>
                   <%= link_to(category_case_path(category.id,category.cases.where(closed: [nil,false]).first), class: "pure-menu-link") do %> <%= category.name %>
-                  <span class="email-count"> (<%= category.cases.size %>)</span>
+                  <span class="email-count"> <font color="6BB050">(<%= category.cases.size %>)</font></span>
                   <%end%>
                 <% end %>
               </li>
             <%end%>
             <li class="sidebar-label">
-              Settings
+              <font color="6BB050">Settings</font>
             </li>
             <li>
                 <%= link_to "Categories", categories_path, class: "pure-menu-link"%>
