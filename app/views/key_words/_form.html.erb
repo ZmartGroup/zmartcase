@@ -4,9 +4,9 @@
   <br>
   <%= f.text_field :point,class: "form-control", placeholder: "Point"%>
   Select Category:<BR>
-  <%= select_tag 'key_word[category_id]', 
+  <%= select_tag 'key_word[category]', 
     options_from_collection_for_select(@categories,  'id', 'name'), 
-      :prompt => "Category",class: "form-control"%>
+      class: "form-control"%>
   <br>
 
   select("post", "person_id", Person.all.collect {|p| [ p.name, p.id ] }, {:prompt => 'Select Person'})
