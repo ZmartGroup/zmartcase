@@ -10,8 +10,8 @@ var CaseThreadMail = React.createClass({
 
   render: function(){
 
-    return <div onClick={this.onClick} className="panel panel-success pull-right" style={{width:'60%'}}>
-      <div className="panel-heading panel-email" id="clickme">
+    return <div className="panel panel-success pull-right" style={{width:'60%'}}>
+      <div onClick={this.onClick} className="panel-heading panel-email">
         <h4 className="pull-left" style={{margin:0}}>Email</h4>
         <font style={{color:'black', paddingLeft:20, fontWeight:'bold'}}>{this.props.email.subject}</font>
       </div>

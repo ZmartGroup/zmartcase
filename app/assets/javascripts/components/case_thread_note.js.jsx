@@ -10,8 +10,8 @@ var CaseThreadNote = React.createClass({
 
   render: function(){
     console.log(this.props);
-    return <div onClick={this.onClick} className="panel panel-info pull-right" style={{width:'60%'}}>
-        <div className="panel-heading panel-note" id="clickme" style={{margin: 0}}>
+    return <div  className="panel panel-info pull-right" style={{width:'60%'}}>
+        <div onClick={this.onClick} className="panel-heading panel-note" style={{margin: 0}}>
           <h4 className="pull-left" style={{margin:0}}>Note</h4>
           <font style={{color:'black', paddingLeft:20, fontWeight:'bold'}}>{this.props.note.subject}</font>
           <p className="pull-right" style={{color:'black', fontSize:10, marginTop:-7}}>
