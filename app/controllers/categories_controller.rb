@@ -48,11 +48,13 @@ class CategoriesController < ApplicationController
     end
   end
 
-
-
-  def destory
+  def destroy
     #TODO
     #What happens with cases?
-    #delete alla associated key words
+    #delete all associated key words
+    @category = Category.find(params[:id])
+    @category.destroy
+    #redirect_to root_path
+    redirect_to(:back)
   end
 end
