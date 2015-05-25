@@ -1,10 +1,32 @@
+<div class="col-sm-6">
+  <h1>Users</h1>
+  <table class="table table-striped">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Created at</th>
+      <th>Role</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.name %></td>
+        <td><%= user.created_at %></td>
+        <td>
+          <% if user.has_role? :admin %>
+          <span class="label label-primary">Admin</span>
+          <% end %>
+          <% if user.has_role? :user %>
+          <span class="label label-info">User</span>
+          <% end %>
+        </td>
+        <td><%= link_to "edit", edit_user_path(user), class: "btn btn-xs btn-primary" %></td>
+        <td><%= link_to "delete", user_path(user), :method => "delete", :confirm => "Are you sure?", class: "btn btn-xs btn-danger" %> </td>
+      </tr>
+    <% end %>
+  </table>
 
-<div class="row" style="border-bottom: 1px solid lightgrey;">
-  <h1 class="text-center"> Dashboard </h1>
+  <%= link_to "New user", new_user_path, class: "btn btn-primary" %>
 </div>
-
-<h3 class="text-center">Cases in categories</h3>
-<%#= bar_chart Category.joins(:cases).group("categories.name").count %>
-
-<h3 class="text-center">Your cases</h3>
-<%= line_chart Case.group(:user).count %>

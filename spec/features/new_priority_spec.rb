@@ -16,8 +16,8 @@ describe 'new priority' do
     expect(page).to have_content('New Priority')
     fill_in 'Name', with: 'Asa viktig'
 
-    expect(page).to have_button('Create')
-    click_button 'Create'
+    expect(page).to have_button('Save')
+    click_button 'Save'
 
     expect(page).to have_link('New priority')
 

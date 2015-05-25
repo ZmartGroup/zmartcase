@@ -1,3 +1,5 @@
+
+=begin
 require 'rails_helper'
 
 RSpec.describe KeyWordControllerController, :type => :controller do
@@ -24,3 +26,4 @@ RSpec.describe KeyWordControllerController, :type => :controller do
   end
 
 end
+=end

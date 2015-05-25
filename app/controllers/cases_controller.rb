@@ -29,7 +29,7 @@ class CasesController < ApplicationController
       if @case.closed
         @case.update_attributes(closed_at: DateTime.now, category: nil)
       end
-      redirect_to category_case_path(@category,@case), notice: "Case is updated!"
+      redirect_to category_case_path(@case.category,@case), notice: "Case is updated!"
     else
       redirect_to category_case_path(@category,@case), alert: "Case was not updated!"
     end

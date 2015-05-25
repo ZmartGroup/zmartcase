@@ -7,7 +7,7 @@
 <%= button_to "Filter all emails", filter_mail_start_filtering_path %>
 
 <h1>Listing mails</h1>
- 
+
 <table border =1>
   <tr>
     <h1>Listing mails</h1><th>Subject:</th>
@@ -17,7 +17,7 @@
     <th>Case:</th>
     <th>Body:</th>
   </tr>
- 
+
   <% @emails.each do |email| %>
     <tr>
       <td><%= email.subject %></td>
@@ -30,7 +30,7 @@
       -
       <% end %>
 		</td>
-          
+
     <td>
       <%unless email.case_id.blank? %>
       <%=email.case_id%>

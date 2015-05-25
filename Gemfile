@@ -6,6 +6,7 @@ gem 'rails', '3.2.18'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+gem 'sucker_punch', '~> 1.0'
 gem 'sqlite3'
 gem "sorcery"
 gem 'carrierwave'
@@ -20,6 +21,8 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 end
+
+gem 'rolify'
 
 gem 'chartkick'
 

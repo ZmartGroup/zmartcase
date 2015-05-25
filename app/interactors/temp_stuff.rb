@@ -1,10 +1,11 @@
 # encoding: UTF-8
+
 require 'net/imap'
 require 'mail'
 
 class TempStuff
 
-  def generate_categories_w_keywords
+  def generate_categories_w_keywords_and_test_accounts
     uncat_cat = Category.new(name: "Uncategorized")
     uncat_cat.save
 
@@ -15,7 +16,7 @@ class TempStuff
     feedback_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
     feedback_cat.key_words.push(KeyWord.new(word: "förbättring", point: '8'))
 
-    feedback_cat.email_accounts.push(EmailAccount.new(email_address: "feedback@baraspara.se"))
+    feedback_cat.email_accounts.push(EmailAccount.new(imap: "imap.gmail.com", port: "993", email_address: "feedback@baraspara.se", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!"))
     feedback_cat.save
 
     avregistera_cat = Category.new(name: "Avregistrera")
@@ -25,8 +26,9 @@ class TempStuff
     avregistera_cat.key_words.push(KeyWord.new(word: "dåligt", point: '2'))
     avregistera_cat.key_words.push(KeyWord.new(word: "avsluta", point: '9'))
 
-    feedback_cat.email_accounts.push(EmailAccount.new(email_address: "avregistrera@baraspara.se"))
+    feedback_cat.email_accounts.push(EmailAccount.new(email_address: "avregistrera@baraspara.se", imap: "imap.gmail.com", port: "993", email_address: "feedback@baraspara.se", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!"))
     avregistera_cat.save
+
 
   end
 
@@ -112,7 +114,7 @@ class TempStuff
     end
   end
 
-
+=begin
 	def self.zip
     email_account = EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
     imap = Net::IMAP.new(email_account.imap, {:port => email_account.port, :ssl => email_account.enable_ssl})
