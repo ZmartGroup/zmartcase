@@ -1,57 +1,83 @@
 
-<h2><%= @category.name %></h2>
+<div class="col-sm-5">
+  <h2>Edit Category:</h2><h1> <%= @category.name %></h1>
+  <BR>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    Rename Category
+  </button>
+
+  <!-- Edit Project Name -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <BR>
+          	<%= render 'form' %>
+          <BR>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <BR>
+  <BR>
+  <div class="col-sm-5">
+    <h3>Attached key words:</h3>
+    <table class="table table-striped">
+    	<tr>
+          <th>
+          	Word: 
+          </td>
+          <th>
+          	Point: 
+          </td>
+          <th>
+            &nbsp;
+          </td>
+          <th>
+            &nbsp;
+          </td>
+      </tr>
+      <% @category.key_words.each do |key| %>
+      <tr>
+          <td>
+            <%= key.word %>
+          </td>
+          <td>
+            <%= key.point %>
+          </td>
+          <td>
+            <td>
+              <%= link_to "edit", edit_key_word_path(key), class: "btn btn-xs btn-primary" %>
+            <td>
+            	<%= link_to "delete", key_word_path(key), :method => "delete", :confirm => "Are you sure?", class: "btn btn-xs btn-danger" %>
+          	</td>
+        </tr>
+        <% end %>
+    </table>
+    <BR>
+    <%= link_to "Add key word", new_key_word_path , class: "btn btn-primary btn-sm" %>
 
 
-<h3>Attached key words:</h3>
-<table cellpadding="2">
-	<tr>
-      <td>
-      	Word: 
-      </td>
-      <td>
-      	Point: 
-      </td>
-      <td>
-
-      </td>
-      <td>
-
-      </td>
-    </tr>
-    <% @category.key_words.each do |key| %>
-    <tr>
-        <td>
-          <%= key.word %>
+    <h3>Cases without a category:</h3>
+    <table class="table table-striped">
+    	<tr>
+        <th>
+          <%= @category.name %>
         </td>
-        <td>
-        	<%= key.point %>
-        </td>
-        <td>
-        	<%= button_to "edit" %>
-      	</td>
-      	<td>
-			<%= button_to "delete" %>
-      	</td>
-    </tr>
-    <% end %>
-</table>
-<BR>
-<%= link_to "Add key word", root_path , class: "btn btn-primary" %>
+        </tr>
+        <% @category.cases.each do |case1| %>
+        <tr>
+          <td>
+            <%= case1.id %>
+          </td>
+        </tr>
+        <% end %>
+    </table>
 
-<h3>Attached cases:</h3>
-<table>
-	<tr>
-      <td>
-      	<%= @category.name %>
-      </td>
-    </tr>
-    <% @category.cases.each do |case1| %>
-    <tr>
-        <td>
-          <%= case1.id %>
-        </td>
-    </tr>
-    <% end %>
-</table>
-
+</div>

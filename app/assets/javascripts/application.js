@@ -15,3 +15,6 @@
 //= require_tree .
 
 
+$( "#clickme" ).click(function() {
+  $("#note").slideToggle("slow");
+});

@@ -8,7 +8,7 @@ describe User do
   user.last_name = "testsson"
 
   it "is named Kalle" do
-    expect(user.name).to eq("Kalle testsson")
+    expect(user.name).to eq("Kalle Testsson")
   end
 
   it "should not be valid user" do

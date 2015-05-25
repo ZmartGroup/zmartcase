@@ -34,6 +34,9 @@ class EmailsController < ApplicationController
       @case.save
       @email.case = @case
     end
+    unless @email.subject.include?("[CaseID:")
+      @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"
+    end
 
     unless @email.subject.include?("[CaseID:")
       @email.subject += " [CaseID:<" + @email.case_id.to_s + ">]"

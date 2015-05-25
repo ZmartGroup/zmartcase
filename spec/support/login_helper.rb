@@ -19,6 +19,9 @@ module LoginHelper
   def log_in_with(first_name, last_name, email, password)
     fill_in 'Email', with: email
     fill_in 'password', with: password
+    @user = User.last
+    @user.add_role :admin
+    @user.add_role :user
     click_button 'Log in'
   end
 end

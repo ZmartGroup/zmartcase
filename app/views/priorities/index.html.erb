@@ -2,15 +2,19 @@
   <h1>Priorities</h1>
   <table class="table table-striped">
     <tr>
-      <th>#</td>
-      <th>Name</td>
-      <th>Created at</td>
+      <th>#</th>
+      <th>Name</th>
+      <th>Created at</th>
+      <th></th>
+      <th></th>
     </tr>
     <% @prios.each do |prio| %>
       <tr>
         <td><%= prio.id %></td>
         <td><%= prio.name %></td>
         <td><%= prio.created_at %></td>
+        <td><%= link_to "edit", edit_priority_path(prio), class: "btn btn-xs btn-primary"%></td>
+        <td><%= link_to "delete", priority_path(prio), :method => "delete", :confirm => "Are you sure?", class: "btn btn-xs btn-danger"%></td>
       </tr>
     <% end %>
   </table>

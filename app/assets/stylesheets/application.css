@@ -13,11 +13,11 @@
  */
 
  .btn-primary {
-    border-radius: 25px;
+    /*border-radius: 25px;*/
  }
 
  .btn-default {
-    border-radius: 25px;
+    /*border-radius: 25px;*/
  }
 
 #wrapper {
@@ -101,6 +101,12 @@
     text-decoration: none;
 }
 
+.sidebar-nav > .sidebar-footer {
+    text-indent: 100px;
+    position: fixed;
+    bottom: 0px;
+    font-size: 16px;
+}
 .sidebar-nav > .sidebar-footer a {
     text-indent: 100px;
     position: fixed;

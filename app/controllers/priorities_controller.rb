@@ -7,9 +7,18 @@ class PrioritiesController < ApplicationController
   end
 
   def edit
+    @prio = Priority.find(params[:id])
   end
 
   def update
+    @prio = Priority.find(params[:id])
+    @prio.update_attributes(params[:priority])
+
+    if @prio.save
+      redirect_to priorities_path, notice:  'Prio updated'
+    else
+      render action: 'edit'
+    end
   end
 
   def new
@@ -24,6 +33,12 @@ class PrioritiesController < ApplicationController
     else
       redirect_to priorities_path, alert: "Priority not created"
     end
+  end
+
+  def destroy
+    @prio = Priority.find(params[:id])
+    @prio.destroy
+    redirect_to priorities_path
   end
 
 end

@@ -76,7 +76,6 @@ class FilterEmail
 
     def attach_category_to_email(email,cat)
         email.category = cat
-
     end
 
     #check each word in either subject or body against the keywords in each category's key_words

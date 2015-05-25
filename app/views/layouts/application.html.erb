@@ -10,7 +10,7 @@
 
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+  <%#= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
   <%#= javascript_include_tag "path/to/highcharts.js", "chartkick" %>
   <%= csrf_meta_tags %>
 </head>
@@ -28,50 +28,65 @@
             </li>
             <li class="sidebar-brand">
                 <%= link_to "ZmartCase", root_path %>
+                </br>
             </li>
-            <li>
-              <%= link_to(root_path, class: "pure-menu-link") do %> Inbox <%end%>
-            </li>
-            <li>
-              <%= link_to(new_email_path, class: "pure-menu-link") do %> New Email <%end%>
-            </li>
-            <li class="sidebar-label">
-              Categories
-            </li>
-            <li>
-              <% if @closed_cases.empty? %>
-                <a class="pure-menu-link"> Closed <span class="email-count"> (0)</span></a>
-              <% else %>
-                <%= link_to show_closed_path(@closed_cases.first) do %>
-                  Closed
-                  <span class="email-count"> (<%= @closed_cases.size %>)</span>
-                <% end %>
-              <% end %>
-            </li>
-            <% @categories.each do |category| %>
+
+
+            <%# ======================================= %>
+            <%# ============= CATEGORIES ============== %>
+            <%# ======================================= %>
+            <% if current_user.has_role? :user %>
               <li>
-                <% if category.cases.empty? %>
-                  <a class="pure-menu-link"> <%= category.name %><span class="email-count"> (0)</span></a>
+                <%= link_to(new_email_path, class: "pure-menu-link") do %> New Email <%end%>
+              </li>
+
+              <li class="sidebar-label">
+                Categories
+              </li>
+              <li>
+                <% if @closed_cases.empty? %>
+                  <a class="pure-menu-link"> Closed <span class="email-count"> (0)</span></a>
                 <% else %>
-                  <%= link_to(category_case_path(category.id,category.cases.where(closed: [nil,false]).first), class: "pure-menu-link") do %> <%= category.name %>
-                  <span class="email-count"> (<%= category.cases.size %>)</span>
-                  <%end%>
+                  <%= link_to show_closed_path(@closed_cases.first) do %>
+                    Closed
+                    <span class="email-count"> (<%= @closed_cases.size %>)</span>
+                  <% end %>
                 <% end %>
               </li>
-            <%end%>
-            <li class="sidebar-label">
-              Settings
-            </li>
-            <li>
-                <%= link_to "Categories", categories_path, class: "pure-menu-link"%>
-            </li>
-            <li>
-                <%= link_to "Priorities", priorities_path, class: "pure-menu-link"%>
-            </li>
+              <% @categories.each do |category| %>
+                <li>
+                  <% if category.cases.empty? %>
+                    <a class="pure-menu-link"> <%= category.name %><span class="email-count"> (0)</span></a>
+                  <% else %>
+                    <%= link_to(category_case_path(category.id,category.cases.where(closed: [nil,false]).first), class: "pure-menu-link") do %> <%= category.name %>
+                    <span class="email-count"> (<%= category.cases.size %>)</span>
+                    <%end%>
+                  <% end %>
+                </li>
+              <% end %>
+            <% end %>
+
+
+            <%# ===================================== %>
+            <%# ============= SETTINGS ============== %>
+            <%# ===================================== %>
+            <% if current_user.has_role? :admin %>
+              <li class="sidebar-label">
+                Settings
+              </li>
+              <li>
+                  <%= link_to "Categories", categories_path, class: "pure-menu-link"%>
+              </li>
+              <li>
+                  <%= link_to "Priorities", priorities_path, class: "pure-menu-link"%>
+              </li>
+              <li>
+                  <%= link_to "Users", users_path, class: "pure-menu-link"%>
+              </li>
+            <% end %>
+
             <li class="sidebar-brand sidebar-footer">
-
               <%= link_to "Log out", logout_path %>
-
             </li>
         </ul>
         <div>
