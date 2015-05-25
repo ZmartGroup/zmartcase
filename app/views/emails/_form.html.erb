@@ -1,14 +1,14 @@
 <%= form_tag('/emails', :method=>'post', :multipart => true, html: {class: "form-group"} ) do %>
-  <%= label_tag 'to'%>:
+  <%= label_tag 'to'%>
   <%= email_field_tag 'email[to]', nil, class: "form-control" %><br />
 
-  <%= label_tag 'subject'%>:
+  <%= label_tag 'subject'%>
   <%= text_field_tag 'email[subject]', nil, class: "form-control" %><br />
 
-  <%= label_tag 'body'%>:
+  <%= label_tag 'body'%>
   <%= text_area_tag 'email[body]', nil, rows: "5",class: "form-control" %><br />
 
-  <%= label_tag 'attachment:'%>:
+  <%= label_tag 'attachment'%>
   <%= file_field_tag 'attachment[]', :multiple => true %><br />
 
   <% if current_page?('/emails/new') %>
