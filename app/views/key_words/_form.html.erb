@@ -1,0 +1,17 @@
+<%= form_for @key_word, html: {class: "form-group"} do |f| %>
+  <%= f.label :word %>
+  <%= f.text_field :word,class: "form-control", placeholder: "Word"%>
+  <br>
+  <%= f.text_field :point,class: "form-control", placeholder: "Point"%>
+  Select Category:<BR>
+  <%= select_tag 'key_word[category_id]', 
+    options_from_collection_for_select(@categories,  'id', 'name'), 
+      class: "form-control", :selected => @key_word.category%>
+  <br>
+
+  <% if current_page?('key_words/new') %>
+  	<%= f.submit "Create", class: "btn btn-primary"%>
+  <%else %>
+  	<%= f.submit "Edit", class: "btn btn-primary"%>
+  <% end %>
+<% end %>

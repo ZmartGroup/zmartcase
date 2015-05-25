@@ -14,8 +14,9 @@ class FetchFromOne
   def perform
     if check_number_of_emails > 0
       imap_select_inbox
-      imap_readmail
+      q = imap_readmail
     end
+    return q
   ensure
     imap_logout
   end
@@ -39,15 +40,16 @@ class FetchFromOne
 
   #Read the new mail, save in db
   def imap_readmail
+    q = Queue.new
     imap.search([imap_search_for]).each do |message_id|
       msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
       mail = Mail.new(msg)
       case_id = get_case_id(mail)
-      Email.create(case_id: case_id, date: mail.date, is_sent: false, raw: MailCompressor.compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
-
+      e = Email.create(case_id: case_id, date: mail.date, is_sent: false, raw: MailCompressor.compress_mail(msg), to: @email_account.user_name, from: mail.from[0].to_s, subject: mail.subject, body: mail.text_part.body.to_s)
+      q.push(e)
       imap.store(message_id, '+FLAGS', [:Seen])
     end
-    #call keyword and filtering code
+    return q
   end
 
   def get_case_id(mail)
@@ -73,3 +75,4 @@ class FetchFromOne
     end
   end
 end
+

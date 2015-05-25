@@ -1,10 +1,6 @@
 Zmartcase::Application.routes.draw do
 
-  get "key_word_controller/edit"
 
-  get "key_word_controller/delete"
-
-  get "key_word_controller/create"
 
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
@@ -13,15 +9,13 @@ Zmartcase::Application.routes.draw do
   #get "welcome/index"
 
   get "filter_mail/index"
-  #get "filter_mail/filter_all_uncategorized_emails"
-  #post "filter_mail/filter_all_uncategorized_emails"
+  post "filter_mail/index"
   get "filter_mail/start_filtering"
   post "filter_mail/start_filtering"
 
 
 
-  post "filter_mail/index"
-
+  #get "Catego"
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
   get "signup" => "users#new", :as => "signup"
@@ -37,6 +31,7 @@ Zmartcase::Application.routes.draw do
   resources :sessions
   resources :emails
   resources :notes
+  resources :key_words
   resources :categories do
     resources :cases
   end

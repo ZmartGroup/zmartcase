@@ -64,24 +64,6 @@ describe FilterEmail do
         expect(temp_email1.category).to eq(feedback_cat)
     end
 
-    it "check_subject_and_body: should set category to  uncategorized if nothing found" do
-        temp_email1.case = Case.new
-        temp_email1.save
-
-        uncategorized_cat = Category.new(name: "Uncategorized")
-        uncategorized_cat.save
-
-        key_words_DB2.push(KeyWord.new(word: "rymden", point: '10'))
-        key_words_DB2.push(KeyWord.new(word: "operan", point: '10'))
-        key_words_DB2.push(KeyWord.new(word: "info", point: '10'))
-
-        fel_cat.key_words = key_words_DB2
-        fel_cat.save
-
-        FilterEmail.new.check_subject_and_body(temp_email1)
-        expect(temp_email1.category).to eq(uncategorized_cat)
-    end
-
     it "check_email_addresses: should set category to feedback_cat" do
         temp_email1.case = temp_case
         temp_email1.to = to_email_address

@@ -65,18 +65,17 @@ class FilterEmail
             attach_category_to_email(email,winning_category)
         else
             #This asumes there's a category called "Uncategorized"
-            uncategorized = Category.find_by_name("Uncategorized")
+            #uncategorized = Category.find_by_name("Uncategorized")
             #using scopes: not working for some reason
             #uncategorized = Category.uncategorized
 
-            attach_category_to_email(email,uncategorized)
+            #attach_category_to_email(email,uncategorized)
         end
 
     end
 
     def attach_category_to_email(email,cat)
         email.category = cat
-
     end
 
     #check each word in either subject or body against the keywords in each category's key_words

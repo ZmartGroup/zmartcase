@@ -2,5 +2,11 @@
   <%= f.label :name %>
   <%= f.text_field :name,class: "form-control", placeholder: "Name"%>
   <br>
-  <%= f.submit "Create", class: "btn btn-primary"%>
+  <% if current_page?('categories/new') %>
+  	<%= f.submit "Create", class: "btn btn-primary"%>
+  <%else %>
+  	<%= f.submit "Create", class: "btn btn-primary"%>
+  <% end %>
 <% end %>
+
+
