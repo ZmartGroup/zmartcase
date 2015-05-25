@@ -55,26 +55,29 @@
             <td>
               <%= link_to "edit", edit_key_word_path(key), class: "btn btn-xs btn-primary" %>
             <td>
-            	<%= link_to "delete", key_word_path(key), :method => "delete", :confirm => "Are you sure?", class: "btn btn-xs btn-danger" %>
+            	<%= link_to "delete", key_word_path(key), :method => "delete",
+                 :confirm => "Are you sure?", class: "btn btn-xs btn-danger" %>
           	</td>
         </tr>
         <% end %>
     </table>
     <BR>
     <%= link_to "Add key word", new_key_word_path , class: "btn btn-primary btn-sm" %>
-
-
-    <h3>Cases without a category:</h3>
+    <BR>
+      <BR>
+    <%= button_to "Filter all emails", filter_mail_start_filtering_path, class: "btn btn-primary" %>
+    <BR>
+    <h3></h3>
     <table class="table table-striped">
     	<tr>
         <th>
-          <%= @category.name %>
+          Emails without a category:
         </td>
         </tr>
-        <% @category.cases.each do |case1| %>
+        <% @uncategorized.each do |email| %>
         <tr>
           <td>
-            <%= case1.id %>
+            <%= email.subject%>
           </td>
         </tr>
         <% end %>

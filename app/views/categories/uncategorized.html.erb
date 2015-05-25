@@ -1,0 +1,20 @@
+<BR>
+    <%= link_to "Add key word", new_key_word_path , class: "btn btn-primary btn-sm" %>
+    <BR>
+      <BR>
+    <%= button_to "Filter all emails", filter_mail_start_filtering_path, class: "btn btn-primary" %>
+    <BR>
+    <table class="table table-striped">
+    	<tr>
+            <th>
+              Emails without a category:
+            </td>
+        </tr>
+        <% @uncategorized.each do |email| %>
+        <tr>
+          <td>
+            <%= email.subject%>
+          </td>
+        </tr>
+        <% end %>
+    </table>
