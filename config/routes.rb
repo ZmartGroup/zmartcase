@@ -13,9 +13,9 @@ Zmartcase::Application.routes.draw do
   get "filter_mail/start_filtering"
   post "filter_mail/start_filtering"
 
+  get "categories/uncategorized"
+  post "categories/uncategorized"
 
-
-  #get "Catego"
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
   get "signup" => "users#new", :as => "signup"
@@ -30,7 +30,7 @@ Zmartcase::Application.routes.draw do
   get "dashboard" => "users#dashboard"
   resources :sessions
   resources :emails
-  resources :notes
+  resources:notes
   resources :key_words
   resources :categories do
     resources :cases

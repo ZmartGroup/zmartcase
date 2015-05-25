@@ -11,6 +11,8 @@ class CategoriesController < ApplicationController
 
   def edit
     @category = Category.find(params[:id])
+    @uncategorized = Email.where(:category_id => nil)
+
   end
 
   def new
@@ -20,6 +22,10 @@ class CategoriesController < ApplicationController
       format.html # new.html.erb
       format.json { render json: @category }
     end
+  end
+
+  def uncategorized
+    @uncategorized = Email.where(:category_id => nil)
   end
 
   def create

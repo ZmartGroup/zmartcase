@@ -52,6 +52,16 @@
                   <% end %>
                 <% end %>
               </li>
+              <li>
+                <% if @uncategorized.empty? %>
+                  <a class="pure-menu-link"> Uncategorized <span class="email-count"> (0)</span></a>
+                <% else %>
+                  <%= link_to categories_uncategorized_path(@uncategorized.first) do %>
+                    Uncategorized
+                    <span class="email-count"> (<%= @uncategorized.size %>)</span>
+                  <% end %>
+                <% end %>
+              </li>
               <% @categories.each do |category| %>
                 <li>
                   <% if category.cases.empty? %>

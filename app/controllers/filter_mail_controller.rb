@@ -12,7 +12,7 @@ class FilterMailController < ApplicationController
 	def start_filtering
 		filter_all_emails
 
-		redirect_to filter_mail_index_path
+		redirect_to(:back)
 
 	end
 
