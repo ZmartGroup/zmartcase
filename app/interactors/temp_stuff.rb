@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'net/imap'
 require 'mail'
 
@@ -93,11 +94,11 @@ class TempStuff
     #redirect_to filter_mail_index_path
   end
 
-=begin
+
 	def self.create_email_acc
 		EmailAccount.create(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
 	end
-
+=begin
   def self.getMail
     email_account = EmailAccount.new(imap: "imap.gmail.com", port: "993", enable_ssl: true, user_name: "barasparaprojtest@gmail.com", password: "Kth2015!")
     imap = Net::IMAP.new(email_account.imap, {:port => email_account.port, :ssl => email_account.enable_ssl})

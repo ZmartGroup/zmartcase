@@ -3,7 +3,7 @@ class ThreadedFilterEmail
     #TODO
 
     #Accepts a que with emails that's going to be categorized, and how many threads it should do it in
-    def execute_filter_threads(queue, num_of_threads)
+    def execute_filter_threads(queue, num_of_threads=4)
         @active_threads = 0
         @lock = Mutex.new
         @thread_array = Array.new

@@ -1,6 +1,9 @@
 class CountWords
-
-	##################FIXA SÅ ATT REDAN GENOMSKANNADE MAIL INTE SKANNAS IGEN
+	def count_queue(queue)
+		queue.length.times do
+			count(queue.pop)
+		end
+	end
 	
 	def count(email)
 
@@ -27,7 +30,7 @@ end
 def check_term(emailword)
 
 	if Term.all == []
-		create_term("hej")
+		create_term("init_word")
 	end
 
 	state = true
