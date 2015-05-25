@@ -4,13 +4,10 @@
   <br>
   <%= f.text_field :point,class: "form-control", placeholder: "Point"%>
   Select Category:<BR>
-  <%= select_tag 'key_word[category]', 
+  <%= select_tag 'key_word[category_id]', 
     options_from_collection_for_select(@categories,  'id', 'name'), 
-      class: "form-control"%>
+      class: "form-control", :selected => @key_word.category%>
   <br>
-
-  select("post", "person_id", Person.all.collect {|p| [ p.name, p.id ] }, {:prompt => 'Select Person'})
-
 
   <% if current_page?('key_words/new') %>
   	<%= f.submit "Create", class: "btn btn-primary"%>

@@ -5,12 +5,20 @@
       <th>#</td>
       <th>Name</td>
       <th>Created at</td>
+        <th> </td>
     </tr>
     <% @categories.each do |cat| %>
       <tr>
         <td><%= cat.id %></td>
         <td><%= cat.name %></td>
         <td><%= cat.created_at %></td>
+        <td>
+          <%= link_to "edit", edit_category_path(cat), class: "btn btn-xs btn-primary" %>
+        </td>
+        <td>
+          <%= link_to "delete", category_path(cat), :method => "delete", 
+            :confirm => "Are you sure?", class: "btn btn-xs btn-danger" %>
+        </td>
       </tr>
     <% end %>
   </table>
