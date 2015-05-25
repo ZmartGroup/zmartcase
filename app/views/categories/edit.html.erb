@@ -64,11 +64,11 @@
     <%= link_to "Add key word", new_key_word_path , class: "btn btn-primary btn-sm" %>
 
 
-    <h3>Attached cases:</h3>
+    <h3>Cases without a category:</h3>
     <table class="table table-striped">
     	<tr>
         <th>
-          	<%= @category.name %>
+          <%= @category.name %>
         </td>
         </tr>
         <% @category.cases.each do |case1| %>
