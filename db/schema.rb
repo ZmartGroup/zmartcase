@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(:version => 20150521104530) do
     t.string   "hashtag"
     t.boolean  "closed"
     t.integer  "priority_id"
-    t.datetime "closed_at"
     t.integer  "category_id"
+    t.datetime "closed_at"
   end
 
   create_table "categories", :force => true do |t|
