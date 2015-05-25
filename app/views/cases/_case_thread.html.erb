@@ -28,43 +28,9 @@
 <div style="padding-top: 50px;">
   <% @communications.each do |c| %>
     <% if c.class == Email %>
-      <% if !c.is_sent? %>
-      <div class="panel panel-success pull-left" style="width:60%; margin-left:0px;">
-      <% else %>
-      <div class="panel panel-success pull-right" style="width:60%;">
-      <% end %>
-        <div class="panel-heading panel-email" id="clickme">
-        <h4 class="pull-left" style="margin:0px;">Email</h4>
-          <!--<h4 style="margin: 0px;"><%= link_to "Email", email_path(c) %></h4>-->
-          <font color="black" style="padding-left:20px; font-weight: bold;"><%= c.subject[0..30] %></font>
-        </div>
-        <div class="panel-body toggler" style="display: none">
-          From: <font color="#999999" size="3"><%= c.from %></font>
-          To: <font color="#999999" size="3"><%= c.to %></font>
-          Sent: <font color="#999999" size="3"><%= c.created_at.strftime("%F") %></font>
-          <legend></legend>
-          <%= c.body %>
-        </div>
-      </div>
+        <%= react_component('CaseThreadMail', email: c) %>
     <% else %>
-      <div class="panel panel-info pull-right" style="width:60%;">
-        <div class="panel-heading panel-note" id="clickme" style="margin: 0px;">
-          <h4 class="pull-left" style="margin:0px;">Note</h3>
-          <font color="black" style="padding-left:20px; font-weight: bold;"><%= c.subject[0..30].capitalize %></font>
-          <p class="pull-right" style=" color:black; font-size: 10px; margin-top:-7px;">
-              <% if !c.user.nil? %>
-                <b>Added by:</b></br> <%= c.user.name %>
-              <% else %>
-                <b>Added by:</b></br> None
-              <% end %>
-          </p>
-        </div>
-        <div id="div<%=c.id%>" class="panel-body toggler" >
-          <p >
-            <%= c.body %>
-          </p>
-        </div>
-      </div>
+      <%= react_component('CaseThreadNote', note: c, user: c.user.name) %>
     <% end %>
   <%end%>
 </div>
@@ -128,9 +94,3 @@
   </div>
 </div>
 <% end %>
-
-<script>
-  $("#clickme").click(function() {
-    $(".toggler").slideToggle('slow');
-  });
-</script

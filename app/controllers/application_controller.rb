@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :set_categories, :set_closed_cases, :set_user
+  before_filter :set_categories, :set_closed_cases, :set_user, :set_uncategorized
 
   def set_categories
     @categories = Category.all
