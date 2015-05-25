@@ -54,11 +54,11 @@
               </li>
               <li>
                 <% if @uncategorized.empty? %>
-                  <a class="pure-menu-link"> Uncategorized <span class="email-count"> (0)</span></a>
+                  <a class="pure-menu-link"> Uncategorized <span class="email-count"><font color="6BB050"> (0)</font></span></a>
                 <% else %>
-                  <%= link_to categories_uncategorized_path(@uncategorized.first) do %>
+                  <%= link_to categories_uncategorized_path do %>
                     Uncategorized
-                    <span class="email-count"> (<%= @uncategorized.size %>)</span>
+                    <span class="email-count"> <font color="6BB050">(<%= @uncategorized.size %>)</font></span>
                   <% end %>
                 <% end %>
               </li>
