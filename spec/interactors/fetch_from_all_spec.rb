@@ -15,7 +15,7 @@ describe FetchFromAll do
     ffo = double(FetchFromOne.new(1,2))
   	expect(EmailAccount).to receive(:all){[1,2]}
     expect(FetchFromOne).to receive(:new).twice{ffo}
-    expect(ffo).to receive(:perform).twice{}
+    expect(ffo).to receive(:perform).twice{Queue.new}
     FetchFromAll.new.perform
   end
 end

@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     if user
       redirect_to root_path, :notice => "Logged in"
     else
-      redirect_to root_path, :notice => "Email or password was incorrect!"
+      redirect_to login_path, :notice => "Email or password was incorrect!"
     end
   end
 
