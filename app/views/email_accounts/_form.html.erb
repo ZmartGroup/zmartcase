@@ -1,0 +1,30 @@
+<%= form_for @email_account, html: {class: "form-group"} do |f| %>
+  <%= f.label :imap %>
+  <%= f.text_field :imap,class: "form-control", placeholder: "Imap"%>
+  <br>
+  <%= f.label :port %>
+  <%= f.text_field :port,class: "form-control", placeholder: "Port"%>
+  <br>
+  <%= f.label :enable_ssl %>
+  <%= f.text_field :enable_ssl,class: "form-control", placeholder: "enable_ssl"%>
+  <%= f.label :user_name %>
+  <%= f.text_field :user_name,class: "form-control", placeholder: "User_name"%>
+  <br>
+  <%= f.label :password %>
+  <%= f.text_field :password,class: "form-control", placeholder: "Password"%>
+  <br>
+    <%= f.label :email_address %>
+  <%= f.text_field :email_address,class: "form-control", placeholder: "Email_address"%>
+  <br>
+  <br>
+    <%= f.label :category %>
+    <%= select_tag 'email_account[category_id]', 
+    options_from_collection_for_select(@categories,  'id', 'name'), 
+      class: "form-control", include_blank: true %>
+  <br>
+  <% if current_page?('categories/new') %>
+    <%= f.submit "Create", class: "btn btn-primary"%>
+  <%else %>
+    <%= f.submit "Create", class: "btn btn-primary"%>
+  <% end %>
+<% end %>

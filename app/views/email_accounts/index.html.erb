@@ -1,0 +1,55 @@
+<div class="col-sm-5">
+	<h1>Email Accounts</h1>
+  <table class="table table-striped">
+  	<tr>
+	  	<th>
+	      Attached to:
+	    </td>
+	    <th>
+	      Email Address:
+	    </td>
+	    <th>
+	      Port:
+	    </td>
+			<th>
+	    	SSL:
+	    </td>
+			<th>
+	      Imap:
+	    </td>
+			<th>
+	      Password:
+	    </td>
+    </tr>
+    <% @email_accounts.each do |account| %>
+    <tr>
+    	<td>
+        <%= account.category_id%>
+      </td>
+      <td>
+        <%= account.email_address%>
+      </td>
+      <td>
+        <%= account.port%>
+      </td>
+      <td>
+        <%= account.enable_ssl%>
+      </td>
+      <td>
+        <%= account.imap%>
+      </td>
+      <td>
+        <%= account.password%>
+      </td>
+      <td>
+        <%= link_to "edit", edit_email_account_path(account), class: "btn btn-xs btn-primary" %>
+      </td>
+      <td>
+        <%= link_to "delete", email_account_path(account), :method => "delete", 
+          :confirm => "Are you sure?", class: "btn btn-xs btn-danger" %>
+      </td>      
+    </tr>
+    <% end %>
+  </table>
+	<%= link_to "New email account", email_accounts_new_path, class: "btn btn-primary" %>
+</div>

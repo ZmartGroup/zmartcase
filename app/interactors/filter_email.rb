@@ -2,7 +2,7 @@ class FilterEmail
     #TODO:
 
     def initialize(categories=Category.all)
-        #if threaded categories needs to be sent from the caller
+        #if threaded, categories needs to be sent from the caller
         @all_categories = categories
     end
 

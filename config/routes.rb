@@ -2,6 +2,14 @@ Zmartcase::Application.routes.draw do
 
 
 
+  get "email_accounts/index"
+
+  get "email_accounts/edit"
+
+  get "email_accounts/new"
+
+  get "email_accounts/index"
+
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
   get "signup" => "users#new", :as => "signup"
@@ -30,6 +38,7 @@ Zmartcase::Application.routes.draw do
   get "dashboard" => "users#dashboard"
   resources :sessions
   resources :emails
+  resources :email_accounts
   resources:notes
   resources :key_words
   resources :categories do
